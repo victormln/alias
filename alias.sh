@@ -19,14 +19,15 @@ function aliasAdded {
 }
 
 function add {
+  echo "Se va a crear un alias nuevo."
 	continuar="y"
 	# Preguntamos hasta que el usuario quiera, si quiere crear alias
 	while [ $continuar == "y" ] || [ $continuar == "Y" ] ||
    [ $continuar == "s" ] || [ $continuar == "S" ]
 	do
-    echo -e "Introduce un nombre de alias"
+    echo -e "Introduce un nombre para el alias:"
     read name
-    echo "Introduce ahora el comando que querrás ejecutar con el alias $name (no hace falta que pongas las comillas)"
+    echo "Introduce ahora el comando que querrás ejecutar con el alias $name (no hace falta que pongas las comillas):"
     read alias_command
     #Añadimos al .bashrc el alias
     echo alias $name=\"$alias_command\" >> ~/.bashrc
@@ -98,7 +99,7 @@ function edit {
       # COPIAR LO MISMO QUE EN EL ELSE DE ARRIBA
       editSpecificAlias $1
     else
-      echo "El alias $1 no existe. "
+      echo "El alias $1 no existe."
       echo "Introduce uno que exista (recuerda que puedes ejecutar el [edit] sin parámetros o ver los alias con [show] o [view])"
     fi
   fi
@@ -132,15 +133,22 @@ function delete {
 }
 
 function showHelp {
-	echo "########"
-	echo "Ayuda"
-	echo "########"
-	echo "Comandos disponibles:"
-	echo "add -> Añade un alias"
-	echo "edit -> Editar un alias"
-	echo "delete -> Elimina un alias"
-	echo "Sin argumentos -> Crea un alias"
-	echo "Vuelve a ejecutar el script y selecciona una de esas opciones"
+	echo -e "usage: malias [add] [edit] [list] [delete] - Script que te permite crear, modificar, listar o eliminar alias de tu pc."
+
+  echo -e "\n[add] [add nombre_alias]"
+  echo -e "\tPodrás añadir un alias."
+  echo -e "\tEl nombre de alias quieres añadir, puedes poner [add nombre] y el nombre del alias."
+
+  echo -e "\n[edit] [edit nombre_alias]"
+  echo -e "\tPodrás modificar un alias que tengas ya creado."
+  echo -e "\tSi sabes el nombre del alias, puedes poner [edit nombre]"
+  echo -e "\tSi no lo sabes, puedes poner [edit] a secas y te saldrá el listado de alias que tienes."
+
+  echo -e "\n[view] [show] [list]"
+  echo -e "\tPodrás listar/ver todos los alias que tienes."
+
+  echo -e "\n[delete] [delete nombre_alias]"
+  echo -e "\tPodrás eliminar un alias."
 }
 
 function parseOption {
@@ -167,7 +175,7 @@ function parseOption {
   	elif [ $1 == "delete" ]
   	then
   		delete
-  	elif [ $1 == "help" ]
+  	elif [ $1 == "help" ] || [ $1 == "--help" ]
   	then
   		showHelp
     elif [ $1 == "show" ] || [ $1 == "view" ]
