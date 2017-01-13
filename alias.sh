@@ -82,12 +82,6 @@ function edit {
     then
       echo "numero"
     else
-      echo "**********"
-      cat .alias.tmp
-      commando=$(cat .alias.tmp | grep -E "alias $selectedOption=" | cut -d"\"" -f 2)
-      echo "**********"
-      echo $commando
-      echo -e "Has seleccionado el alias ${ORANGE}$selectedOption${NC}."
       editSpecificAlias $selectedOption
     fi
     rm .alias.tmp
@@ -106,11 +100,13 @@ function edit {
 
 # A esta funcion le paso un argumento, que será el nombre del alias a editar
 function editSpecificAlias {
+  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2)
+  echo -e "Has seleccionado el alias ${ORANGE}$1${NC}."
   echo "Que nombre quieres ponerle?:"
-  read name_alias
+  read -e -i $1 name_alias
   echo -e "Que comando quieres que se ejecute con el alias ${ORANGE}$name_alias${NC}?:"
-  read alias_command
-  echo $selectedOption
+  read -e -i $commando alias_command
+  #echo $alias_command
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${FILE_WITH_ALIAS}_copy_alias_script.txt
   # Sustituimos el comando antiguo, por el nuevo
