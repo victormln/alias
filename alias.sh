@@ -12,6 +12,7 @@ NC='\033[0m'
 BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 ORANGE='\033[0;33m'
+CYAN='\033[0;36m'
 
 function aliasAdded {
   #Mostramos mensaje conforme se han creado los alias y se ha salido del programa
@@ -135,19 +136,19 @@ function delete {
 function showHelp {
 	echo -e "usage: malias [add] [edit] [list] [delete] - Script que te permite crear, modificar, listar o eliminar alias de tu pc."
 
-  echo -e "\n[add] [add nombre_alias]"
+  echo -e "\n${CYAN}[-a] [add] [add nombre_alias]${NC}"
   echo -e "\tPodrás añadir un alias."
   echo -e "\tEl nombre de alias quieres añadir, puedes poner [add nombre] y el nombre del alias."
 
-  echo -e "\n[edit] [edit nombre_alias]"
+  echo -e "\n${CYAN}[-e] [edit] [edit nombre_alias]${NC}"
   echo -e "\tPodrás modificar un alias que tengas ya creado."
   echo -e "\tSi sabes el nombre del alias, puedes poner [edit nombre]"
   echo -e "\tSi no lo sabes, puedes poner [edit] a secas y te saldrá el listado de alias que tienes."
 
-  echo -e "\n[view] [show] [list]"
+  echo -e "\n${CYAN}[-l] [view] [show] [list]${NC}"
   echo -e "\tPodrás listar/ver todos los alias que tienes."
 
-  echo -e "\n[delete] [delete nombre_alias]"
+  echo -e "\n${CYAN}[-d] [delete] [delete nombre_alias]${NC}"
   echo -e "\tPodrás eliminar un alias."
 }
 
@@ -159,10 +160,10 @@ function parseOption {
     add
   else
     # Miramos que ha seleccionado el usuario (add, edit, delete, help, show)
-    if [ $1 == "add" ]
+    if [ $1 == "add" ] || [ $1 == "-a" ]
   	then
   		add
-  	elif [ $1 == "edit" ]
+  	elif [ $1 == "edit" ] || [ $1 == "-e" ]
   	then
       # Si no le pasa un segundo argumento a edit (el nombre del alias)
       # le preguntaremos en el edit cual quiere modificar
@@ -172,13 +173,13 @@ function parseOption {
       else
         edit $2
       fi
-  	elif [ $1 == "delete" ]
+  	elif [ $1 == "delete" ] || [ $1 == "-d" ]
   	then
   		delete
   	elif [ $1 == "help" ] || [ $1 == "--help" ]
   	then
   		showHelp
-    elif [ $1 == "show" ] || [ $1 == "view" ]
+    elif [ $1 == "show" ] || [ $1 == "view" ] || [ $1 == "list" ] || [ $1 == "-l" ]
     then
       show
     else
