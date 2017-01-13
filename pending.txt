@@ -1,0 +1,2 @@
+- Crear constante para el nombre .bashrc
+- Añadir colores a los mensajes (y a los números de script y nombre de script)
