@@ -56,9 +56,11 @@ else
 	    # Si es así, hacemos un pull y le actualizamos el script
 	  	git pull | tee >(echo "Actualizando... Por favor, espere ...")
 			echo -e "${OK}[OK] ${NC}La actualización ha acabado.";
+			echo -e "**************************"
 	  else
 	    # En el caso que seleccione que no, muestro un mensaje.
 	    echo -e "${WARNING}¡AVISO!${NC} NO se actualizará (aunque se recomienda)."
+			echo -e "**************************"
 			# Damos por su puesto que tiene la ultima version,
 			# para que el script no entre en bucle
 			tieneUltimaVersion=true

@@ -143,22 +143,39 @@ function delete {
   fi
 }
 
+function deleteEmptyLines {
+  numberEmptyLines=$(grep -cvP '\S' ${FILE_WITH_ALIAS})
+  if [ $numberEmptyLines != 0 ]
+  then
+    echo "Tienes $numberEmptyLines lineas en blanco en ${FILE_WITH_ALIAS}"
+    echo "Quieres eliminarlas todas?"
+    read delete
+    if confirmYes $delete
+    then
+      sed -i '/^\s*$/d' ${FILE_WITH_ALIAS}
+      echo -e "${OK}[OK] ${NC}Se han eliminado todas las lineas en blanco"
+    fi
+  else
+    echo -e "${OK}[OK] ${NC}No hay lineas en blanco en tu archivo"
+  fi
+}
+
 function deleteSpecificAlias {
   commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2)
   echo -e "Seguro que quiere eliminar el alias ${ORANGE}$1${NC}?"
   read confirmation
-
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${FILE_WITH_ALIAS}_copy_alias_script.txt
   # Sustituimos el comando antiguo, por el nuevo
   # la coma es el delimitador para el sed
-  sed "s,^alias $selectedOption=\"$commando\",alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+  #sed "/^alias $1=\"$commando\"/ d" ${FILE_WITH_ALIAS}
+  sed "s,^alias $1=\"$commando\",,g" ${FILE_WITH_ALIAS} > ~/bash.txt
   # Eliminamos
-  rm ${FILE_WITH_ALIAS}
-  mv ~/bash.txt ${FILE_WITH_ALIAS}
+  #rm ${FILE_WITH_ALIAS}
+  #mv ~/bash.txt ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
   then
-    echo -e "${OK}[OK]${NC} Se ha modificado el alias correctamente"
+    echo -e "${OK}[OK]${NC} Se ha eliminado el alias correctamente"
   else
     echo -e "${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar el script"
   fi
@@ -211,8 +228,9 @@ function showHelp {
   echo -e "\n${CYAN}[-l] [view] [show] [list]${NC}"
   echo -e "\tPodrás listar/ver todos los alias que tienes."
 
-  echo -e "\n${CYAN}[-d] [delete] [delete nombre_alias]${NC}"
+  echo -e "\n${CYAN}[-d] [delete] [delete nombre_alias] [-d empty]${NC}"
   echo -e "\tPodrás eliminar un alias."
+  echo -e "\tEl empty después de un -d o un delete, también sirve para eliminar las lineas en blanco del archivo."
 }
 
 function parseOption {
@@ -238,7 +256,14 @@ function parseOption {
       fi
   	elif [ $1 == "delete" ] || [ $1 == "-d" ]
   	then
-  		delete
+      if ! [ -z $2 ] && [ $2 == "empty" ]
+      then
+        deleteEmptyLines
+      else
+        echo $2
+        delete
+      fi
+
   	elif [ $1 == "help" ] || [ $1 == "--help" ]
   	then
   		showHelp
@@ -254,6 +279,13 @@ function parseOption {
 
 # Cogemos los datos del archivo .conf
 source user.conf
+
+if ! [ -e ${FILE_WITH_ALIAS} ]
+then
+  echo "No existe el archivo ${FILE_WITH_ALIAS}."
+  echo "Puedes modificar esta ruta en el user.conf que hay en este script."
+  exit 1
+fi
 
 echo "Alias Manager v$version"
 if $show_author; then echo "Autor: Víctor Molina [victormln.com] <contact@victormln.com> "; fi;

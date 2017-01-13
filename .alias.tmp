@@ -1,0 +1,6 @@
+alias gp="~/Documents/Victor/Git_Scripts/Autopush/autopush.sh"
+alias gp2="~/Documents/Victor/Git_Scripts/Autopush/autopush_graphic.sh"
+alias 2ndo="cd ~/Documents/Victor/2ndo"
+alias html="cd c:/Program\ Files\ \(x86\)/PostgreSQL/EnterpriseDB-ApachePHP/apache/www"
+alias htdocs="cd c:/xampp/htdocs"
+alias malias="~/Workspace/Code/alias/alias.sh"
