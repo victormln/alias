@@ -23,8 +23,7 @@ function add {
   echo -e "${WARNING}Se va a crear un alias nuevo.${NC}"
 	continuar="y"
 	# Preguntamos hasta que el usuario quiera, si quiere crear alias
-	while [ $continuar == "y" ] || [ $continuar == "Y" ] ||
-   [ $continuar == "s" ] || [ $continuar == "S" ]
+	while confirmYes $continuar
 	do
     echo -e "Introduce un nombre para el alias:"
     read name
@@ -64,23 +63,13 @@ function edit {
   # significa que no sabe cual va a editar
   if [ -z $1 ]
   then
-    echo "Mostrando todos los alias que tienes:"
-    # Mientras hayan alias, irlos mostrando
-    contador=1
-    while read linea
-    do
-      nombreScript=$(echo "$linea" | cut -d"=" -f 1)
-      comando=$(echo "$linea" | cut -d"=" -f 2)
-      # Elimino la palabra alias para que solo se vea lo que importa
-      echo -e "\t${BLUE}[$contador] ${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
-      contador=$(($contador + 1))
-    done < .alias.tmp
-    #
+    showAlias
     echo "Seleccione el número o nombre del alias que quiere editar"
     read selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
-      echo "numero"
+      nombre=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 1 | cut -d" " -f 2)
+      editSpecificAlias $nombre
     else
       editSpecificAlias $selectedOption
     fi
@@ -124,7 +113,87 @@ function editSpecificAlias {
 }
 
 function delete {
-  echo "delete"
+  # Meto todos los alias en un archivo temporal y los muestro
+  cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
+  # En el caso de que el usuario no le haya pasado un argumento,
+  # significa que no sabe cual va a editar
+  if [ -z $1 ]
+  then
+    showAlias
+    echo "Seleccione el número o nombre del alias que quiere eliminar"
+    read selectedOption
+    if [[ "$selectedOption" =~ ^[0-9]+$ ]]
+    then
+      nombre=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 1 | cut -d" " -f 2)
+      deleteSpecificAlias $nombre
+    else
+      deleteSpecificAlias $selectedOption
+    fi
+    rm .alias.tmp
+  # En el caso que le haya pasado un argumento (el nombre de un alias)
+  # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
+  else
+    if $(cat ${FILE_WITH_ALIAS} | grep -E "^alias $1=")
+    then
+      deleteSpecificAlias $1
+    else
+      echo -e "${ERROR}[ERROR]${NC} El alias ${ORANGE}$1${NC} no existe."
+      echo "Introduce uno que exista (recuerda que puedes ejecutar el [edit] sin parámetros o ver los alias con [show] o [view])"
+    fi
+  fi
+}
+
+function deleteSpecificAlias {
+  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2)
+  echo -e "Seguro que quiere eliminar el alias ${ORANGE}$1${NC}?"
+  read confirmation
+
+  # Antes de nada, le hacemos una copia al usuario de su bashrc
+  cp ${FILE_WITH_ALIAS} ${FILE_WITH_ALIAS}_copy_alias_script.txt
+  # Sustituimos el comando antiguo, por el nuevo
+  # la coma es el delimitador para el sed
+  sed "s,^alias $selectedOption=\"$commando\",alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+  # Eliminamos
+  rm ${FILE_WITH_ALIAS}
+  mv ~/bash.txt ${FILE_WITH_ALIAS}
+  if [ $? -eq 0 ]
+  then
+    echo -e "${OK}[OK]${NC} Se ha modificado el alias correctamente"
+  else
+    echo -e "${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar el script"
+  fi
+}
+
+# Le paso como primer argumento la respuesta del usuario (normalmente una s/y/n)
+function confirmYes {
+  if ! [ -z $1 ]
+  then
+    if [ $1 == "y" ] || [ $1 == "Y" ] ||
+     [ $1 == "s" ] || [ $1 == "S" ]
+    then
+      return 0
+    else
+      echo "Has seleccionado $1. Saliendo del script."
+      return 1
+    fi
+  else
+    echo "Ha salido del programa porque no ha seleccionado una de las opciones [y] [s] [n]"
+    exit -1
+  fi
+}
+
+function showAlias {
+  echo "Mostrando todos los alias que tienes:"
+  # Mientras hayan alias, irlos mostrando
+  contador=1
+  while read linea
+  do
+    nombreScript=$(echo "$linea" | cut -d"=" -f 1)
+    comando=$(echo "$linea" | cut -d"=" -f 2)
+    # Elimino la palabra alias para que solo se vea lo que importa
+    echo -e "\t${BLUE}[$contador] ${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
+    contador=$(($contador + 1))
+  done < .alias.tmp
 }
 
 function showHelp {
