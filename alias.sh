@@ -31,7 +31,7 @@ function add {
     echo -e "Introduce ahora el comando que querrás ejecutar con el alias ${ORANGE}$name${NC} (no hace falta que pongas las comillas):"
     read alias_command
     #Añadimos al .bashrc el alias
-    echo alias $name=\"$alias_command\" >> ~/.bashrc
+    echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
     aliasAdded
     echo "Quieres crear otro alias? Escribe: [y / n] o [s / n] para continuar."
     read continuar
@@ -42,7 +42,7 @@ function show {
   echo "Estos son los alias que tienes creados hasta ahora:"
   echo "*---------------------------------------------------*"
   # Meto todos los alias en un archivo temporal y los muestro
-  cat ~/.bashrc | grep -E "^alias " > .alias.tmp
+  cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
   while read linea
   do
     nombreScript=$(echo "$linea" | cut -d"=" -f 1)
@@ -59,7 +59,7 @@ function show {
 
 function edit {
   # Meto todos los alias en un archivo temporal y los muestro
-  cat ~/.bashrc | grep -E "^alias " > .alias.tmp
+  cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
   # En el caso de que el usuario no le haya pasado un argumento,
   # significa que no sabe cual va a editar
   if [ -z $1 ]
@@ -94,7 +94,7 @@ function edit {
   # En el caso que le haya pasado un argumento (el nombre de un alias)
   # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
-    if $(cat ~/.bashrc | grep -E "^alias $1=")
+    if $(cat ${FILE_WITH_ALIAS} | grep -E "^alias $1=")
     then
       editSpecificAlias $1
     else
@@ -112,13 +112,13 @@ function editSpecificAlias {
   read alias_command
   echo $selectedOption
   # Antes de nada, le hacemos una copia al usuario de su bashrc
-  cp ~/.bashrc ~/.bashrc_copy_alias_script.txt
+  cp ${FILE_WITH_ALIAS} ${FILE_WITH_ALIAS}_copy_alias_script.txt
   # Sustituimos el comando antiguo, por el nuevo
   # la coma es el delimitador para el sed
-  sed "s,^alias $selectedOption=\"$commando\",alias $name_alias=\"$alias_command\",g" ~/.bashrc > ~/bash.txt
+  sed "s,^alias $selectedOption=\"$commando\",alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
   # Eliminamos
-  rm ~/.bashrc
-  mv ~/bash.txt ~/.bashrc
+  rm ${FILE_WITH_ALIAS}
+  mv ~/bash.txt ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
   then
     echo -e "${OK}[OK]${NC} Se ha modificado el alias correctamente"
@@ -204,7 +204,7 @@ then
   if ! $tieneUltimaVersion
   then
     # Iniciamos de nuevo el script para ejecutar el script actualizado
-    exec alias.sh
+    exec ./alias.sh
   fi
 fi
 

@@ -1,0 +1,12 @@
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias gp="~/Documentos/Git_Scripts/autopush/autopush.sh"
+alias 2ndo="cd ~/Documentos/2ndo"
+alias html="cd /var/www/html"
+alias =""
+alias test2="cd /user/autopush.sh"
+alias test="cd /usr/webroot/.autopush.sh"
+alias m07="cd /var/www/html/m07"
+alias malias="~/Workspace/Code/alias/alias.sh"
