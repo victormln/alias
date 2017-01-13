@@ -55,7 +55,7 @@ else
 	  then
 	    # Si es así, hacemos un pull y le actualizamos el script
 	  	git pull | tee >(echo "Actualizando... Por favor, espere ...")
-			echo -e "${OK}[OK] ${NC}La actualización ha acabado, por favor, vuelva a iniciar el script.";
+			echo -e "${OK}[OK] ${NC}La actualización ha acabado.";
 	  else
 	    # En el caso que seleccione que no, muestro un mensaje.
 	    echo -e "${WARNING}¡AVISO!${NC} NO se actualizará (aunque se recomienda)."
