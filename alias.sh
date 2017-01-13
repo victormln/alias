@@ -187,6 +187,27 @@ function parseOption {
   fi
 }
 
+# Cogemos los datos del archivo .conf
+source user.conf
+
+echo "Easy Push v$version"
+if $show_author; then echo "Autor: Víctor Molina [victormln.com] <contact@victormln.com> "; fi;
+# Si están activadas las actualizaciones automáticas
+if $search_ota
+then
+  # Doy permiso al update.sh
+  chmod +x update.sh
+  # Comprobaré si hay alguna versión nueva del programa autopush
+  # y lo mostraré en pantalla
+  source update.sh
+  # Si no tiene la ultima version y ha actualizado, volvemos a ejecutar el script
+  if ! $tieneUltimaVersion
+  then
+    # Iniciamos de nuevo el script para ejecutar el script actualizado
+    exec alias.sh
+  fi
+fi
+
 # Iniciamos el script
 if ! [ -z $1 ]
 then
