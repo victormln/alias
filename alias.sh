@@ -190,7 +190,7 @@ function parseOption {
 # Cogemos los datos del archivo .conf
 source user.conf
 
-echo "Easy Push v$version"
+echo "Alias Manager v$version"
 if $show_author; then echo "Autor: Víctor Molina [victormln.com] <contact@victormln.com> "; fi;
 # Si están activadas las actualizaciones automáticas
 if $search_ota
