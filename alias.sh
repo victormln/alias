@@ -16,11 +16,11 @@ CYAN='\033[0;36m'
 
 function aliasAdded {
   #Mostramos mensaje conforme se han creado los alias y se ha salido del programa
-  echo "Alias creado!"
+  echo -e "${OK}[OK]${NC} Alias creado!"
 }
 
 function add {
-  echo "Se va a crear un alias nuevo."
+  echo -e "${WARNING}Se va a crear un alias nuevo.${NC}"
 	continuar="y"
 	# Preguntamos hasta que el usuario quiera, si quiere crear alias
 	while [ $continuar == "y" ] || [ $continuar == "Y" ] ||
@@ -28,7 +28,7 @@ function add {
 	do
     echo -e "Introduce un nombre para el alias:"
     read name
-    echo "Introduce ahora el comando que querrás ejecutar con el alias $name (no hace falta que pongas las comillas):"
+    echo -e "Introduce ahora el comando que querrás ejecutar con el alias ${ORANGE}$name${NC} (no hace falta que pongas las comillas):"
     read alias_command
     #Añadimos al .bashrc el alias
     echo alias $name=\"$alias_command\" >> ~/.bashrc
@@ -87,7 +87,7 @@ function edit {
       commando=$(cat .alias.tmp | grep -E "alias $selectedOption=" | cut -d"\"" -f 2)
       echo "**********"
       echo $commando
-      echo "Has seleccionado el alias $selectedOption."
+      echo -e "Has seleccionado el alias ${ORANGE}$selectedOption${NC}."
       editSpecificAlias $selectedOption
     fi
     rm .alias.tmp
@@ -96,11 +96,9 @@ function edit {
   else
     if $(cat ~/.bashrc | grep -E "^alias $1=")
     then
-      echo "El alias $1 existe."
-      # COPIAR LO MISMO QUE EN EL ELSE DE ARRIBA
       editSpecificAlias $1
     else
-      echo "El alias $1 no existe."
+      echo -e "${ERROR}[ERROR]${NC} El alias ${ORANGE}$1${NC} no existe."
       echo "Introduce uno que exista (recuerda que puedes ejecutar el [edit] sin parámetros o ver los alias con [show] o [view])"
     fi
   fi
@@ -110,7 +108,7 @@ function edit {
 function editSpecificAlias {
   echo "Que nombre quieres ponerle?:"
   read name_alias
-  echo "Que comando quieres que se ejecute con el alias $name_alias?:"
+  echo -e "Que comando quieres que se ejecute con el alias ${ORANGE}$name_alias${NC}?:"
   read alias_command
   echo $selectedOption
   # Antes de nada, le hacemos una copia al usuario de su bashrc
@@ -123,9 +121,9 @@ function editSpecificAlias {
   mv ~/bash.txt ~/.bashrc
   if [ $? -eq 0 ]
   then
-    echo "Se ha modificado el alias correctamente"
+    echo -e "${OK}[OK]${NC} Se ha modificado el alias correctamente"
   else
-    echo "Ha ocurrido un problema. Vuelva a ejecutar el script"
+    echo -e "${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar el script"
   fi
 }
 
@@ -183,7 +181,7 @@ function parseOption {
     then
       show
     else
-      # Cualquier otro parametro, mostramos la ayuda
+      # Cualquier otro parámetro, mostramos la ayuda
       showHelp
   	fi
   fi
