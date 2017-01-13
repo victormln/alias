@@ -23,20 +23,16 @@
 
 tieneUltimaVersion=false
 # Conseguimos la ultima version que hay en github y le quitamos los puntos
-ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/easy-push/master/terminal/user.conf | tail -1 | cut -d'=' -f 2) > /dev/null
+ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/user.conf | tail -1 | cut -d'=' -f 2) > /dev/null
 ultimaVersionSinPuntos=$( echo $ultimaVersion | tr -d ".")
 # Miramos que versión tiene el usuario actualmente
-versionActualSinPuntos=$(cat $( dirname "${BASH_SOURCE[0]}" )/user.conf | tail -1 | cut -d'=' -f 2 | tr -d ".")
+versionActualSinPuntos=$(cat user.conf | tail -1 | cut -d'=' -f 2 | tr -d ".")
 # Comprobamos si la versionActual es igual o mas grande que la ultimaVersion
 # es igual a la versionActual.
 if (( $versionActualSinPuntos>=$ultimaVersionSinPuntos ))
 then
 	tieneUltimaVersion=true
 else
-	directorioActual=$(pwd)
-	# Nos colocamos en el directorio del script, para actualizarlo
-	cd "$( dirname "${BASH_SOURCE[0]}" )"
-	cd ..
 	# Mostramos el mensaje de que hay una nueva actualización
 	echo "###########################################"
 	echo -e "${WARNING}¡NUEVA ACTUALIZACIÓN!${NC}"
@@ -57,13 +53,8 @@ else
 	  read actualizar
 	  if [ $actualizar == "s" ] || [ $actualizar == "y" ]
 	  then
-			directorioActual=$(pwd)
-			cd "$( dirname "${BASH_SOURCE[0]}" )"
-			cd ..
-			pwd
 	    # Si es así, hacemos un pull y le actualizamos el script
 	  	git pull | tee >(echo "Actualizando... Por favor, espere ...")
-			cd $directorioActual
 			echo -e "${OK}[OK] ${NC}La actualización ha acabado, por favor, vuelva a iniciar el script.";
 	  else
 	    # En el caso que seleccione que no, muestro un mensaje.
@@ -73,6 +64,4 @@ else
 			tieneUltimaVersion=true
 	  fi
 	fi
-	# Cambiamos al directorio donde el usuario tiene sus cambios
-	cd $directorioActual
 fi
