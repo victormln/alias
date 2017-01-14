@@ -124,7 +124,7 @@ function editSpecificAlias {
   read -e -i $commando alias_command
   #echo $alias_command
   # Antes de nada, le hacemos una copia al usuario de su bashrc
-  cp ${FILE_WITH_ALIAS} ~/.alias_script_copy.txt
+  cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
   # Sustituimos el comando antiguo, por el nuevo
   # la coma es el delimitador para el sed
   #sed "0,/^alias $1=\"$commando\"/{/^alias $name_alias=\"$alias_command\"/g;}" ${FILE_WITH_ALIAS} > ~/bash.txt
@@ -179,7 +179,7 @@ function deleteSpecificAlias {
   echo -e "Seguro que quiere eliminar el alias ${ORANGE}$1${NC}?"
   read confirmation
   # Antes de nada, le hacemos una copia al usuario de su bashrc
-  cp ${FILE_WITH_ALIAS} ~/.alias_script_copy.txt
+  cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
   # la coma es el delimitador para el sed
   # El 0 es para que solo elimine la primera ocurrencia
   sed "0,/^alias $1=\"$commando\"/{/^alias $1=\"$commando\"/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
@@ -210,6 +210,65 @@ function deleteEmptyLines {
     fi
   else
     echo -e "${OK}[OK] ${NC}No hay lineas en blanco en tu archivo"
+  fi
+}
+
+function copy {
+  # Meto todos los alias en un archivo temporal y los muestro
+  cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
+  # En el caso de que el usuario no le haya pasado un argumento,
+  # significa que no sabe cual va a editar
+  if [ -z $1 ]
+  then
+    showAlias
+    echo "Seleccione el número o nombre del alias que quiere copiar"
+    read selectedOption
+    if [[ "$selectedOption" =~ ^[0-9]+$ ]]
+    then
+      nombre=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 1 | cut -d" " -f 2)
+      copySpecificAlias $nombre
+    else
+      copySpecificAlias $selectedOption
+    fi
+    rm .alias.tmp
+  # En el caso que le haya pasado un argumento (el nombre de un alias)
+  # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
+  else
+    # Compruebo si el alias que ha pasado el usuario existe
+    if cat .alias.tmp | grep "^alias $1=" > /dev/null
+    then
+      if [ -z $2 ]
+      then
+        copySpecificAlias $1
+      else
+        copySpecificAlias $1 $2
+      fi
+    else
+      # Si no existe el alias que el usuario ha pasado por argumento
+      # ejecuto otra vez la funcion edit para que seleccione un alias que exista
+      echo -e "${ERROR}[ERROR]${NC} El alias ${ORANGE}$1${NC} no existe."
+      copy
+    fi
+  fi
+}
+
+function copySpecificAlias {
+  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2 | head -1)
+  if [ -z $2 ]
+  then
+    echo -e "Has seleccionado el alias ${ORANGE}$1${NC}."
+    echo "Que nombre quieres ponerle al nuevo alias (tiene que ser distinto al que estás copiando)?:"
+    read name_alias
+    echo alias $name_alias=\"$commando\" >> ${FILE_WITH_ALIAS}
+    echo -e "Ahora también podrás usar el alias ${ORANGE}$name_alias${NC} de la misma forma que con ${ORANGE}$1${NC}."
+  else
+    echo alias $2=\"$commando\" >> ${FILE_WITH_ALIAS}
+    if [ $? -eq 0 ]
+    then
+      echo -e "Ahora también podrás usar el alias ${ORANGE}$2${NC} de la misma forma que con ${ORANGE}$1${NC}."
+    else
+      echo -e "${ERROR}[ERROR]${NC} Ha ocurrido un error y no se ha copiado correctamente."
+    fi
   fi
 }
 
@@ -245,6 +304,18 @@ function showAlias {
   done < .alias.tmp
 }
 
+function restore {
+  if ! [ -e ${DIR_BACKUP}.alias_backup.txt ]
+  then
+    cat ${DIR_BACKUP}.alias_backup.txt
+    echo -e "${ERROR}[ERROR]${NC}Lo siento. No se ha encontrado ninguna copia de seguridad."
+    echo "Puedes modificar la ruta donde se guarda la copia de seguridad en el user.conf que hay en este script."
+  else
+    cp ${DIR_BACKUP}.alias_backup.txt ${FILE_WITH_ALIAS}
+    echo -e "${OK}[OK]${NC}Se ha restaurado correctamente la copia de seguridad."
+  fi
+}
+
 function showHelp {
 	echo -e "usage: malias [add] [edit] [list] [delete] - Script que te permite crear, modificar, listar o eliminar alias de tu pc."
 
@@ -262,6 +333,13 @@ function showHelp {
 
   echo -e "\n${CYAN}[-d] [delete] [delete nombre_alias] [-d]${NC}"
   echo -e "\tPodrás eliminar un alias."
+
+  echo -e "\n${CYAN}[-cp] [copy] [copy nombre_alias_creado] [copy nombre_alias_creado nombre_alias_a_crear]${NC}"
+  echo -e "\tPodrás eliminar un alias."
+
+  echo -e "\n${CYAN}[--restore]${NC}"
+  echo -e "\tEl parámetro [--restore] sirve para restaurar una copia de seguridad del archivo que contiene los alias."
+  echo -e "\tEsta copia de seguridad se ejecuta automáticamente cada vez que se hace una acción de editar, eliminar o copiar."
 
   echo -e "\n${CYAN}[--empty]${NC}"
   echo -e "\tEl parámetro [--empty] sirve para eliminar las lineas en blanco del archivo que contenga los alias."
@@ -298,6 +376,17 @@ function parseOption {
         else
           delete $2
         fi
+    elif [ $1 == "copy" ] || [ $1 == "-cp" ]
+    then
+      if [ -z $2 ]
+      then
+        copy
+      elif [ -z $3 ]
+      then
+        copy $2
+      else
+        copy $2 $3
+      fi
   	elif [ $1 == "help" ] || [ $1 == "--help" ]
   	then
   		showHelp
@@ -307,6 +396,9 @@ function parseOption {
     elif [ $1 == "--empty" ]
     then
       deleteEmptyLines
+    elif [ $1 == "--restore" ]
+    then
+      restore
     else
       # Cualquier otro parámetro, mostramos la ayuda
       showHelp
@@ -342,11 +434,25 @@ then
   fi
 fi
 
-# Iniciamos el script
-if ! [ -z $1 ]
+if [ $1 == "--restore" ]
 then
-	parseOption $1 $2
-	exit
+  parseOption $1
+  exit
+fi
+# Primero compruebo que el archivo tenga alias dentro
+if cat ${FILE_WITH_ALIAS} | grep "^alias " > /dev/null
+then
+  # Iniciamos el script
+  if ! [ -z $1 ]
+  then
+  	parseOption $1 $2
+  	exit
+  else
+    parseOption
+  fi
 else
-  parseOption
+  echo -e "\n${ERROR}[ERROR] ${NC}El archivo ${FILE_WITH_ALIAS} no contiene alias."
+  echo "Recuerde poner correctamente en el archivo user.conf el archivo que contiene los alias."
+  echo "Si cree que ha sido a causa de un problema del script, puede restaurar la copia de seguridad con --restore"
+  exit
 fi
