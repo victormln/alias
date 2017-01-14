@@ -25,8 +25,12 @@ function add {
 	# Preguntamos hasta que el usuario quiera, si quiere crear alias
 	while confirmYes $continuar
 	do
-    echo -e "Introduce un nombre para el alias:"
-    read name
+    name=$1
+    if [ -z $1 ]
+    then
+      echo -e "Introduce un nombre para el alias:"
+      read name
+    fi
     if cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
     then
       echo -e "\n${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2 iguales."
@@ -379,7 +383,10 @@ function parseOption {
     # Miramos que ha seleccionado el usuario (add, edit, delete, help, show)
     if [ $1 == "add" ] || [ $1 == "-a" ]
   	then
-  		add
+      if ! [ -z $2 ]
+      then
+  		    add $2
+      fi
   	elif [ $1 == "edit" ] || [ $1 == "-e" ]
   	then
       # Si no le pasa un segundo argumento a edit (el nombre del alias)
