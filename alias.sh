@@ -101,12 +101,15 @@ function edit {
   # En el caso que le haya pasado un argumento (el nombre de un alias)
   # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
-    if $(cat ${FILE_WITH_ALIAS} | grep -E "^alias $1=" | head -1)
+    # Compruebo si el alias que ha pasado el usuario existe
+    if cat .alias.tmp | grep "^alias $1=" > /dev/null
     then
       editSpecificAlias $1
     else
+      # Si no existe el alias que el usuario ha pasado por argumento
+      # ejecuto otra vez la funcion edit para que seleccione un alias que exista
       echo -e "${ERROR}[ERROR]${NC} El alias ${ORANGE}$1${NC} no existe."
-      echo "Introduce uno que exista (recuerda que puedes ejecutar el [edit] sin parámetros o ver los alias con [show] o [view])"
+      edit
     fi
   fi
 }
@@ -158,12 +161,15 @@ function delete {
   # En el caso que le haya pasado un argumento (el nombre de un alias)
   # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
-    if $(cat ${FILE_WITH_ALIAS} | grep -E "^alias $1=" | head -1)
+    # Compruebo si el alias que ha pasado el usuario existe
+    if cat .alias.tmp | grep "^alias $1=" > /dev/null
     then
       deleteSpecificAlias $1
     else
+      # Si no existe el alias que el usuario ha pasado por argumento
+      # ejecuto otra vez la funcion edit para que seleccione un alias que exista
       echo -e "${ERROR}[ERROR]${NC} El alias ${ORANGE}$1${NC} no existe."
-      echo "Introduce uno que exista (recuerda que puedes ejecutar el [edit] sin parámetros o ver los alias con [show] o [view])"
+      delete
     fi
   fi
 }
@@ -254,9 +260,11 @@ function showHelp {
   echo -e "\n${CYAN}[-l] [view] [show] [list]${NC}"
   echo -e "\tPodrás listar/ver todos los alias que tienes."
 
-  echo -e "\n${CYAN}[-d] [delete] [delete nombre_alias] [-d empty]${NC}"
+  echo -e "\n${CYAN}[-d] [delete] [delete nombre_alias] [-d]${NC}"
   echo -e "\tPodrás eliminar un alias."
-  echo -e "\tEl empty después de un -d o un delete, también sirve para eliminar las lineas en blanco del archivo."
+
+  echo -e "\n${CYAN}[--empty]${NC}"
+  echo -e "\tEl parámetro [--empty] sirve para eliminar las lineas en blanco del archivo que contenga los alias."
 }
 
 function parseOption {
@@ -282,25 +290,23 @@ function parseOption {
       fi
   	elif [ $1 == "delete" ] || [ $1 == "-d" ]
   	then
-      if ! [ -z $2 ] && [ $2 == "empty" ]
-      then
-        deleteEmptyLines
-      else
         # Si no le pasa un segundo argumento a edit (el nombre del alias)
-        # le preguntaremos en el edit cual quiere modificar
+        # le preguntaremos en el delete cual quiere eliminarsss
         if [ -z $2 ]
         then
           delete
         else
           delete $2
         fi
-      fi
   	elif [ $1 == "help" ] || [ $1 == "--help" ]
   	then
   		showHelp
     elif [ $1 == "show" ] || [ $1 == "view" ] || [ $1 == "list" ] || [ $1 == "-l" ]
     then
       show
+    elif [ $1 == "--empty" ]
+    then
+      deleteEmptyLines
     else
       # Cualquier otro parámetro, mostramos la ayuda
       showHelp
