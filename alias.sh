@@ -385,6 +385,7 @@ function parseOption {
       then
         copy $2
       else
+        echo "dentro3"
         copy $2 $3
       fi
   	elif [ $1 == "help" ] || [ $1 == "--help" ]
@@ -405,6 +406,17 @@ function parseOption {
   	fi
   fi
 }
+
+
+##########################
+# Aquí empieza el script #
+##########################
+# Pendiente
+# Poder hacer edit pasandole 2 argumentos
+# Copiar el sed del edit para el delete
+
+# Primero cambiamos al directorio del script
+cd $( dirname "${BASH_SOURCE[0]}" )
 
 # Cogemos los datos del archivo .conf
 source user.conf
@@ -434,18 +446,20 @@ then
   fi
 fi
 
+# Comprobamos primero si ha ejecutado el restaurar la copia de seguridads
 if [ $1 == "--restore" ]
 then
   parseOption $1
   exit
 fi
+
 # Primero compruebo que el archivo tenga alias dentro
 if cat ${FILE_WITH_ALIAS} | grep "^alias " > /dev/null
 then
   # Iniciamos el script
   if ! [ -z $1 ]
   then
-  	parseOption $1 $2
+  	parseOption $1 $2 $3
   	exit
   else
     parseOption
