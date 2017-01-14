@@ -94,7 +94,6 @@ function edit {
     then
       nombre=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 1 | cut -d" " -f 2)
       comando=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 2)
-      echo $comando
       editSpecificAlias $nombre $comando
     else
       editSpecificAlias $selectedOption
