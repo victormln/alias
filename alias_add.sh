@@ -4,18 +4,6 @@
 # Fecha: 12/11/16
 # Versión: 1.0
 
-function crear_alias {
-	zenity --info \
-	--text="Se va a proceder a instalar el programa de Backups."
-	git clone https://github.com/victormln/Scripts.git
-	cd Scripts/Backup
-	chmod +x install.sh
-	./install.sh
-	cd -
-	rm -rf Scripts/
-}
-
-
 # Le preguntamos al usuario si quiere instalar el programa
 if ! zenity --question \
 	--title "Creador de alias" \
@@ -36,7 +24,7 @@ while [[ $? == 0 ]]; do
 		exit 1
 	fi
 	#Añadimos al .bashrc los comandos
-  echo alias $nombre=\"$comando\" >> ~/.zshrc
+  echo alias $nombre=\"$comando\" >> ${FILE_WITH_ALIAS}
   continuar=$(zenity --question \
   --text="¿Quieres crear otro alias?")
 done
