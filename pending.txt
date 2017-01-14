@@ -1,5 +1,0 @@
-- Crear constante para el nombre .bashrc
-- [DONE] Añadir colores a los mensajes (y a los números de script y nombre de script)
-- Hacer un actualizador (como en easy-push)
-- Hacer archivo configuracion
-- Cada vez que compruebe si le pasa un si o un no, ejecutar una funcion

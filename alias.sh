@@ -47,7 +47,7 @@ function show {
     nombreScript=$(echo "$linea" | cut -d"=" -f 1)
     comando=$(echo "$linea" | cut -d"=" -f 2)
     # Elimino la palabra alias para que solo se vea lo que importa
-    echo -e "${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
+    echo -e " ${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
     contador=$(($contador + 1))
   done < .alias.tmp
   rm .alias.tmp
@@ -133,13 +133,40 @@ function delete {
   # En el caso que le haya pasado un argumento (el nombre de un alias)
   # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
-    if $(cat ${FILE_WITH_ALIAS} | grep -E "^alias $1=")
+    if $(cat ${FILE_WITH_ALIAS} | grep -E "^alias $1=" | head -1)
     then
       deleteSpecificAlias $1
     else
       echo -e "${ERROR}[ERROR]${NC} El alias ${ORANGE}$1${NC} no existe."
       echo "Introduce uno que exista (recuerda que puedes ejecutar el [edit] sin parámetros o ver los alias con [show] o [view])"
     fi
+  fi
+}
+
+function deleteSpecificAlias {
+  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2 | head -1)
+  echo -e "Seguro que quiere eliminar el alias ${ORANGE}$1${NC}?"
+  read confirmation
+  # Antes de nada, le hacemos una copia al usuario de su bashrc
+  cp ${FILE_WITH_ALIAS} .alias_script_copy.txt
+  # Sustituimos el comando antiguo, por el nuevo
+  # la coma es el delimitador para el sed
+  echo "AQUI"
+  cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2 | head -1
+  echo $1
+  echo $commando
+  # El 0 es para que solo elimine la primera ocurrencia
+  sed "0,/^alias $1=\"$commando\"/{/^alias $1=\"$commando\"/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
+  #sed "0,/^alias $1=\"$commando\"/ d" ${FILE_WITH_ALIAS} > ~/bash.txt
+  #sed "s,^alias $1=\"$commando\",,g" ${FILE_WITH_ALIAS} > ~/bash.txt
+  # Eliminamos
+  rm ${FILE_WITH_ALIAS}
+  mv ~/bash.txt ${FILE_WITH_ALIAS}
+  if [ $? -eq 0 ]
+  then
+    echo -e "${OK}[OK]${NC} Se ha eliminado el alias correctamente"
+  else
+    echo -e "${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar el script"
   fi
 }
 
@@ -157,27 +184,6 @@ function deleteEmptyLines {
     fi
   else
     echo -e "${OK}[OK] ${NC}No hay lineas en blanco en tu archivo"
-  fi
-}
-
-function deleteSpecificAlias {
-  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2)
-  echo -e "Seguro que quiere eliminar el alias ${ORANGE}$1${NC}?"
-  read confirmation
-  # Antes de nada, le hacemos una copia al usuario de su bashrc
-  cp ${FILE_WITH_ALIAS} ${FILE_WITH_ALIAS}_copy_alias_script.txt
-  # Sustituimos el comando antiguo, por el nuevo
-  # la coma es el delimitador para el sed
-  #sed "/^alias $1=\"$commando\"/ d" ${FILE_WITH_ALIAS}
-  sed "s,^alias $1=\"$commando\",,g" ${FILE_WITH_ALIAS} > ~/bash.txt
-  # Eliminamos
-  #rm ${FILE_WITH_ALIAS}
-  #mv ~/bash.txt ${FILE_WITH_ALIAS}
-  if [ $? -eq 0 ]
-  then
-    echo -e "${OK}[OK]${NC} Se ha eliminado el alias correctamente"
-  else
-    echo -e "${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar el script"
   fi
 }
 
@@ -260,10 +266,15 @@ function parseOption {
       then
         deleteEmptyLines
       else
-        echo $2
-        delete
+        # Si no le pasa un segundo argumento a edit (el nombre del alias)
+        # le preguntaremos en el edit cual quiere modificar
+        if [ -z $2 ]
+        then
+          delete
+        else
+          delete $2
+        fi
       fi
-
   	elif [ $1 == "help" ] || [ $1 == "--help" ]
   	then
   		showHelp
