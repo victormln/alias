@@ -121,7 +121,7 @@ function editSpecificAlias {
   read -e -i $commando alias_command
   #echo $alias_command
   # Antes de nada, le hacemos una copia al usuario de su bashrc
-  cp ${FILE_WITH_ALIAS} ${FILE_WITH_ALIAS}_copy_alias_script.txt
+  cp ${FILE_WITH_ALIAS} ~/.alias_script_copy.txt
   # Sustituimos el comando antiguo, por el nuevo
   # la coma es el delimitador para el sed
   #sed "0,/^alias $1=\"$commando\"/{/^alias $name_alias=\"$alias_command\"/g;}" ${FILE_WITH_ALIAS} > ~/bash.txt
@@ -173,7 +173,7 @@ function deleteSpecificAlias {
   echo -e "Seguro que quiere eliminar el alias ${ORANGE}$1${NC}?"
   read confirmation
   # Antes de nada, le hacemos una copia al usuario de su bashrc
-  cp ${FILE_WITH_ALIAS} .alias_script_copy.txt
+  cp ${FILE_WITH_ALIAS} ~/.alias_script_copy.txt
   # la coma es el delimitador para el sed
   # El 0 es para que solo elimine la primera ocurrencia
   sed "0,/^alias $1=\"$commando\"/{/^alias $1=\"$commando\"/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
