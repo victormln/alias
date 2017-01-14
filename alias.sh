@@ -93,7 +93,9 @@ function edit {
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
       nombre=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 1 | cut -d" " -f 2)
-      editSpecificAlias $nombre
+      comando=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 2)
+      echo $comando
+      editSpecificAlias $nombre $comando
     else
       editSpecificAlias $selectedOption
     fi
@@ -116,7 +118,7 @@ function edit {
 
 # A esta funcion le paso un argumento, que será el nombre del alias a editar
 function editSpecificAlias {
-  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2 | head -1)
+  commando=$(cat .alias.tmp | grep -E "alias $1=$2" | cut -d"\"" -f 2 | head -1)
   echo -e "Has seleccionado el alias ${ORANGE}$1${NC}."
   echo "Que nombre quieres ponerle?:"
   read -e -i $1 name_alias
