@@ -182,7 +182,8 @@ function deleteSpecificAlias {
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
   # la coma es el delimitador para el sed
   # El 0 es para que solo elimine la primera ocurrencia
-  sed "0,/^alias $1=\"$commando\"/{/^alias $1=\"$commando\"/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
+  sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
+  #sed "0,/^alias $1=\"$commando\"/{/^alias $1=\"$commando\"/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
   #sed "0,/^alias $1=\"$commando\"/ d" ${FILE_WITH_ALIAS} > ~/bash.txt
   #sed "s,^alias $1=\"$commando\",,g" ${FILE_WITH_ALIAS} > ~/bash.txt
   # Eliminamos
@@ -196,8 +197,9 @@ function deleteSpecificAlias {
   fi
 }
 
-function deleteEmptyLines {
+function empty {
   numberEmptyLines=$(grep -cvP '\S' ${FILE_WITH_ALIAS})
+  numberEmptyAlias=$(grep "alias =\"\"" ${FILE_WITH_ALIAS} | wc -l)
   if [ $numberEmptyLines != 0 ]
   then
     echo "Tienes $numberEmptyLines lineas en blanco en ${FILE_WITH_ALIAS}"
@@ -211,6 +213,22 @@ function deleteEmptyLines {
   else
     echo -e "${OK}[OK] ${NC}No hay lineas en blanco en tu archivo"
   fi
+  # Comprobamos si tiene alias en blanco
+  if ! [ $numberEmptyAlias -eq 0 ]
+  then
+    echo "Tienes $numberEmptyAlias alias vacios en ${FILE_WITH_ALIAS}"
+    echo "Quieres eliminarlos?"
+    read delete
+    if confirmYes $delete
+    then
+      sed -i '/^alias =\"\"*$/d' ${FILE_WITH_ALIAS}
+      echo -e "${OK}[OK] ${NC}Se han eliminado todos los alias vacios"
+    fi
+  else
+    echo -e "${OK}[OK] ${NC}No hay alias vacios en tu archivo"
+  fi
+
+
 }
 
 function copy {
@@ -304,6 +322,10 @@ function showAlias {
   done < .alias.tmp
 }
 
+function deleteDuplicateAlias {
+  awk "/^alias $1=/&&c++>0 {next} 1" ${FILE_WITH_ALIAS}
+}
+
 function restore {
   if ! [ -e ${DIR_BACKUP}.alias_backup.txt ]
   then
@@ -343,6 +365,7 @@ function showHelp {
 
   echo -e "\n${CYAN}[--empty]${NC}"
   echo -e "\tEl parámetro [--empty] sirve para eliminar las lineas en blanco del archivo que contenga los alias."
+  echo -e "\tTambién sirve para eliminar los alias vacios del archivo."
 }
 
 function parseOption {
@@ -396,7 +419,7 @@ function parseOption {
       show
     elif [ $1 == "--empty" ]
     then
-      deleteEmptyLines
+      empty
     elif [ $1 == "--restore" ]
     then
       restore
@@ -414,12 +437,21 @@ function parseOption {
 # Pendiente
 # Poder hacer edit pasandole 2 argumentos
 # Copiar el sed del edit para el delete
+# Sugerencia, buscar comando para eliminar todas las ocurrencias menos la primera
+# para eliminar todos los alias repetidos menos el primero
 
 # Primero cambiamos al directorio del script
 cd $( dirname "${BASH_SOURCE[0]}" )
 
 # Cogemos los datos del archivo .conf
 source user.conf
+
+# Comprobamos primero si ha ejecutado el restaurar la copia de seguridads
+if [ $1 == "--restore" ]
+then
+  parseOption $1
+  exit
+fi
 
 if ! [ -e ${FILE_WITH_ALIAS} ]
 then
@@ -444,13 +476,6 @@ then
     # Iniciamos de nuevo el script para ejecutar el script actualizado
     exec ./alias.sh
   fi
-fi
-
-# Comprobamos primero si ha ejecutado el restaurar la copia de seguridads
-if [ $1 == "--restore" ]
-then
-  parseOption $1
-  exit
 fi
 
 # Primero compruebo que el archivo tenga alias dentro
