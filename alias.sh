@@ -27,13 +27,37 @@ function add {
 	do
     echo -e "Introduce un nombre para el alias:"
     read name
-    echo -e "Introduce ahora el comando que querrás ejecutar con el alias ${ORANGE}$name${NC} (no hace falta que pongas las comillas):"
-    read alias_command
-    #Añadimos al .bashrc el alias
-    echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
-    aliasAdded
-    echo "Quieres crear otro alias? Escribe: [y / n] o [s / n] para continuar."
-    read continuar
+    if cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
+    then
+      echo -e "\n${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2 iguales."
+      echo -e "Piensa otro nombre para tu alias. Recuerda: puedes editar un alias o eliminarlo con [-e] o [-d]."
+      nombreErroneo=1
+      while cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
+      do
+        echo -e "\nIntroduce un nombre que no esté cogido (q para salir):"
+        read name
+      done
+      if [ $name == "q" ]
+      then
+        exit
+      else
+        echo -e "Introduce ahora el comando que querrás ejecutar con el alias ${ORANGE}$name${NC} (no hace falta que pongas las comillas):"
+        read alias_command
+        #Añadimos al .bashrc el alias
+        echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
+        aliasAdded
+        echo "Quieres crear otro alias? Escribe: [y / n] o [s / n] para continuar."
+        read continuar
+      fi
+    else
+      echo -e "Introduce ahora el comando que querrás ejecutar con el alias ${ORANGE}$name${NC} (no hace falta que pongas las comillas):"
+      read alias_command
+      #Añadimos al .bashrc el alias
+      echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
+      aliasAdded
+      echo "Quieres crear otro alias? Escribe: [y / n] o [s / n] para continuar."
+      read continuar
+    fi
 	done
 }
 
@@ -77,7 +101,7 @@ function edit {
   # En el caso que le haya pasado un argumento (el nombre de un alias)
   # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
-    if $(cat ${FILE_WITH_ALIAS} | grep -E "^alias $1=")
+    if $(cat ${FILE_WITH_ALIAS} | grep -E "^alias $1=" | head -1)
     then
       editSpecificAlias $1
     else
@@ -89,7 +113,7 @@ function edit {
 
 # A esta funcion le paso un argumento, que será el nombre del alias a editar
 function editSpecificAlias {
-  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2)
+  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2 | head -1)
   echo -e "Has seleccionado el alias ${ORANGE}$1${NC}."
   echo "Que nombre quieres ponerle?:"
   read -e -i $1 name_alias
@@ -100,7 +124,8 @@ function editSpecificAlias {
   cp ${FILE_WITH_ALIAS} ${FILE_WITH_ALIAS}_copy_alias_script.txt
   # Sustituimos el comando antiguo, por el nuevo
   # la coma es el delimitador para el sed
-  sed "s,^alias $selectedOption=\"$commando\",alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+  #sed "0,/^alias $1=\"$commando\"/{/^alias $name_alias=\"$alias_command\"/g;}" ${FILE_WITH_ALIAS} > ~/bash.txt
+  sed "s,^alias $1=\"$commando\",alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
   # Eliminamos
   rm ${FILE_WITH_ALIAS}
   mv ~/bash.txt ${FILE_WITH_ALIAS}
@@ -149,12 +174,7 @@ function deleteSpecificAlias {
   read confirmation
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} .alias_script_copy.txt
-  # Sustituimos el comando antiguo, por el nuevo
   # la coma es el delimitador para el sed
-  echo "AQUI"
-  cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2 | head -1
-  echo $1
-  echo $commando
   # El 0 es para que solo elimine la primera ocurrencia
   sed "0,/^alias $1=\"$commando\"/{/^alias $1=\"$commando\"/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
   #sed "0,/^alias $1=\"$commando\"/ d" ${FILE_WITH_ALIAS} > ~/bash.txt
