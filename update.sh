@@ -96,5 +96,5 @@ then
     fi
   fi
 else
-  echo -e "${WARNING}[AVISO] ${NC}No tienes internet. Para buscar actualizaciones se necesita internet."
+	echo -e "${WARNING}[AVISO] ${NC}No tienes internet. Para buscar actualizaciones se necesita internet."
 fi
