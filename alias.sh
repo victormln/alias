@@ -283,12 +283,12 @@ function copySpecificAlias {
     echo "Que nombre quieres ponerle al nuevo alias (tiene que ser distinto al que estás copiando)?:"
     read name_alias
     echo alias $name_alias=\"$commando\" >> ${FILE_WITH_ALIAS}
-    echo -e "${OK}[OK]${NC}Ahora también podrás usar el alias ${ORANGE}$name_alias${NC} de la misma forma que con ${ORANGE}$1${NC}."
+    echo -e "${OK}[OK]${NC} Ahora también podrás usar el alias ${ORANGE}$name_alias${NC} de la misma forma que con ${ORANGE}$1${NC}."
   else
     echo alias $2=\"$commando\" >> ${FILE_WITH_ALIAS}
     if [ $? -eq 0 ]
     then
-      echo -e "${OK}[OK]${NC}Ahora también podrás usar el alias ${ORANGE}$2${NC} de la misma forma que con ${ORANGE}$1${NC}."
+      echo -e "${OK}[OK]${NC} Ahora también podrás usar el alias ${ORANGE}$2${NC} de la misma forma que con ${ORANGE}$1${NC}."
     else
       echo -e "${ERROR}[ERROR]${NC} Ha ocurrido un error y no se ha copiado correctamente."
     fi
