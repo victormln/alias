@@ -470,42 +470,12 @@ fi
 
 echo "Alias Manager v$version"
 if $show_author; then echo "Autor: Víctor Molina [victormln.com] <contact@victormln.com> "; fi;
-# Compruebo que sistema está usando para hacer ping
-# Si es Linux o Mac
-if [ "$(uname -s)" == "Linux" ] || [ "$(uname)" == "Darwin" ]; then
-    # Do something under GNU/Linux platform
-    ping -c 1 www.google.com > /dev/null
-    has_internet=$(echo $?)
-    # Si es Windows
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] ||
-  [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    # Do something under Windows NT platform
-    ping -n 1 www.google.com > /dev/null
-    has_internet=$(echo $?)
-fi
 
-# Si el ping se ha realizado correctamente es que tiene internet
-# por lo que se buscaran actualizaciones
-if [ $has_internet -eq 0 ]
-then
-  # Si están activadas las actualizaciones automáticas
-  if $search_ota
-  then
-    # Doy permiso al update.sh
-    chmod +x update.sh
-    # Comprobaré si hay alguna versión nueva del programa autopush
-    # y lo mostraré en pantalla
-    source update.sh
-    # Si no tiene la ultima version y ha actualizado, volvemos a ejecutar el script
-    if ! $tieneUltimaVersion
-    then
-      # Iniciamos de nuevo el script para ejecutar el script actualizado
-      exec ./alias.sh
-    fi
-  fi
-else
-  echo -e "${WARNING}[AVISO] ${NC}No tienes internet. Para buscar actualizaciones se necesita internet."
-fi
+# Doy permiso al update.sh
+chmod +x update.sh
+# Comprobaré si hay alguna versión nueva del programa autopush
+# y lo mostraré en pantalla
+source update.sh
 
 # Primero compruebo que el archivo tenga alias dentro
 if cat ${FILE_WITH_ALIAS} | grep "^alias " > /dev/null
@@ -519,8 +489,9 @@ then
     parseOption
   fi
 else
-  echo -e "\n${ERROR}[ERROR] ${NC}El archivo ${FILE_WITH_ALIAS} no contiene alias."
+  echo -e "\n${WARNING}[WARNING] ${NC}El archivo ${FILE_WITH_ALIAS} no contiene alias."
+  echo -e "No podrás usar las funciones de [edit], [delete] o [copy], solo podrás usar [add]."
   echo "Recuerde poner correctamente en el archivo user.conf el archivo que contiene los alias."
   echo "Si cree que ha sido a causa de un problema del script, puede restaurar la copia de seguridad con --restore"
-  exit
+  parseOption
 fi
