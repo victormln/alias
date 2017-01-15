@@ -470,20 +470,41 @@ fi
 
 echo "Alias Manager v$version"
 if $show_author; then echo "Autor: Víctor Molina [victormln.com] <contact@victormln.com> "; fi;
-# Si están activadas las actualizaciones automáticas
-if $search_ota
+# Compruebo que sistema está usando para hacer ping
+# Si es Linux o Mac
+if [ "$(uname -s)" == "Linux" ] || [ "$(uname)" == "Darwin" ]; then
+    # Do something under GNU/Linux platform
+    ping -c 1 www.google.com > /dev/null
+    has_internet=$(echo $?)
+    # Si es Windows
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] ||
+  [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+    # Do something under Windows NT platform
+    ping -n 1 www.google.com > /dev/null
+    has_internet=$(echo $?)
+fi
+
+# Si el ping se ha realizado correctamente es que tiene internet
+# por lo que se buscaran actualizaciones
+if [ $has_internet -eq 0 ]
 then
-  # Doy permiso al update.sh
-  chmod +x update.sh
-  # Comprobaré si hay alguna versión nueva del programa autopush
-  # y lo mostraré en pantalla
-  source update.sh
-  # Si no tiene la ultima version y ha actualizado, volvemos a ejecutar el script
-  if ! $tieneUltimaVersion
+  # Si están activadas las actualizaciones automáticas
+  if $search_ota
   then
-    # Iniciamos de nuevo el script para ejecutar el script actualizado
-    exec ./alias.sh
+    # Doy permiso al update.sh
+    chmod +x update.sh
+    # Comprobaré si hay alguna versión nueva del programa autopush
+    # y lo mostraré en pantalla
+    source update.sh
+    # Si no tiene la ultima version y ha actualizado, volvemos a ejecutar el script
+    if ! $tieneUltimaVersion
+    then
+      # Iniciamos de nuevo el script para ejecutar el script actualizado
+      exec ./alias.sh
+    fi
   fi
+else
+  echo -e "${WARNING}[AVISO] ${NC}No tienes internet. Para buscar actualizaciones se necesita internet."
 fi
 
 # Primero compruebo que el archivo tenga alias dentro
