@@ -24,13 +24,11 @@
 # Compruebo que sistema está usando para hacer ping
 # Si es Linux o Mac
 if [ "$(uname -s)" == "Linux" ] || [ "$(uname)" == "Darwin" ]; then
-    # Do something under GNU/Linux platform
-    ping -c 1 www.google.com > /dev/null
+    ping -c 1 8.8.8.8 &> /dev/null
     has_internet=$(echo $?)
     # Si es Windows
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] ||
   [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    # Do something under Windows NT platform
     ping -n 1 www.google.com > /dev/null
     has_internet=$(echo $?)
 fi
