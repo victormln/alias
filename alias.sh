@@ -355,7 +355,7 @@ function restore {
 }
 
 function showHelp {
-	echo -e "usage: malias [add] [edit] [list] [delete] - Script que te permite crear, modificar, listar o eliminar alias de tu pc."
+	echo -e "usage: malias [add] [edit] [copy] [list] [delete] - Script que te permite crear, modificar, copiar, listar o eliminar alias de tu pc."
 
   echo -e "\n${CYAN}[-a] [add] [add nombre_alias]${NC}"
   echo -e "\tPodrás añadir un alias."
@@ -366,7 +366,7 @@ function showHelp {
   echo -e "\tSi sabes el nombre del alias, puedes poner [edit nombre]"
   echo -e "\tSi no lo sabes, puedes poner [edit] a secas y te saldrá el listado de alias que tienes."
 
-  echo -e "\n${CYAN}[-l] [view] [show] [list]${NC}"
+  echo -e "\n${CYAN}[-l] [list] [view] [show] ${NC}"
   echo -e "\tPodrás listar/ver todos los alias que tienes."
 
   echo -e "\n${CYAN}[-d] [delete] [delete nombre_alias] [-d]${NC}"
@@ -394,11 +394,11 @@ function parseOption {
     # Miramos que ha seleccionado el usuario (add, edit, delete, help, show)
     if [ $1 == "add" ] || [ $1 == "-a" ]
   	then
-      if ! [ -z $2 ]
+      if [ -z $2 ]
       then
-  		    add $2
+  		    add
       else
-          add
+          add $2
       fi
   	elif [ $1 == "edit" ] || [ $1 == "-e" ]
   	then
