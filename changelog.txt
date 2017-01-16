@@ -1,0 +1,11 @@
+#############
+# Changelog #
+#############
+
+* Version: 1.0.3 *
+#----------------#
+
+- El script permite añadir, editar, eliminar y copiar alias
+- También hay una función para limpiar un poco el archivo que contiene los alias
+- Función --help disponible para ver los comandos que admite el script
+- Tiene autoactualizador y comprueba si el usuario tiene conexión a internet
