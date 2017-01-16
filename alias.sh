@@ -80,7 +80,7 @@ function show {
   done < .alias.tmp
   rm .alias.tmp
   echo "*---------------------------------------------------*"
-  echo "Recuerda que si quieres editar o eliminar algún alias, puedes ejecutar el script con los argumentos [edit nombre_alias] o [delete]."
+  echo "Recuerda que si quieres añadir, editar, eliminar o copiar algún alias, puedes ejecutar el script con los argumentos [add] [edit] [delete] o [copy]."
   exit
 }
 
@@ -397,6 +397,8 @@ function parseOption {
       if ! [ -z $2 ]
       then
   		    add $2
+      else
+          add
       fi
   	elif [ $1 == "edit" ] || [ $1 == "-e" ]
   	then
