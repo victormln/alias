@@ -2,6 +2,13 @@
 # Changelog #
 #############
 
+- Pendiente:
+
+Si en un alias no hay comillas, peta.
+Arreglarlo de alguna manera
+  - o bien poner las comillas yo
+  - o bien coger también los comandos sin comillas 
+
 * Version: 1.0.4 *
 #----------------#
 
