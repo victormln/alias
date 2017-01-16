@@ -221,13 +221,24 @@ function empty {
   # Comprobamos si tiene alias en blanco
   if ! [ $numberEmptyAlias -eq 0 ]
   then
-    echo "Tienes $numberEmptyAlias alias vacios en ${FILE_WITH_ALIAS}"
-    echo "Quieres eliminarlos?"
+    if [ $numberEmptyAlias -gt 1 ]
+    then
+      echo "Tienes $numberEmptyAlias alias vacios en ${FILE_WITH_ALIAS}"
+      echo "Quieres eliminarlos?"
+    else
+      echo "Tienes $numberEmptyAlias alias vacio en ${FILE_WITH_ALIAS}"
+      echo "Quieres eliminarlo?"
+    fi
     read delete
     if confirmYes $delete
     then
       sed -i '/^alias =\"\"*$/d' ${FILE_WITH_ALIAS}
-      echo -e "${OK}[OK] ${NC}Se han eliminado todos los alias vacios"
+      if [ $numberEmptyAlias -gt 1 ]
+      then
+        echo -e "${OK}[OK] ${NC}Se han eliminado todos los alias vacios"
+      else
+        echo -e "${OK}[OK] ${NC}Se ha eliminado el alias vacio"
+      fi
     fi
   else
     echo -e "${OK}[OK] ${NC}No hay alias vacios en tu archivo"
@@ -335,11 +346,11 @@ function restore {
   if ! [ -e ${DIR_BACKUP}.alias_backup.txt ]
   then
     cat ${DIR_BACKUP}.alias_backup.txt
-    echo -e "${ERROR}[ERROR]${NC}Lo siento. No se ha encontrado ninguna copia de seguridad."
+    echo -e "${ERROR}[ERROR]${NC} Lo siento. No se ha encontrado ninguna copia de seguridad."
     echo "Puedes modificar la ruta donde se guarda la copia de seguridad en el user.conf que hay en este script."
   else
     cp ${DIR_BACKUP}.alias_backup.txt ${FILE_WITH_ALIAS}
-    echo -e "${OK}[OK]${NC}Se ha restaurado correctamente la copia de seguridad."
+    echo -e "${OK}[OK]${NC} Se ha restaurado correctamente la copia de seguridad."
   fi
 }
 
@@ -454,7 +465,7 @@ cd $( dirname "${BASH_SOURCE[0]}" )
 source user.conf
 
 # Comprobamos primero si ha ejecutado el restaurar la copia de seguridads
-if [ $1 == "--restore" ]
+if [ "$1" == "--restore" ]
 then
   parseOption $1
   exit
