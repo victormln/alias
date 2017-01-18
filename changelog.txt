@@ -2,12 +2,11 @@
 # Changelog #
 #############
 
-- Pendiente:
+* Version: 1.0.5 *
+#----------------#
 
-Si en un alias no hay comillas, peta.
-Arreglarlo de alguna manera
-  - o bien poner las comillas yo
-  - o bien coger también los comandos sin comillas 
+- Solución de bug al tener alias sin comillas
+- Comprobación de alias vacíos mejorada
 
 * Version: 1.0.4 *
 #----------------#

@@ -121,7 +121,11 @@ function edit {
 
 # A esta funcion le paso un argumento, que será el nombre del alias a editar
 function editSpecificAlias {
-  commando=$(cat .alias.tmp | grep -E "alias $1=$2" | cut -d"\"" -f 2 | head -1)
+  commando=$(cat .alias.tmp | grep -E "alias $1=$2" | cut -d"=" -f 2 | head -1)
+  # Elimino las comillas del sufijo
+  temp="${commando%\"}"
+  # Elimino las comillas del prefijo
+  commando="${temp#\"}"
   echo -e "Has seleccionado el alias ${ORANGE}$1${NC}."
   echo "Que nombre quieres ponerle?:"
   read -e -i $1 name_alias
@@ -132,8 +136,7 @@ function editSpecificAlias {
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
   # Sustituimos el comando antiguo, por el nuevo
   # la coma es el delimitador para el sed
-  #sed "0,/^alias $1=\"$commando\"/{/^alias $name_alias=\"$alias_command\"/g;}" ${FILE_WITH_ALIAS} > ~/bash.txt
-  sed "s,^alias $1=\"$commando\",alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+  sed "s,^alias $1=$commando,alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
   # Eliminamos
   rm ${FILE_WITH_ALIAS}
   mv ~/bash.txt ${FILE_WITH_ALIAS}
@@ -180,7 +183,11 @@ function delete {
 }
 
 function deleteSpecificAlias {
-  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2 | head -1)
+  comando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"=" -f 2 | head -1)
+  # Elimino las comillas del sufijo
+  temp="${commando%\"}"
+  # Elimino las comillas del prefijo
+  comando="${temp#\"}"
   echo -e "Seguro que quiere eliminar el alias ${ORANGE}$1${NC}?"
   read confirmation
   # Antes de nada, le hacemos una copia al usuario de su bashrc
@@ -204,7 +211,9 @@ function deleteSpecificAlias {
 
 function empty {
   numberEmptyLines=$(grep -cvP '\S' ${FILE_WITH_ALIAS})
-  numberEmptyAlias=$(grep "alias =\"\"" ${FILE_WITH_ALIAS} | wc -l)
+  numberEmptyAlias=$(grep '^alias .*=\"\"$' ${FILE_WITH_ALIAS} | wc -l)
+  numberEmptyAliasWithoutQuotes=$(grep '^alias .*=$' ${FILE_WITH_ALIAS} | wc -l)
+  numberEmptyAlias=$(($numberEmptyAlias + $numberEmptyAliasWithoutQuotes))
   if [ $numberEmptyLines != 0 ]
   then
     echo "Tienes $numberEmptyLines lineas en blanco en ${FILE_WITH_ALIAS}"
@@ -232,7 +241,8 @@ function empty {
     read delete
     if confirmYes $delete
     then
-      sed -i '/^alias =\"\"*$/d' ${FILE_WITH_ALIAS}
+      sed -i '/^alias .*=\"\"*$/d' ${FILE_WITH_ALIAS}
+      sed -i '/^alias .*=$/d' ${FILE_WITH_ALIAS}
       if [ $numberEmptyAlias -gt 1 ]
       then
         echo -e "${OK}[OK] ${NC}Se han eliminado todos los alias vacios"
@@ -287,7 +297,11 @@ function copy {
 }
 
 function copySpecificAlias {
-  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"\"" -f 2 | head -1)
+  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"=" -f 2 | head -1)
+  # Elimino las comillas del sufijo
+  temp="${commando%\"}"
+  # Elimino las comillas del prefijo
+  commando="${temp#\"}"
   if [ -z $2 ]
   then
     echo -e "Has seleccionado el alias ${ORANGE}$1${NC}."
