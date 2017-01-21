@@ -74,8 +74,8 @@ then
 			  then
 			    # Si es así, hacemos un pull y le actualizamos el script
 			  	git pull | tee >(echo "Actualizando... Por favor, espere ...")
-					echo -e "${OK}[OK] ${NC}La actualización ha acabado.";
-					echo -e "**************************"
+					echo -e "${OK}[OK] ${NC}La actualización ha acabado, por favor, vuelva a iniciar el script.";
+          exit
 			  else
 			    # En el caso que seleccione que no, muestro un mensaje.
 			    echo -e "${WARNING}¡AVISO!${NC} NO se actualizará (aunque se recomienda)."
@@ -86,12 +86,6 @@ then
 			  fi
 			fi
 		fi
-    # Si no tiene la ultima version y ha actualizado, volvemos a ejecutar el script
-    if ! $tieneUltimaVersion
-    then
-      # Iniciamos de nuevo el script para ejecutar el script actualizado
-      exec ./alias.sh
-    fi
   fi
 else
 	echo -e "${WARNING}[AVISO] ${NC}No tienes internet. Para buscar actualizaciones se necesita internet."
