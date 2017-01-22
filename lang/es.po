@@ -1,0 +1,6 @@
+ALIASCREATED="${OK}[OK]${NC} Alias creado"
+WARNNEWALIAS="${WARNING}Se va a crear un alias nuevo${NC}"
+INSERTNAMEOFALIAS="Introduce un nombre para el alias"
+ALIASEXISTS="${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2 iguales."
+CHOOSEANOTHERNAME="Introduce un nombre que no esté cogido (q para salir)"
+INSERTCOMMAND="Introduce ahora el comando que querrás ejecutar con el alias ${ORANGE}$name${NC} (no hace falta que pongas las comillas)"

@@ -14,13 +14,15 @@ PURPLE='\033[0;35m'
 ORANGE='\033[0;33m'
 CYAN='\033[0;36m'
 
+source /lang/$LANGUAGE.po
+
 function aliasAdded {
   #Mostramos mensaje conforme se han creado los alias y se ha salido del programa
-  echo -e "${OK}[OK]${NC} Alias creado!"
+  echo -e $ALIASCREATED
 }
 
 function add {
-  echo -e "${WARNING}Se va a crear un alias nuevo.${NC}"
+  echo -e $WARNNEWALIAS
 	continuar="y"
 	# Preguntamos hasta que el usuario quiera, si quiere crear alias
 	while confirmYes $continuar
@@ -28,12 +30,13 @@ function add {
     name=$1
     if [ -z $1 ]
     then
-      echo -e "Introduce un nombre para el alias:"
+      echo -e "$INSERTNAMEOFALIAS:"
       read name
     fi
     if cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
     then
-      echo -e "\n${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2 iguales."
+      echo -e "\n${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2 iguales.
+      \nPiensa otro nombre para tu alias. Recuerda: puedes editar un alias o eliminarlo con [-e] o [-d]."
       echo -e "Piensa otro nombre para tu alias. Recuerda: puedes editar un alias o eliminarlo con [-e] o [-d]."
       nombreErroneo=1
       while cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
@@ -134,6 +137,9 @@ function editSpecificAlias {
   #echo $alias_command
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
+  echo $name_alias
+  echo $alias_command
+  exit
   # Sustituimos el comando antiguo, por el nuevo
   # la coma es el delimitador para el sed
   sed "s,^alias $1=$commando,alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
