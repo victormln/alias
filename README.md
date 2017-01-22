@@ -26,7 +26,7 @@ alias -a test1
 
 Todos los argumentos disponibles:
 
-|Flag           |Short|Meaning                                   |Usage|
+|Argumento           |Short|Significado                                   |Uso|
 | ------------- | ---- | ---------------------------------------- |----------|
 |`--help`       |      | Muestra los comandos disponibles         |`--help`  |
 |`list`         |`-l`  | Muestra los alias que tienes             |`-l`    |
