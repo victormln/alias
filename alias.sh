@@ -323,11 +323,11 @@ function confirmYes {
     then
       return 0
     else
-      echo "Has seleccionado $1. Saliendo del script."
+      echo "$MENUSELECTION $1. $EXITSCRIPT."
       return 1
     fi
   else
-    echo "Ha salido del programa porque no ha seleccionado una de las opciones [y] [s] [n]"
+    echo "$EXITSCRIPTWITHOPTIONS"
     exit -1
   fi
 }
@@ -354,11 +354,11 @@ function restore {
   if ! [ -e ${DIR_BACKUP}.alias_backup.txt ]
   then
     cat ${DIR_BACKUP}.alias_backup.txt
-    echo -e "${ERROR}[ERROR]${NC} Lo siento. No se ha encontrado ninguna copia de seguridad."
-    echo "Puedes modificar la ruta donde se guarda la copia de seguridad en el user.conf que hay en este script."
+    echo -e "$BACKUPNOTFOUND"
+    echo "$ROUTEBACKUPMESSAGE"
   else
     cp ${DIR_BACKUP}.alias_backup.txt ${FILE_WITH_ALIAS}
-    echo -e "${OK}[OK]${NC} Se ha restaurado correctamente la copia de seguridad."
+    echo -e "$BACKUPDONE"
   fi
 }
 
@@ -485,13 +485,13 @@ fi
 
 if ! [ -e ${FILE_WITH_ALIAS} ]
 then
-  echo "No existe el archivo ${FILE_WITH_ALIAS}."
-  echo "Puedes modificar esta ruta en el user.conf que hay en este script."
+  echo "$ALIASFILENOTFOUND"
+  echo "$ROUTEALIASFILEMESSAGE"
   exit 1
 fi
 
 echo "Alias Manager v$version"
-if $show_author; then echo "Autor: Víctor Molina [victormln.com] <contact@victormln.com> "; fi;
+if $show_author; then echo "$AUTHORMESSAGE: Víctor Molina [victormln.com] <contact@victormln.com> "; fi;
 
 # Doy permiso al update.sh
 chmod +x update.sh
@@ -511,9 +511,9 @@ then
     parseOption
   fi
 else
-  echo -e "\n${WARNING}[WARNING] ${NC}El archivo ${FILE_WITH_ALIAS} no contiene alias."
-  echo -e "No podrás usar las funciones de [edit], [delete] o [copy], solo podrás usar [add]."
-  echo "Recuerde poner correctamente en el archivo user.conf el archivo que contiene los alias."
-  echo "Si cree que ha sido a causa de un problema del script, puede restaurar la copia de seguridad con --restore"
+  echo -e "$FILENOTCONTAINALIAS"
+  echo -e "$CANNOTUSEOPTIONS"
+  echo "$REMEMBERFILEALIAS"
+  echo "$RESTOREHELPMESSAGE"
   parseOption
 fi

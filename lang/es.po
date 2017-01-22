@@ -7,6 +7,16 @@ ALIASSELECTED="Has seleccionado el alias"
 MESSAGEEMPTYLINES="Tienes $numberEmptyLines lineas en blanco en ${FILE_WITH_ALIAS}"
 NOEMPTYLINES="${OK}[OK] ${NC}No hay lineas en blanco en tu archivo"
 NOEMPTYALIAS="${OK}[OK] ${NC}No hay alias vacios en tu archivo"
+MENUSELECTION="Has seleccionado"
+EXITSCRIPT="Saliendo del script"
+EXITSCRIPTWITHOPTIONS="Ha salido del programa porque no ha seleccionado una de las opciones [y] [s] [n]"
+ROUTEBACKUPMESSAGE="Puedes modificar la ruta donde se guarda la copia de seguridad en el user.conf que hay en este script."
+ROUTEALIASFILEMESSAGE="Puedes modificar esta ruta en el user.conf que hay en este script."
+AUTHORMESSAGE="Autor"
+FILENOTCONTAINALIAS="\n${WARNING}[WARNING] ${NC}El archivo ${FILE_WITH_ALIAS} no contiene alias."
+CANNOTUSEOPTIONS="No podrás usar las funciones de [edit], [delete] o [copy], solo podrás usar [add]."
+REMEMBERFILEALIAS="Recuerde poner correctamente en el archivo user.conf el archivo que contiene los alias."
+RESTOREHELPMESSAGE="Si cree que ha sido a causa de un problema del script, puede restaurar la copia de seguridad con --restore"
 ###############
 # DONE MESSAGES
 #######################################
@@ -16,6 +26,7 @@ DELETEDONE="${OK}[OK]${NC} Se ha eliminado el alias correctamente"
 EMPTYLINESDELETED="${OK}[OK] ${NC}Se han eliminado todas las lineas en blanco"
 EMPTYALIASDELETED="${OK}[OK] ${NC}Se ha/n eliminado el/los alia/s vacio/s"
 COPIEDDONE="${OK}[OK]${NC} Ahora también podrás usar el alias"
+BACKUPDONE="${OK}[OK]${NC} Se ha restaurado correctamente la copia de seguridad."
 ###############
 # ASK MESSAGES
 #######################################
@@ -39,6 +50,8 @@ ERRORALIASEXISTS="\n${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2
 ALIASNOTEXISTS="${ERROR}[ERROR]${NC} No existe el alias"
 UNKNOWNPROBLEM="${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar el script"
 COPYERROR="${ERROR}[ERROR]${NC} Ha ocurrido un error y no se ha copiado correctamente."
+BACKUPNOTFOUND="${ERROR}[ERROR]${NC} Lo siento. No se ha encontrado ninguna copia de seguridad."
+ALIASFILENOTFOUND="No existe el archivo ${FILE_WITH_ALIAS}."
 ################
 # OTHER MESSAGES
 #######################################
