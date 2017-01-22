@@ -445,7 +445,7 @@ function parseOption {
       else
         copy $2 $3
       fi
-  	elif [ $1 == "help" ] || [ $1 == "--help" ]
+  	elif [ $1 == "-h" ] || [ $1 == "--help" ]
   	then
   		showHelp
     elif [ $1 == "show" ] || [ $1 == "view" ] || [ $1 == "list" ] || [ $1 == "-l" ]
