@@ -60,10 +60,10 @@ OPTIONSCONFIRM="Escribe: [y / n] o [s / n] para continuar"
 # HELP MESSAGES
 #######################################
 USAGEMESSAGE="usage: malias [add] [edit] [copy] [list] [delete] - Script que te permite crear, modificar, copiar, listar o eliminar alias de tu pc."
-ADDHELPUSAGE="\n${CYAN}[-a] [add] [add nombre_alias]${NC}\n\tPodrás añadir un alias.\n\tEl nombre de alias quieres añadir, puedes poner [add nombre] y el nombre del alias."
+ADDHELPUSAGE="\n${CYAN}[-a] [add] [add nombre_alias]${NC}\n\tPodrás añadir un alias.\n\tEl nombre de alias que quieres añadir, puedes poner [add nombre] y el nombre del alias."
 EDITHELPUSAGE="\n${CYAN}[-e] [edit] [edit nombre_alias]${NC}\n\tPodrás modificar un alias que tengas ya creado.\n\tSi sabes el nombre del alias, puedes poner [edit nombre]\n\tSi no lo sabes, puedes poner [edit] a secas y te saldrá el listado de alias que tienes."
 LISTHELPUSAGE="\n${CYAN}[-l] [list] [view] [show] ${NC}\n\tPodrás listar/ver todos los alias que tienes."
 DELETEHELPUSAGE="\n${CYAN}[-d] [delete] [delete nombre_alias] [-d]${NC}\n\tPodrás eliminar un alias."
-COPYHELPUSAGE="\n${CYAN}[-cp] [copy] [copy nombre_alias_creado] [copy nombre_alias_creado nombre_alias_a_crear]${NC}\n\tPodrás eliminar un alias."
-RESTOREHELPUSAGE="\n${CYAN}[--restore]${NC}\n\tEl parámetro [--restore] sirve para restaurar una copia de seguridad del archivo que contiene los alias.\n\tEsta copia de seguridad se ejecuta automáticamente cada vez que se hace una acción de editar, eliminar o copiar."
+COPYHELPUSAGE="\n${CYAN}[-cp] [copy] [copy nombre_alias_creado] [copy nombre_alias_creado nombre_alias_a_crear]${NC}\n\tPodrás copiar un alias."
+RESTOREHELPUSAGE="\n${CYAN}[--restore]${NC}\n\tEl parámetro [--restore] sirve para restaurar una copia de seguridad del archivo que contiene los alias.\n\tEsta copia de seguridad se ejecuta automáticamente cada vez que se hace una acción de editar, eliminar o copiar (es decir, cuando el archivo que contiene los alias, se modifica)."
 EMPTYHELPMESSAGE="\n${CYAN}[--empty]${NC}\n\tEl parámetro [--empty] sirve para eliminar las lineas en blanco del archivo que contenga los alias.\n\tTambién sirve para eliminar los alias vacios del archivo."
