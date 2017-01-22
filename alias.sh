@@ -14,15 +14,13 @@ PURPLE='\033[0;35m'
 ORANGE='\033[0;33m'
 CYAN='\033[0;36m'
 
-source /lang/$LANGUAGE.po
-
 function aliasAdded {
   #Mostramos mensaje conforme se han creado los alias y se ha salido del programa
   echo -e $ALIASCREATED
 }
 
 function add {
-  echo -e $WARNNEWALIAS
+  echo -e ${WARNNEWALIAS}
 	continuar="y"
 	# Preguntamos hasta que el usuario quiera, si quiere crear alias
 	while confirmYes $continuar
@@ -137,12 +135,16 @@ function editSpecificAlias {
   #echo $alias_command
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
-  echo $name_alias
-  echo $alias_command
-  exit
-  # Sustituimos el comando antiguo, por el nuevo
-  # la coma es el delimitador para el sed
-  sed "s,^alias $1=$commando,alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+  # Miramos si tiene o no comillas el alias antiguo
+  if cat ${FILE_WITH_ALIAS} | grep "^alias $1=\"$commando\""
+  then
+    # la coma es el delimitador para el sed
+    sed "s,^alias $1=\"$commando\",alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+  else
+    # la coma es el delimitador para el sed
+    sed "s,^alias $1=$commando,alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+  fi
+  cat ~/bash.txt
   # Eliminamos
   rm ${FILE_WITH_ALIAS}
   mv ~/bash.txt ${FILE_WITH_ALIAS}
@@ -485,6 +487,8 @@ cd $( dirname "${BASH_SOURCE[0]}" )
 
 # Cogemos los datos del archivo .conf
 source user.conf
+# Cogemos las variables de idioma
+source lang/${LANGUAGE}.po
 
 # Comprobamos primero si ha ejecutado el restaurar la copia de seguridads
 if [ "$1" == "--restore" ]
