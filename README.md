@@ -26,10 +26,10 @@ alias -a test1
 
 Todos los argumentos disponibles:
 
-|Argumento           |Short|Significado                                   |Uso|
+|Argumento           |Abreviado|Significado                                   |Uso|
 | ------------- | ---- | ---------------------------------------- |----------|
 |`--help`       |`-h`     | Muestra los comandos disponibles         |`--help`  |
-|`list`         |`-l`  | Muestra los alias que tienes             |`-l`    |
+|`list` OR `view` OR `show` |`-l`  | Muestra los alias que tienes             |`-l`    |
 |`add`     |`-a`  | Añade un alias   |`-a test1`      |
 |`edit`     |`-e`  | Edita un alias   |`-e test1`      |
 |`delete`     |`-d`  | Elimina un alias   |`-d test1`      |
