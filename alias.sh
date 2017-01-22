@@ -33,41 +33,39 @@ function add {
     fi
     if cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
     then
-      echo -e "\n${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2 iguales.
-      \nPiensa otro nombre para tu alias. Recuerda: puedes editar un alias o eliminarlo con [-e] o [-d]."
-      echo -e "Piensa otro nombre para tu alias. Recuerda: puedes editar un alias o eliminarlo con [-e] o [-d]."
+      echo -e "$ERRORALIASEXISTS"
       nombreErroneo=1
       while cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
       do
-        echo -e "\nIntroduce un nombre que no esté cogido (q para salir):"
+        echo -e "$CHOOSEANOTHERNAME"
         read name
       done
-      if [ $name == "q" ]
+      if [ $name == "q" ] || [ $name == "Q" ]
       then
         exit
       else
-        echo -e "Introduce ahora el comando que querrás ejecutar con el alias ${ORANGE}$name${NC} (no hace falta que pongas las comillas):"
+        echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
         read alias_command
         #Añadimos al .bashrc el alias
         echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
         aliasAdded
-        echo "Quieres crear otro alias? Escribe: [y / n] o [s / n] para continuar."
+        echo -e "$ASKCREATEANOTHERALIAS $OPTIONSCONFIRM"
         read continuar
       fi
     else
-      echo -e "Introduce ahora el comando que querrás ejecutar con el alias ${ORANGE}$name${NC} (no hace falta que pongas las comillas):"
+      echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
       read alias_command
       #Añadimos al .bashrc el alias
       echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
       aliasAdded
-      echo "Quieres crear otro alias? Escribe: [y / n] o [s / n] para continuar."
+      echo "$ASKCREATEANOTHERALIAS $OPTIONSCONFIRM"
       read continuar
     fi
 	done
 }
 
 function show {
-  echo "Estos son los alias que tienes creados hasta ahora:"
+  echo "$SHOWALIASCREATED"
   echo "*---------------------------------------------------*"
   # Meto todos los alias en un archivo temporal y los muestro
   cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
@@ -81,7 +79,7 @@ function show {
   done < .alias.tmp
   rm .alias.tmp
   echo "*---------------------------------------------------*"
-  echo "Recuerda que si quieres añadir, editar, eliminar o copiar algún alias, puedes ejecutar el script con los argumentos [add] [edit] [delete] o [copy]."
+  echo "$OPTIONSSCRIPT"
   exit
 }
 
@@ -93,7 +91,7 @@ function edit {
   if [ -z $1 ]
   then
     showAlias
-    echo "Seleccione el número o nombre del alias que quiere editar"
+    echo "$SELECTALIAS"
     read selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
@@ -114,7 +112,7 @@ function edit {
     else
       # Si no existe el alias que el usuario ha pasado por argumento
       # ejecuto otra vez la funcion edit para que seleccione un alias que exista
-      echo -e "${ERROR}[ERROR]${NC} El alias ${ORANGE}$1${NC} no existe."
+      echo -e "$ALIASNOTEXISTS ${ORANGE}$1${NC}"
       edit
     fi
   fi
@@ -127,32 +125,31 @@ function editSpecificAlias {
   temp="${commando%\"}"
   # Elimino las comillas del prefijo
   commando="${temp#\"}"
-  echo -e "Has seleccionado el alias ${ORANGE}$1${NC}."
-  echo "Que nombre quieres ponerle?:"
-  read -e -i $1 name_alias
-  echo -e "Que comando quieres que se ejecute con el alias ${ORANGE}$name_alias${NC}?:"
+  echo -e "$ALIASSELECTED ${ORANGE}$1${NC}"
+  echo "$INSERTNAMEOFALIAS:"
+  read -e -i $1 name
+  echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
   read -e -i $commando alias_command
   #echo $alias_command
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
   # Miramos si tiene o no comillas el alias antiguo
-  if cat ${FILE_WITH_ALIAS} | grep "^alias $1=\"$commando\""
+  if cat ${FILE_WITH_ALIAS} | grep "^alias $1=\"$commando\"" &> /dev/null
   then
     # la coma es el delimitador para el sed
-    sed "s,^alias $1=\"$commando\",alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+    sed "s,^alias $1=\"$commando\",alias $name=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
   else
     # la coma es el delimitador para el sed
-    sed "s,^alias $1=$commando,alias $name_alias=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+    sed "s,^alias $1=$commando,alias $name=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
   fi
-  cat ~/bash.txt
   # Eliminamos
   rm ${FILE_WITH_ALIAS}
   mv ~/bash.txt ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
   then
-    echo -e "${OK}[OK]${NC} Se ha modificado el alias correctamente"
+    echo -e "$MODIFIEDDONE"
   else
-    echo -e "${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar el script"
+    echo -e "$UNKNOWNPROBLEM"
   fi
 }
 
@@ -164,7 +161,7 @@ function delete {
   if [ -z $1 ]
   then
     showAlias
-    echo "Seleccione el número o nombre del alias que quiere eliminar"
+    echo "$NAMEALIASDELETE"
     read selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
@@ -183,8 +180,8 @@ function delete {
       deleteSpecificAlias $1
     else
       # Si no existe el alias que el usuario ha pasado por argumento
-      # ejecuto otra vez la funcion edit para que seleccione un alias que exista
-      echo -e "${ERROR}[ERROR]${NC} El alias ${ORANGE}$1${NC} no existe."
+      # ejecuto otra vez la funcion delete para que seleccione un alias que exista
+      echo -e "$ALIASNOTEXISTS ${ORANGE}$1${NC}"
       delete
     fi
   fi
@@ -196,7 +193,7 @@ function deleteSpecificAlias {
   temp="${commando%\"}"
   # Elimino las comillas del prefijo
   comando="${temp#\"}"
-  echo -e "Seguro que quiere eliminar el alias ${ORANGE}$1${NC}?"
+  echo -e "$CONFIRMDELETE ${ORANGE}$1${NC}?"
   read confirmation
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
@@ -211,9 +208,9 @@ function deleteSpecificAlias {
   mv ~/bash.txt ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
   then
-    echo -e "${OK}[OK]${NC} Se ha eliminado el alias correctamente"
+    echo -e "$DELETEDONE"
   else
-    echo -e "${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar el script"
+    echo -e "$UNKNOWNPROBLEM"
   fi
 }
 
@@ -224,42 +221,31 @@ function empty {
   numberEmptyAlias=$(($numberEmptyAlias + $numberEmptyAliasWithoutQuotes))
   if [ $numberEmptyLines != 0 ]
   then
-    echo "Tienes $numberEmptyLines lineas en blanco en ${FILE_WITH_ALIAS}"
-    echo "Quieres eliminarlas todas?"
+    echo "$MESSAGEEMPTYLINES"
+    echo "$DELETEEMPTYLINES"
     read delete
     if confirmYes $delete
     then
       sed -i '/^\s*$/d' ${FILE_WITH_ALIAS}
-      echo -e "${OK}[OK] ${NC}Se han eliminado todas las lineas en blanco"
+      echo -e "$EMPTYLINESDELETED"
     fi
   else
-    echo -e "${OK}[OK] ${NC}No hay lineas en blanco en tu archivo"
+    echo -e "$NOEMPTYLINES"
   fi
   # Comprobamos si tiene alias en blanco
   if ! [ $numberEmptyAlias -eq 0 ]
   then
-    if [ $numberEmptyAlias -gt 1 ]
-    then
-      echo "Tienes $numberEmptyAlias alias vacios en ${FILE_WITH_ALIAS}"
-      echo "Quieres eliminarlos?"
-    else
-      echo "Tienes $numberEmptyAlias alias vacio en ${FILE_WITH_ALIAS}"
-      echo "Quieres eliminarlo?"
-    fi
+    echo "$EMPTYALIAS"
+    echo "$DELETEEMPTYALIAS"
     read delete
     if confirmYes $delete
     then
       sed -i '/^alias .*=\"\"*$/d' ${FILE_WITH_ALIAS}
       sed -i '/^alias .*=$/d' ${FILE_WITH_ALIAS}
-      if [ $numberEmptyAlias -gt 1 ]
-      then
-        echo -e "${OK}[OK] ${NC}Se han eliminado todos los alias vacios"
-      else
-        echo -e "${OK}[OK] ${NC}Se ha eliminado el alias vacio"
-      fi
+      echo -e "$EMPTYALIASDELETED"
     fi
   else
-    echo -e "${OK}[OK] ${NC}No hay alias vacios en tu archivo"
+    echo -e "$NOEMPTYALIAS"
   fi
 
 
@@ -273,7 +259,7 @@ function copy {
   if [ -z $1 ]
   then
     showAlias
-    echo "Seleccione el número o nombre del alias que quiere copiar"
+    echo "$SELECTCOPYALIAS"
     read selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
@@ -298,7 +284,7 @@ function copy {
     else
       # Si no existe el alias que el usuario ha pasado por argumento
       # ejecuto otra vez la funcion edit para que seleccione un alias que exista
-      echo -e "${ERROR}[ERROR]${NC} El alias ${ORANGE}$1${NC} no existe."
+      echo -e "$ALIASNOTEXISTS ${ORANGE}$1${NC}"
       copy
     fi
   fi
@@ -312,18 +298,18 @@ function copySpecificAlias {
   commando="${temp#\"}"
   if [ -z $2 ]
   then
-    echo -e "Has seleccionado el alias ${ORANGE}$1${NC}."
-    echo "Que nombre quieres ponerle al nuevo alias (tiene que ser distinto al que estás copiando)?:"
+    echo -e "$ALIASSELECTED ${ORANGE}$1${NC}."
+    echo "$INSERTNAMEOFALIAS:"
     read name_alias
     echo alias $name_alias=\"$commando\" >> ${FILE_WITH_ALIAS}
-    echo -e "${OK}[OK]${NC} Ahora también podrás usar el alias ${ORANGE}$name_alias${NC} de la misma forma que con ${ORANGE}$1${NC}."
+    echo -e "$COPIEDDONE ${ORANGE}$name_alias${NC}."
   else
     echo alias $2=\"$commando\" >> ${FILE_WITH_ALIAS}
     if [ $? -eq 0 ]
     then
-      echo -e "${OK}[OK]${NC} Ahora también podrás usar el alias ${ORANGE}$2${NC} de la misma forma que con ${ORANGE}$1${NC}."
+      echo -e "$COPIEDDONE ${ORANGE}$2${NC}."
     else
-      echo -e "${ERROR}[ERROR]${NC} Ha ocurrido un error y no se ha copiado correctamente."
+      echo -e "$COPYERROR"
     fi
   fi
 }
@@ -347,7 +333,7 @@ function confirmYes {
 }
 
 function showAlias {
-  echo "Mostrando todos los alias que tienes:"
+  echo "$SHOWALIASCREATED"
   # Mientras hayan alias, irlos mostrando
   contador=1
   while read linea
