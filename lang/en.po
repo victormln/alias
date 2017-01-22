@@ -1,6 +1,69 @@
-ALIASCREATED="${OK}[OK]${NC} Alias created"
-WARNNEWALIAS="${WARNING}Alias are gonna be created${NC}"
-INSERTNAMEOFALIAS="Insert the name of alias"
-ALIASEXISTS="${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2 iguales."
+###############
+# INFO MESSAGES
+#######################################
+SHOWALIASCREATED="Estos son los alias que tienes creados hasta ahora:"
+OPTIONSSCRIPT="Si quieres añadir, editar, eliminar o copiar algún alias, puedes ejecutar el script con los argumentos [add] [edit] [delete] o [copy]."
+ALIASSELECTED="Has seleccionado el alias"
+MESSAGEEMPTYLINES="Tienes $numberEmptyLines lineas en blanco en ${FILE_WITH_ALIAS}"
+NOEMPTYLINES="${OK}[OK] ${NC}No hay lineas en blanco en tu archivo"
+NOEMPTYALIAS="${OK}[OK] ${NC}No hay alias vacios en tu archivo"
+MENUSELECTION="Has seleccionado"
+EXITSCRIPT="Saliendo del script"
+EXITSCRIPTWITHOPTIONS="Ha salido del programa porque no ha seleccionado una de las opciones [y] [s] [n]"
+ROUTEBACKUPMESSAGE="Puedes modificar la ruta donde se guarda la copia de seguridad en el user.conf que hay en este script."
+ROUTEALIASFILEMESSAGE="Puedes modificar esta ruta en el user.conf que hay en este script."
+AUTHORMESSAGE="Autor"
+FILENOTCONTAINALIAS="\n${WARNING}[WARNING] ${NC}El archivo ${FILE_WITH_ALIAS} no contiene alias."
+CANNOTUSEOPTIONS="No podrás usar las funciones de [edit], [delete] o [copy], solo podrás usar [add]."
+REMEMBERFILEALIAS="Recuerde poner correctamente en el archivo user.conf el archivo que contiene los alias."
+RESTOREHELPMESSAGE="Si cree que ha sido a causa de un problema del script, puede restaurar la copia de seguridad con --restore"
+###############
+# DONE MESSAGES
+#######################################
+ALIASCREATED="${OK}[OK]${NC} Alias creado"
+MODIFIEDDONE="${OK}[OK]${NC} Se ha modificado el alias correctamente"
+DELETEDONE="${OK}[OK]${NC} Se ha eliminado el alias correctamente"
+EMPTYLINESDELETED="${OK}[OK] ${NC}Se han eliminado todas las lineas en blanco"
+EMPTYALIASDELETED="${OK}[OK] ${NC}Se ha/n eliminado el/los alia/s vacio/s"
+COPIEDDONE="${OK}[OK]${NC} Ahora también podrás usar el alias"
+BACKUPDONE="${OK}[OK]${NC} Se ha restaurado correctamente la copia de seguridad."
+###############
+# ASK MESSAGES
+#######################################
+WARNNEWALIAS="${WARNING}Se va a crear un alias nuevo${NC}"
+INSERTNAMEOFALIAS="Introduce un nombre para el alias"
+INSERTCOMMAND="Introduce ahora el comando que querrás ejecutar con el alias"
+ASKCREATEANOTHERALIAS="Quieres crear otro alias?"
+SELECTALIAS="Seleccione el número o nombre del alias que quiere editar"
+NAMEALIASDELETE="Seleccione el número o nombre del alias que quiere eliminar"
+CONFIRMDELETE="Seguro que quiere eliminar el alias"
+DELETEEMPTYLINES="Quieres eliminarlas todas?"
+EMPTYALIAS="Tienes $numberEmptyAlias alias vacio/s en ${FILE_WITH_ALIAS}"
+DELETEEMPTYALIAS="Quieres eliminarlo/s?"
+SELECTCOPYALIAS="Seleccione el número o nombre del alias que quiere copiar"
+#################
+# ERROR MESSAGES
+#######################################
+ALIASEXISTS="${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2 iguales"
 CHOOSEANOTHERNAME="Introduce un nombre que no esté cogido (q para salir)"
-INSERTCOMMAND="Introduce ahora el comando que querrás ejecutar con el alias ${ORANGE}$name${NC} (no hace falta que pongas las comillas)"
+ERRORALIASEXISTS="\n${ERROR}[ERROR] ${NC}Ese alias ya existe y no pueden haber 2 iguales.\nPiensa otro nombre para tu alias. Recuerda: puedes editar un alias o eliminarlo con [-e] o [-d]"
+ALIASNOTEXISTS="${ERROR}[ERROR]${NC} No existe el alias"
+UNKNOWNPROBLEM="${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar el script"
+COPYERROR="${ERROR}[ERROR]${NC} Ha ocurrido un error y no se ha copiado correctamente."
+BACKUPNOTFOUND="${ERROR}[ERROR]${NC} Lo siento. No se ha encontrado ninguna copia de seguridad."
+ALIASFILENOTFOUND="No existe el archivo ${FILE_WITH_ALIAS}."
+################
+# OTHER MESSAGES
+#######################################
+OPTIONSCONFIRM="Escribe: [y / n] o [s / n] para continuar"
+################
+# HELP MESSAGES
+#######################################
+USAGEMESSAGE="usage: malias [add] [edit] [copy] [list] [delete] - Script que te permite crear, modificar, copiar, listar o eliminar alias de tu pc."
+ADDHELPUSAGE="\n${CYAN}[-a] [add] [add nombre_alias]${NC}\n\tPodrás añadir un alias.\n\tEl nombre de alias quieres añadir, puedes poner [add nombre] y el nombre del alias."
+EDITHELPUSAGE="\n${CYAN}[-e] [edit] [edit nombre_alias]${NC}\n\tPodrás modificar un alias que tengas ya creado.\n\tSi sabes el nombre del alias, puedes poner [edit nombre]\n\tSi no lo sabes, puedes poner [edit] a secas y te saldrá el listado de alias que tienes."
+LISTHELPUSAGE="\n${CYAN}[-l] [list] [view] [show] ${NC}\n\tPodrás listar/ver todos los alias que tienes."
+DELETEHELPUSAGE="\n${CYAN}[-d] [delete] [delete nombre_alias] [-d]${NC}\n\tPodrás eliminar un alias."
+COPYHELPUSAGE="\n${CYAN}[-cp] [copy] [copy nombre_alias_creado] [copy nombre_alias_creado nombre_alias_a_crear]${NC}\n\tPodrás eliminar un alias."
+RESTOREHELPUSAGE="\n${CYAN}[--restore]${NC}\n\tEl parámetro [--restore] sirve para restaurar una copia de seguridad del archivo que contiene los alias.\n\tEsta copia de seguridad se ejecuta automáticamente cada vez que se hace una acción de editar, eliminar o copiar."
+EMPTYHELPMESSAGE="\n${CYAN}[--empty]${NC}\n\tEl parámetro [--empty] sirve para eliminar las lineas en blanco del archivo que contenga los alias.\n\tTambién sirve para eliminar los alias vacios del archivo."
