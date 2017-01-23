@@ -28,7 +28,6 @@ EMPTYLINESDELETED="${OK}[OK] ${NC}Se han eliminado todas las lineas en blanco"
 EMPTYALIASDELETED="${OK}[OK] ${NC}Se ha/n eliminado el/los alia/s vacio/s"
 COPIEDDONE="${OK}[OK]${NC} Ahora también podrás usar el alias"
 BACKUPDONE="${OK}[OK]${NC} Se ha restaurado correctamente la copia de seguridad."
-HAVELASTVERSION="${OK}[OK]${NC} No hay actualizaciones nuevas. Tienes la última versión $version"
 ###############
 # ASK MESSAGES
 #######################################
@@ -70,6 +69,7 @@ UPDATEDONEMESSAGE="${OK}[OK] ${NC}La actualización ha acabado, por favor, vuelv
 UPDATINGPLEASEWAITMESSAGE="Actualizando... Por favor, espere ..."
 AVAILABLEUPDATEMESSAGE="Hay una nueva versión disponible."
 WANTTODOWNLOADMESSAGE="Quieres descargarla y así tener las últimas mejoras? y/n o s/n"
+HAVELASTVERSION="${OK}[OK]${NC} No hay actualizaciones nuevas. Tienes la última versión $version"
 ################
 # HELP MESSAGES
 #######################################
