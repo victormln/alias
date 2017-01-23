@@ -105,16 +105,19 @@ function edit {
   # En el caso que le haya pasado un argumento (el nombre de un alias)
   # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
-    # Compruebo si el alias que ha pasado el usuario existe
-    if cat .alias.tmp | grep "^alias $1=" > /dev/null
-    then
-      editSpecificAlias $1
-    else
-      # Si no existe el alias que el usuario ha pasado por argumento
-      # ejecuto otra vez la funcion edit para que seleccione un alias que exista
-      echo -e "$ALIASNOTEXISTS ${ORANGE}$1${NC}"
-      edit
-    fi
+    for param in "$@"
+    do
+      # Compruebo si el alias que ha pasado el usuario existe
+      if cat .alias.tmp | grep "^alias $param=" > /dev/null
+      then
+        editSpecificAlias $param
+      else
+        # Si no existe el alias que el usuario ha pasado por argumento
+        # ejecuto otra vez la funcion edit para que seleccione un alias que exista
+        echo -e "$ALIASNOTEXISTS ${ORANGE}$param${NC}"
+        edit
+      fi
+    done
   fi
 }
 
@@ -279,21 +282,29 @@ function copy {
   # En el caso que le haya pasado un argumento (el nombre de un alias)
   # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
-    # Compruebo si el alias que ha pasado el usuario existe
-    if cat .alias.tmp | grep "^alias $1=" > /dev/null
-    then
-      if [ -z $2 ]
+    #Guardo el comandoOrigen para poder hacer shift
+    comandoOrigen=$1
+    for param in "$@"
+    do
+      # Compruebo si el alias que ha pasado el usuario existe
+      if cat .alias.tmp | grep "^alias $comandoOrigen=" > /dev/null
       then
-        copySpecificAlias $1
+        if [ -z $2 ]
+        then
+          copySpecificAlias $comandoOrigen
+        else
+          if ! [ "$comandoOrigen" == "$param" ]
+          then
+              copySpecificAlias $comandoOrigen $param
+          fi
+        fi
       else
-        copySpecificAlias $1 $2
+        # Si no existe el alias que el usuario ha pasado por argumento
+        # ejecuto otra vez la funcion edit para que seleccione un alias que exista
+        echo -e "$ALIASNOTEXISTS ${ORANGE}$1${NC}"
+        copy
       fi
-    else
-      # Si no existe el alias que el usuario ha pasado por argumento
-      # ejecuto otra vez la funcion edit para que seleccione un alias que exista
-      echo -e "$ALIASNOTEXISTS ${ORANGE}$1${NC}"
-      copy
-    fi
+    done
   fi
 }
 
@@ -407,7 +418,10 @@ function parseOption {
       then
         edit
       else
-        edit $2
+        # Recorro un argumento ya que sino, le pasaria también
+        # el -e o el edit (y solo quiero los nombres de los alias)
+        shift
+        edit $@
       fi
   	elif [ $1 == "delete" ] || [ $1 == "-d" ]
   	then
@@ -431,7 +445,10 @@ function parseOption {
       then
         copy $2
       else
-        copy $2 $3
+        # Recorro un argumento ya que sino, le pasaria también
+        # el -copy o el copy (y solo quiero los nombres de los alias)
+        shift
+        copy $@
       fi
   	elif [ $1 == "-h" ] || [ $1 == "--help" ]
   	then
