@@ -2,6 +2,11 @@
 # Changelog #
 #############
 
+* Version: 2.0.1 *
+#----------------#
+
+- Mejorando y solucionando bugs del update
+
 * Version: 2.0.0 *
 #----------------#
 
