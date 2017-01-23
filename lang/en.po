@@ -4,7 +4,7 @@
 SHOWALIASCREATED="Alias created until now:"
 OPTIONSSCRIPT="If you want to add, edit, delete or copy some alias, you can execute the script with the arguments [add] [edit] [delete] or [copy]."
 ALIASSELECTED="You selected the alias"
-MESSAGEEMPTYLINES="You have $numberEmptyLines empty lines in the file ${FILE_WITH_ALIAS}"
+MESSAGEEMPTYLINES="You have empty lines in the file ${FILE_WITH_ALIAS}"
 NOEMPTYLINES="${OK}[OK] ${NC}There aren't empty lines in your file"
 NOEMPTYALIAS="${OK}[OK] ${NC}There aren't empty alias"
 MENUSELECTION="You selected"
@@ -58,6 +58,18 @@ ALIASFILENOTFOUND="File ${FILE_WITH_ALIAS} not exist."
 # OTHER MESSAGES
 #######################################
 OPTIONSCONFIRM="Type: [y / n] or [s / n] to continue"
+###################
+# UPDATE MESSAGES
+#######################################
+NEWUPDATEMESSAGE="${WARNING}¡NEW UPDATE!"
+YOUHAVEVERSIONMESSAGE="You have the version"
+AVAILABLEVERSIONMESSAGE="Available version"
+NOTHAVEINTERNETMESSAGE="${WARNING}[WARNING] ${NC}You don't have internet. Is needed to check for updates"
+NOTUPDATEDMESSAGE="${WARNING}WARNING!${NC} It will NOT be updated (although recommended)."
+UPDATEDONEMESSAGE="${OK}[OK] ${NC}The update is finish, please re-start the script.";
+UPDATINGPLEASEWAITMESSAGE="Updating... Please, wait ..."
+AVAILABLEUPDATEMESSAGE="There is a new version available."
+WANTTODOWNLOADMESSAGE="Do you want to download it and have the latest improvements? y/n or s/n"
 ################
 # HELP MESSAGES
 #######################################

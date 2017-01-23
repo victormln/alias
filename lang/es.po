@@ -4,7 +4,7 @@
 SHOWALIASCREATED="Estos son los alias que tienes creados hasta ahora:"
 OPTIONSSCRIPT="Si quieres añadir, editar, eliminar o copiar algún alias, puedes ejecutar el script con los argumentos [add] [edit] [delete] o [copy]."
 ALIASSELECTED="Has seleccionado el alias"
-MESSAGEEMPTYLINES="Tienes $numberEmptyLines lineas en blanco en ${FILE_WITH_ALIAS}"
+MESSAGEEMPTYLINES="Tienes lineas en blanco en ${FILE_WITH_ALIAS}"
 NOEMPTYLINES="${OK}[OK] ${NC}No hay lineas en blanco en tu archivo"
 NOEMPTYALIAS="${OK}[OK] ${NC}No hay alias vacios en tu archivo"
 MENUSELECTION="Has seleccionado"
@@ -40,7 +40,7 @@ SELECTALIAS="Seleccione el número o nombre del alias que quiere editar"
 NAMEALIASDELETE="Seleccione el número o nombre del alias que quiere eliminar"
 CONFIRMDELETE="Seguro que quiere eliminar el alias"
 DELETEEMPTYLINES="Quieres eliminarlas todas?"
-EMPTYALIAS="Tienes $numberEmptyAlias alias vacio/s en ${FILE_WITH_ALIAS}"
+EMPTYALIAS="Tienes alias vacio/s en ${FILE_WITH_ALIAS}"
 DELETEEMPTYALIAS="Quieres eliminarlo/s?"
 SELECTCOPYALIAS="Seleccione el número o nombre del alias que quiere copiar"
 #################
@@ -58,6 +58,18 @@ ALIASFILENOTFOUND="No existe el archivo ${FILE_WITH_ALIAS}."
 # OTHER MESSAGES
 #######################################
 OPTIONSCONFIRM="Escribe: [y / n] o [s / n] para continuar"
+###################
+# UPDATE MESSAGES
+#######################################
+NEWUPDATEMESSAGE="${WARNING}¡NUEVA ACTUALIZACIÓN!"
+YOUHAVEVERSIONMESSAGE="Tienes la versión"
+AVAILABLEVERSIONMESSAGE="Versión disponible"
+NOTHAVEINTERNETMESSAGE="${WARNING}[AVISO] ${NC}No tienes internet. Para buscar actualizaciones se necesita internet."
+NOTUPDATEDMESSAGE="${WARNING}¡AVISO!${NC} NO se actualizará (aunque se recomienda)."
+UPDATEDONEMESSAGE="${OK}[OK] ${NC}La actualización ha acabado, por favor, vuelva a iniciar el script.";
+UPDATINGPLEASEWAITMESSAGE="Actualizando... Por favor, espere ..."
+AVAILABLEUPDATEMESSAGE="Hay una nueva versión disponible."
+WANTTODOWNLOADMESSAGE="Quieres descargarla y así tener las últimas mejoras? y/n o s/n"
 ################
 # HELP MESSAGES
 #######################################

@@ -64,31 +64,31 @@ then
   		else
   			# Mostramos el mensaje de que hay una nueva actualización
   			echo "###########################################"
-  			echo -e "${WARNING}¡NUEVA ACTUALIZACIÓN!${NC}"
-  			echo "Tienes la versión: $version"
-  			echo "Versión disponible: $ultimaVersion"
+  			echo -e "$NEWUPDATEMESSAGE${NC}"
+  			echo "$YOUHAVEVERSIONMESSAGE: $version"
+  			echo "$AVAILABLEVERSIONMESSAGE: $ultimaVersion"
   			echo "###########################################"
   			# Si tiene las actualizaciones automaticas, no se le pide nada
   			if $automatic_update
   			then
   				# Si es así, hacemos un pull y le actualizamos el script
-  				echo "Hay una nueva actualización y tienes activadas las descargas automáticas."
-  				git pull | tee >(echo "Actualizando... Por favor, espere ...")
-  				echo -e "${OK}[OK] ${NC}La actualización ha acabado, por favor, vuelva a iniciar el script.";
+  				echo $AVAILABLEVERSIONMESSAGE
+  				git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
+  				echo -e "$UPDATEDONEMESSAGE"
   			else
-  			  echo "Hay una nueva versión de este script y se recomienda actualizar."
-  			  echo "Quieres descargarla y así tener las últimas mejoras? y/n o s/n"
+  			  echo "$AVAILABLEUPDATEMESSAGE"
+  			  echo "$WANTTODOWNLOADMESSAGE"
   			  # Preguntamos si quiere actualizar
   			  read actualizar
   			  if [ $actualizar == "s" ] || [ $actualizar == "y" ]
   			  then
   			    # Si es así, hacemos un pull y le actualizamos el script
-  			  	git pull | tee >(echo "Actualizando... Por favor, espere ...")
-  					echo -e "${OK}[OK] ${NC}La actualización ha acabado, por favor, vuelva a iniciar el script.";
+  			  	git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
+  					echo -e "$UPDATEDONEMESSAGE"
             exit
   			  else
   			    # En el caso que seleccione que no, muestro un mensaje.
-  			    echo -e "${WARNING}¡AVISO!${NC} NO se actualizará (aunque se recomienda)."
+  			    echo -e "$NOTUPDATEDMESSAGE"
   					echo -e "**************************"
   					# Damos por su puesto que tiene la ultima version,
   					# para que el script no entre en bucle
@@ -98,6 +98,6 @@ then
   		fi
     fi
   else
-  	echo -e "${WARNING}[AVISO] ${NC}No tienes internet. Para buscar actualizaciones se necesita internet."
+  	echo -e "$NOTHAVEINTERNETMESSAGE"
   fi
 fi
