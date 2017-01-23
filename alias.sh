@@ -2,7 +2,7 @@
 # Fichero: alias.sh
 # Autor: Víctor Molina Ferreira (www.victormln.es)
 # Fecha: 12/11/16
-# Versión: 1.0
+# Versión: 2.0.0
 
 # Mensajes de color
 ERROR='\033[0;31m'
@@ -13,6 +13,9 @@ BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 ORANGE='\033[0;33m'
 CYAN='\033[0;36m'
+# Get the current version
+CURRENTVERSION=$(grep '# Versión:' $0 | cut -d: -f 2 | head -1)
+CURRENTVERSION=${CURRENTVERSION//[[:blank:]]/}
 
 ##########################
 # Aquí empieza el script #
@@ -42,7 +45,7 @@ fi
 
 if [ "$1" == "-v" ]
 then
-  echo $version
+  echo $CURRENTVERSION
   exit 0
 fi
 
@@ -53,7 +56,7 @@ then
   exit 1
 fi
 
-echo "Alias Manager v$version"
+echo "Alias Manager v$CURRENTVERSION"
 if $show_author; then echo "$AUTHORMESSAGE: Víctor Molina [victormln.com] <contact@victormln.com> "; fi;
 
 # Doy permiso al update.sh

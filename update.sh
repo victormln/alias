@@ -51,7 +51,7 @@ then
   		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/user.conf | tail -1 | cut -d'=' -f 2) > /dev/null
   		ultimaVersionSinPuntos=$( echo $ultimaVersion | tr -d ".")
   		# Miramos que versión tiene el usuario actualmente
-  		versionActualSinPuntos=$(cat user.conf | tail -1 | cut -d'=' -f 2 | tr -d ".")
+  		versionActualSinPuntos=$(echo $CURRENTVERSION | tr -d ".")
   		# Comprobamos si la versionActual es igual o mas grande que la ultimaVersion
   		# es igual a la versionActual.
   		if (( $versionActualSinPuntos>=$ultimaVersionSinPuntos ))
@@ -65,7 +65,7 @@ then
   			# Mostramos el mensaje de que hay una nueva actualización
   			echo "###########################################"
   			echo -e "$NEWUPDATEMESSAGE${NC}"
-  			echo "$YOUHAVEVERSIONMESSAGE: $version"
+  			echo "$YOUHAVEVERSIONMESSAGE: $CURRENTVERSION"
   			echo "$AVAILABLEVERSIONMESSAGE: $ultimaVersion"
   			echo "###########################################"
   			# Si tiene las actualizaciones automaticas, no se le pide nada
