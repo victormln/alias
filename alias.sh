@@ -174,16 +174,19 @@ function delete {
   # En el caso que le haya pasado un argumento (el nombre de un alias)
   # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
-    # Compruebo si el alias que ha pasado el usuario existe
-    if cat .alias.tmp | grep "^alias $1=" > /dev/null
-    then
-      deleteSpecificAlias $1
-    else
-      # Si no existe el alias que el usuario ha pasado por argumento
-      # ejecuto otra vez la funcion delete para que seleccione un alias que exista
-      echo -e "$ALIASNOTEXISTS ${ORANGE}$1${NC}"
-      delete
-    fi
+    for param in "$@"
+    do
+      # Compruebo si el alias que ha pasado el usuario existe
+      if cat .alias.tmp | grep "^alias $param=" > /dev/null
+      then
+        deleteSpecificAlias $param
+      else
+        # Si no existe el alias que el usuario ha pasado por argumento
+        # ejecuto otra vez la funcion delete para que seleccione un alias que exista
+        echo -e "$ALIASNOTEXISTS ${ORANGE}$param${NC}"
+        delete
+      fi
+    done
   fi
 }
 
@@ -195,6 +198,10 @@ function deleteSpecificAlias {
   comando="${temp#\"}"
   echo -e "$CONFIRMDELETE ${ORANGE}$1${NC}?"
   read confirmation
+  if ! confirmYes $confirmation
+  then
+    exit -1
+  fi
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
   # la coma es el delimitador para el sed
@@ -404,13 +411,16 @@ function parseOption {
       fi
   	elif [ $1 == "delete" ] || [ $1 == "-d" ]
   	then
-        # Si no le pasa un segundo argumento a edit (el nombre del alias)
+        # Si no le pasa un segundo argumento a delete (el nombre del alias)
         # le preguntaremos en el delete cual quiere eliminarsss
         if [ -z $2 ]
         then
           delete
         else
-          delete $2
+          # Recorro un argumento ya que sino, le pasaria también
+          # el -d o el delete (y solo quiero los nombres de los alias)
+          shift
+          delete $@
         fi
     elif [ $1 == "copy" ] || [ $1 == "-cp" ]
     then
@@ -489,7 +499,7 @@ then
   # Iniciamos el script
   if ! [ -z $1 ]
   then
-  	parseOption $1 $2 $3
+  	parseOption $@
   	exit
   else
     parseOption

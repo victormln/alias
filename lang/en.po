@@ -31,7 +31,7 @@ BACKUPDONE="${OK}[OK]${NC} Backup successfully restored."
 # ASK MESSAGES
 #######################################
 WARNNEWALIAS="${WARNING}A new alias will be created${NC}"
-INSERTNAMEOFALIAS="Enter a name for the alias"
+INSERTNAMEOFALIAS="Enter the alias name"
 INSERTCOMMAND="Enter the command you want to execute with the alias"
 ASKCREATEANOTHERALIAS="Do you want to create another alias?"
 SELECTALIAS="Select the number or name of the alias you want to edit"
