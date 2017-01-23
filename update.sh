@@ -21,6 +21,10 @@
 
 #  Descripción: Comprueba si el script está a la ultima version
 
+# Última comprobación de una actualización
+# (Puede forzar la búsqueda de una actualización con --update)
+lastChecked=2017-01-24
+
 today=$(date +%Y-%m-%d)
 if [[ "$today" > "$lastChecked" ]] || [ "$1" == "--update" ]
 then
@@ -43,9 +47,7 @@ then
     # Si están activadas las actualizaciones automáticas
     if $search_ota || [ "$1" == "--update" ]
     then
-      # Modifico el valor de la variable y pongo que se ha buscado una actualización
-      # a fecha de hoy
-      sed -i 's,^\(lastChecked=\).*,\1'$(date +%Y-%m-%d)',' user.conf
+      sed -i 's,^\(lastChecked=\).*,\1'$(date +%Y-%m-%d)',' $( dirname "${BASH_SOURCE[0]}" )/update.sh
   		tieneUltimaVersion=false
   		# Conseguimos la ultima version que hay en github y le quitamos los puntos
   		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Versión:' | cut -d: -f 2 | head -1) > /dev/null
