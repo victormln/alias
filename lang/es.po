@@ -17,6 +17,7 @@ FILENOTCONTAINALIAS="\n${WARNING}[WARNING] ${NC}El archivo ${FILE_WITH_ALIAS} no
 CANNOTUSEOPTIONS="No podrás usar las funciones de [edit], [delete] o [copy], solo podrás usar [add]."
 REMEMBERFILEALIAS="Recuerde poner correctamente en el archivo user.conf el archivo que contiene los alias."
 RESTOREHELPMESSAGE="Si cree que ha sido a causa de un problema del script, puede restaurar la copia de seguridad con --restore"
+FORCEUPDATE="Buscando actualizaciones disponibles..."
 ###############
 # DONE MESSAGES
 #######################################
@@ -27,6 +28,7 @@ EMPTYLINESDELETED="${OK}[OK] ${NC}Se han eliminado todas las lineas en blanco"
 EMPTYALIASDELETED="${OK}[OK] ${NC}Se ha/n eliminado el/los alia/s vacio/s"
 COPIEDDONE="${OK}[OK]${NC} Ahora también podrás usar el alias"
 BACKUPDONE="${OK}[OK]${NC} Se ha restaurado correctamente la copia de seguridad."
+HAVELASTVERSION="${OK}[OK]${NC}No hay actualizaciones nuevas. Tienes la última versión $version"
 ###############
 # ASK MESSAGES
 #######################################

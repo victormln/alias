@@ -11,7 +11,7 @@
 - Añadida opción multiedit (se le puede pasar por argumento varios alias y te pedirá de ir editándolos)
 - Solucionados varios bugs (entre ellos con edit)
 - Añadida opción -v para ver la versión actual que se tiene
-- Funciones por separado
+- Funciones por separado (en carpeta functions)
 - Añadida opción --update para forzar actualización
 - Comprueba internet solo una vez para mejorar eficiencia del script
 

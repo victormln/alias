@@ -446,6 +446,9 @@ function parseOption {
     elif [ $1 == "--restore" ]
     then
       restore
+    elif [ $1 == "--update" ]
+    then
+      echo "$EXITSCRIPT"
     else
       # Cualquier otro parámetro, mostramos la ayuda
       showHelp

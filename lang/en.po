@@ -17,6 +17,7 @@ FILENOTCONTAINALIAS="\n${WARNING}[WARNING] ${NC}The file ${FILE_WITH_ALIAS} does
 CANNOTUSEOPTIONS="You can't use the params [edit], [delete] or [copy], just can use [add]."
 REMEMBERFILEALIAS="Remember to put correctly where the file are that contains the alias in user.conf."
 RESTOREHELPMESSAGE="If you believe that is caused by the script, you can restore a backup with --restore"
+FORCEUPDATE="Looking for updates..."
 ###############
 # DONE MESSAGES
 #######################################
@@ -27,6 +28,7 @@ EMPTYLINESDELETED="${OK}[OK] ${NC}All blank lines have been deletedo"
 EMPTYALIASDELETED="${OK}[OK] ${NC}Empty alias have been removed"
 COPIEDDONE="${OK}[OK]${NC} Now you can also use the alias"
 BACKUPDONE="${OK}[OK]${NC} Backup successfully restored."
+HAVELASTVERSION="${OK}[OK]${NC}No updates available. You have the latest version $version"
 ###############
 # ASK MESSAGES
 #######################################

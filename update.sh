@@ -22,7 +22,7 @@
 #  Descripción: Comprueba si el script está a la ultima version
 
 today=$(date +%Y-%m-%d)
-if [[ "$today" > "$lastChecked" ]]
+if [[ "$today" > "$lastChecked" ]] || [ "$1" == "--update" ]
 then
   # Compruebo que sistema está usando para hacer ping
   # Si es Linux o Mac
@@ -57,6 +57,10 @@ then
   		if (( $versionActualSinPuntos>=$ultimaVersionSinPuntos ))
   		then
   			tieneUltimaVersion=true
+        if [ "$1" == "--update" ]
+        then
+          echo -e "$HAVELASTVERSION"
+        fi
   		else
   			# Mostramos el mensaje de que hay una nueva actualización
   			echo "###########################################"
