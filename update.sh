@@ -48,8 +48,10 @@ then
       sed -i 's,^\(lastChecked=\).*,\1'$(date +%Y-%m-%d)',' user.conf
   		tieneUltimaVersion=false
   		# Conseguimos la ultima version que hay en github y le quitamos los puntos
-  		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/user.conf | tail -1 | cut -d'=' -f 2) > /dev/null
-  		ultimaVersionSinPuntos=$( echo $ultimaVersion | tr -d ".")
+  		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/user.conf) > /dev/null
+      ultimaVersion=$(echo $ultimaVersion | grep '# Versión:' $0 | cut -d: -f 2 | head -1)
+      ultimaVersion=${ultimaVersion//[[:blank:]]/}
+      ultimaVersionSinPuntos=$( echo $ultimaVersion | tr -d ".")
   		# Miramos que versión tiene el usuario actualmente
   		versionActualSinPuntos=$(echo $CURRENTVERSION | tr -d ".")
   		# Comprobamos si la versionActual es igual o mas grande que la ultimaVersion
