@@ -36,3 +36,5 @@ Todos los argumentos disponibles:
 |`copy`     |`-cp`  | Copia un alias existente por otro nuevo   |`-cp alias_origen alias_destino`      |
 |`--empty`     |  | Elimina alias y líneas vacías   |`--empty`      |
 |`--restore`     |  | Restaura una copia de seguridad que se haya hecho antes de una acción.  |`--restore`      |
+|`--update`     |  | Fuerza el buscar una actualización.  |`--update`      |
+|     |`-v`  | Muestra la versión del script.  |`-v`      |

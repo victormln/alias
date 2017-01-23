@@ -41,6 +41,12 @@ then
   exit
 fi
 
+if [ "$1" == "-v" ]
+then
+  echo $version
+  exit 0
+fi
+
 if ! [ -e ${FILE_WITH_ALIAS} ]
 then
   echo "$ALIASFILENOTFOUND"

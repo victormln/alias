@@ -43,7 +43,9 @@ then
     # Si están activadas las actualizaciones automáticas
     if $search_ota || [ "$1" == "--update" ]
     then
-      lastChecked=$(date +%Y-%m-%d)
+      # Modifico el valor de la variable y pongo que se ha buscado una actualización
+      # a fecha de hoy
+      sed -i 's,^\(lastChecked=\).*,\1'$(date +%Y-%m-%d)',' user.conf
   		tieneUltimaVersion=false
   		# Conseguimos la ultima version que hay en github y le quitamos los puntos
   		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/user.conf | tail -1 | cut -d'=' -f 2) > /dev/null
