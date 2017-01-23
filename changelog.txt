@@ -11,8 +11,8 @@
 - Añadida opción multiedit (se le puede pasar por argumento varios alias y te pedirá de ir editándolos)
 - Solucionados varios bugs (entre ellos con edit)
 - Funciones por separado
-- (WIP) Añadida opción --update para forzar actualización
-- (WIP) Comprueba internet solo una vez para mejorar eficiencia del script
+- Añadida opción --update para forzar actualización
+- Comprueba internet solo una vez para mejorar eficiencia del script
 
 * Version: 1.0.5 *
 #----------------#
