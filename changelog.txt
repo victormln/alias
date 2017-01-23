@@ -2,6 +2,18 @@
 # Changelog #
 #############
 
+* Version: 2.0.0 *
+#----------------#
+
+- Añadido multidioma (inglés y español)
+- Añadida opción multidelete (se le puede pasar por argumento varios alias)
+- Añadida opción multicopy (se le puede pasar por argumento varios alias y se copiarán del primer argumento)
+- Añadida opción multiedit (se le puede pasar por argumento varios alias y te pedirá de ir editándolos)
+- Solucionados varios bugs (entre ellos con edit)
+- Funciones por separado
+- (WIP) Añadida opción --update para forzar actualización
+- (WIP) Comprueba internet solo una vez para mejorar eficiencia del script
+
 * Version: 1.0.5 *
 #----------------#
 
