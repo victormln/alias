@@ -61,6 +61,12 @@ if $show_author; then echo "$AUTHORMESSAGE: Víctor Molina [victormln.com] <cont
 
 # Doy permiso al update.sh
 chmod +x update.sh
+
+if [ "$1" == "--update" ]
+then
+	echo -e "$FORCEUPDATE"
+fi
+
 # Comprobaré si hay alguna versión nueva del programa autopush
 # y lo mostraré en pantalla
 source update.sh

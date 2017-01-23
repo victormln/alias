@@ -28,7 +28,7 @@ EMPTYLINESDELETED="${OK}[OK] ${NC}Se han eliminado todas las lineas en blanco"
 EMPTYALIASDELETED="${OK}[OK] ${NC}Se ha/n eliminado el/los alia/s vacio/s"
 COPIEDDONE="${OK}[OK]${NC} Ahora también podrás usar el alias"
 BACKUPDONE="${OK}[OK]${NC} Se ha restaurado correctamente la copia de seguridad."
-HAVELASTVERSION="${OK}[OK]${NC}No hay actualizaciones nuevas. Tienes la última versión $version"
+HAVELASTVERSION="${OK}[OK]${NC} No hay actualizaciones nuevas. Tienes la última versión $version"
 ###############
 # ASK MESSAGES
 #######################################
