@@ -65,9 +65,7 @@ chmod +x update.sh
 if [ "$1" == "--update" ]
 then
 	echo -e "$FORCEUPDATE"
-fi
-
-if [ "$1" == "--conf" ]
+elif [ "$1" == "--conf" ]
 then
 	echo -e "$CONFIGURATIONMSG"
   $default_editor user.conf
