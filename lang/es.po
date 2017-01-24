@@ -18,6 +18,7 @@ CANNOTUSEOPTIONS="No podrás usar las funciones de [edit], [delete] o [copy], so
 REMEMBERFILEALIAS="Recuerde poner correctamente en el archivo user.conf el archivo que contiene los alias."
 RESTOREHELPMESSAGE="Si cree que ha sido a causa de un problema del script, puede restaurar la copia de seguridad con --restore"
 FORCEUPDATE="Buscando actualizaciones disponibles..."
+CONFIGURATIONMSG="Abriendo archivo de configuración."
 ###############
 # DONE MESSAGES
 #######################################
@@ -81,3 +82,4 @@ DELETEHELPUSAGE="\n${CYAN}[-d] [delete] [delete nombre_alias] [-d]${NC}\n\tPodr�
 COPYHELPUSAGE="\n${CYAN}[-cp] [copy] [copy nombre_alias_creado] [copy nombre_alias_creado nombre_alias_a_crear]${NC}\n\tPodrás copiar un alias."
 RESTOREHELPUSAGE="\n${CYAN}[--restore]${NC}\n\tEl parámetro [--restore] sirve para restaurar una copia de seguridad del archivo que contiene los alias.\n\tEsta copia de seguridad se ejecuta automáticamente cada vez que se hace una acción de editar, eliminar o copiar (es decir, cuando el archivo que contiene los alias, se modifica)."
 EMPTYHELPMESSAGE="\n${CYAN}[--empty]${NC}\n\tEl parámetro [--empty] sirve para eliminar las lineas en blanco del archivo que contenga los alias.\n\tTambién sirve para eliminar los alias vacios del archivo."
+CONFIGHELPUSAGE="\n${CYAN}[--conf]${NC}\n\tEl parámetro [--conf] sirve para abrir/editar el archivo de configuración del script.\n\tPuedes editar el editor con el que se abre el archivo abriendo el user.conf."

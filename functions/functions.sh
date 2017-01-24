@@ -374,6 +374,7 @@ function showHelp {
   echo -e "$DELETEHELPUSAGE"
 
   echo -e "$COPYHELPUSAGE"
+  echo -e "$CONFIGHELPUSAGE"
   echo -e "$RESTOREHELPMESSAGE"
   echo -e "$EMPTYHELPMESSAGE"
 }
@@ -449,6 +450,9 @@ function parseOption {
     elif [ $1 == "--update" ]
     then
       echo "$EXITSCRIPT"
+    elif [ $1 == "--conf" ]
+    then
+      echo ""
     else
       # Cualquier otro parámetro, mostramos la ayuda
       showHelp

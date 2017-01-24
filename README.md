@@ -38,6 +38,7 @@ Todos los argumentos disponibles:
 |`edit`     |`-e`  | Edita un alias   |`-e test1`      |
 |`delete`     |`-d`  | Elimina un alias   |`-d test1`      |
 |`copy`     |`-cp`  | Copia un alias existente por otro nuevo   |`-cp alias_origen alias_destino`      |
+|`--conf`     |  | Abre/edita el archivo de configuración del script  |`--conf`      |.
 |`--empty`     |  | Elimina alias y líneas vacías   |`--empty`      |
 |`--restore`     |  | Restaura una copia de seguridad que se haya hecho antes de una acción.  |`--restore`      |
 |`--update`     |  | Fuerza el buscar una actualización.  |`--update`      |

@@ -67,6 +67,12 @@ then
 	echo -e "$FORCEUPDATE"
 fi
 
+if [ "$1" == "--conf" ]
+then
+	echo -e "$CONFIGURATIONMSG"
+  $default_editor user.conf
+fi
+
 # Comprobaré si hay alguna versión nueva del programa autopush
 # y lo mostraré en pantalla
 source update.sh
