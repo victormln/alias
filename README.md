@@ -17,6 +17,10 @@ cd alias
 ./alias.sh
 ```
 
+## Configuración
+
+Se pueden configurar varios parámetros. Por ejemplo que no busque actualizaciones automáticas, cambiar el idioma o poner el archivo donde se encuentran tus alias. Si se abre el archivo **user.conf** se podrán acceder a todas las configuraciones.
+
 ## Uso
 
 Este script tiene varios usos. Un ejemplo para añadir un alias
