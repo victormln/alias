@@ -23,7 +23,7 @@
 
 # Última comprobación de una actualización
 # (Puede forzar la búsqueda de una actualización con --update)
-lastChecked=2017-01-24
+lastChecked=2017-01-26
 
 today=$(date +%Y-%m-%d)
 if [[ "$today" > "$lastChecked" ]] || [ "$1" == "--update" ]

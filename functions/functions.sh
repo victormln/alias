@@ -114,20 +114,21 @@ function editSpecificAlias {
   commando="${temp#\"}"
   echo -e "$ALIASSELECTED ${ORANGE}$1${NC}"
   echo "$INSERTNAMEOFALIAS:"
-  read -e -i $1 name
+  read -e -i "$1" name
   echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
-  read -e -i $commando alias_command
-  #echo $alias_command
+  read -e -i "$commando" alias_command
+  echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
   # Miramos si tiene o no comillas el alias antiguo
   if cat ${FILE_WITH_ALIAS} | grep "^alias $1=\"$commando\"" &> /dev/null
   then
-    # la coma es el delimitador para el sed
-    sed "s,^alias $1=\"$commando\",alias $name=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+    sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
+    echo alias $name=\"$alias_command\" >> ~/bash.txt
   else
     # la coma es el delimitador para el sed
-    sed "s,^alias $1=$commando,alias $name=\"$alias_command\",g" ${FILE_WITH_ALIAS} > ~/bash.txt
+    sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
+    echo alias $name=\"$alias_command\" >> ~/bash.txt
   fi
   # Eliminamos
   rm ${FILE_WITH_ALIAS}

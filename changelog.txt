@@ -2,6 +2,11 @@
 # Changelog #
 #############
 
+* Version: 2.0.2 *
+#----------------#
+
+- Solucionado bug al editar un alias
+
 * Version: 2.0.1 *
 #----------------#
 
