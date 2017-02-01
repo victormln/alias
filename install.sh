@@ -12,5 +12,5 @@ actualDir=$(pwd)
 chmod +x alias.sh
 echo "alias malias=\"$actualDir/alias.sh\"" >> ~/.bashrc
 echo -e "${OK}[OK]${NC} Instalación finalizada."
-echo "Reinicie este terminal y ejecute ${BLUE}malias -v${NC} para comprobar que se ha instalado correctamente."
+echo -e "Reinicie este terminal y ejecute ${BLUE}malias -v${NC} para comprobar que se ha instalado correctamente."
 exit
