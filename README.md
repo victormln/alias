@@ -25,21 +25,21 @@ Se pueden configurar varios parámetros. Por ejemplo que no busque actualizacion
 
 Este script tiene varios usos. Un ejemplo para añadir un alias
 ```shell
-alias -a test1
+malias -a test1
 ```
 
 Todos los argumentos disponibles:
 
 |Argumento           |Abreviado|Significado                                   |Uso|
 | ------------- | ---- | ---------------------------------------- |----------|
-|`--help`       |`-h`     | Muestra los comandos disponibles         |`--help`  |
-|`list` or `view` or `show` |`-l`  | Muestra los alias que tienes             |`-l`    |
-|`add`     |`-a`  | Añade un alias   |`-a test1`      |
-|`edit`     |`-e`  | Edita un alias   |`-e test1`      |
-|`delete`     |`-d`  | Elimina un alias   |`-d test1`      |
-|`copy`     |`-cp`  | Copia un alias existente por otro nuevo   |`-cp alias_origen alias_destino`      |
-|`--conf`     |  | Abre/edita el archivo de configuración del script  |`--conf`      |.
-|`--empty`     |  | Elimina alias y líneas vacías   |`--empty`      |
-|`--restore`     |  | Restaura una copia de seguridad que se haya hecho antes de una acción.  |`--restore`      |
-|`--update`     |  | Fuerza el buscar una actualización.  |`--update`      |
-|     |`-v`  | Muestra la versión del script.  |`-v`      |
+|`--help`       |`-h`     | Muestra los comandos disponibles         |`malias --help`  |
+|`list` or `view` or `show` |`-l`  | Muestra los alias que tienes             |`malias -l`    |
+|`add`     |`-a`  | Añade un alias   |`malias -a test1`      |
+|`edit`     |`-e`  | Edita uno o varios alias   |`malias -e test1`      |
+|`delete`     |`-d`  | Elimina uno o varios alias   |`malias -d test1 test2`      |
+|`copy`     |`-cp`  | Copia uno o varios alias a través de otro ya creado   |`malias -cp alias_origen alias_nuevo alias_nuevo2`      |
+|`--conf`     |  | Abre/edita el archivo de configuración del script  |`malias --conf`      |.
+|`--empty`     |  | Elimina alias y líneas vacías   |`malias --empty`      |
+|`--restore`     |  | Restaura una copia de seguridad que se haya hecho antes de una acción.  |`malias --restore`      |
+|`--update`     |  | Fuerza el buscar una actualización.  |`malias --update`      |
+|     |`-v`  | Muestra la versión del script.  |`malias -v`      |
