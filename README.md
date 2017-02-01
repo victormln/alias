@@ -9,12 +9,12 @@ malias -l
 
 ## Instalación
 
-Este programa no se instala, simplemente se ejecuta.
+Es una instalación muy básica, solo te añade un alias para ejecutar el script
 
 ```shell
 git clone https://github.com/victormln/alias.git
 cd alias
-./alias.sh
+./install.sh
 ```
 
 ## Configuración
