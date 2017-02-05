@@ -2,6 +2,12 @@
 # Changelog #
 #############
 
+* Version: 2.0.3 *
+#----------------#
+
+- Capta automáticamente que shell se tiene y se editan los alias de ahí.
+Se puede modificar el user.conf y editar el archivo que contiene los alias.
+
 * Version: 2.0.2 *
 #----------------#
 

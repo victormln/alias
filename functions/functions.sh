@@ -3,6 +3,19 @@ function aliasAdded {
   echo -e $ALIASCREATED
 }
 
+function comprobarShell {
+    ACTUALSHELL=$(echo $SHELL | grep zsh)
+    if [ -z "${FILE_WITH_ALIAS}" ]
+    then
+        if [ $? -eq 0 ]
+        then
+            FILE_WITH_ALIAS=~/.zshrc
+        else
+            FILE_WITH_ALIAS=~/.bashrc
+        fi
+    fi
+}
+
 function add {
   echo -e ${WARNNEWALIAS}
 	continuar="y"

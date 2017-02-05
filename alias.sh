@@ -2,7 +2,7 @@
 # Fichero: alias.sh
 # Autor: Víctor Molina Ferreira (www.victormln.es)
 # Fecha: 12/11/16
-# Versión: 2.0.2
+# Versión: 2.0.3
 
 # Mensajes de color
 ERROR='\033[0;31m'
@@ -33,6 +33,10 @@ cd $( dirname "${BASH_SOURCE[0]}" )
 source functions/functions.sh
 # Cogemos los datos del archivo .conf
 source user.conf
+
+# Comprobamos que shell tiene el usuario para modificar la variable FILE_WITH_ALIAS
+comprobarShell
+
 # Cogemos las variables de idioma
 source lang/${LANGUAGE}.po
 
