@@ -5,9 +5,10 @@ function aliasAdded {
 
 function comprobarShell {
     ACTUALSHELL=$(echo $SHELL | grep zsh)
+    errorLevel=$(echo $?)
     if [ -z "${FILE_WITH_ALIAS}" ]
     then
-        if [ $? -eq 0 ]
+        if [ $errorLevel -eq 0 ]
         then
             FILE_WITH_ALIAS=~/.zshrc
         else
