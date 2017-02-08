@@ -72,6 +72,7 @@ then
   			then
   				# Si es así, hacemos un pull y le actualizamos el script
   				echo $AVAILABLEVERSIONMESSAGE
+          git stash > /dev/null
   				git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
   				echo -e "$UPDATEDONEMESSAGE"
   			else
