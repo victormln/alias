@@ -82,6 +82,7 @@ then
   			  read actualizar
   			  if [ $actualizar == "s" ] || [ $actualizar == "y" ]
   			  then
+            git stash > /dev/null
   			    # Si es así, hacemos un pull y le actualizamos el script
   			  	git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
   					echo -e "$UPDATEDONEMESSAGE"
