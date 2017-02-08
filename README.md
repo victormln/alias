@@ -1,4 +1,6 @@
-Si no sabes que es un alias, te recomiendo que los utilices. Puedes ver el enlace en la wikipedia para saber porque son útiles: <a href="https://es.wikipedia.org/wiki/Alias_(Unix)" target="_blank">¿Qué és un alias?</a>
+Si no sabes que es un alias, te recomiendo que los utilices. Puedes ver el enlace en la wikipedia para saber porque son útiles: 
+[¿Qué és un alias?](https://es.wikipedia.org/wiki/Alias_(Unix)){:target="_blank"}
+<a href="https://es.wikipedia.org/wiki/Alias_(Unix)" target="_blank">¿Qué és un alias?</a>
 ___
 
 # Alias
