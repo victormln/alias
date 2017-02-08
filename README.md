@@ -1,3 +1,6 @@
+Si no sabes que es un alias, te recomiendo que los utilices. Puedes ver el enlace en la wikipedia para saber porque son útiles: <a href="https://es.wikipedia.org/wiki/Alias_(Unix)" target="_blank">¿Qué és un alias?</a>
+___
+
 # Alias
 
 Este programa ayuda a crear, editar, ver, eliminar o copiar alias de tu archivo que contenga los alias (.bashrc por ejemplo).
