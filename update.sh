@@ -24,7 +24,7 @@
 today=$(date +%Y-%m-%d)
 if ! command -v curl >/dev/null 2>&1
 then
-  $CURLNOTINSTALLED
+  echo -e "$CURLNOTINSTALLED"
   exit 4
 fi
 
