@@ -22,6 +22,12 @@
 #  Descripción: Comprueba si el script está a la ultima version
 
 today=$(date +%Y-%m-%d)
+if ! command -v curl >/dev/null 2>&1
+then
+  $CURLNOTINSTALLED
+  exit 4
+fi
+
 if [[ "$today" > "$lastChecked" ]] || [ "$1" == "--update" ]
 then
   # Compruebo que sistema está usando para hacer ping

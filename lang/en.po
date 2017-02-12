@@ -71,6 +71,7 @@ UPDATINGPLEASEWAITMESSAGE="Updating... Please, wait ..."
 AVAILABLEUPDATEMESSAGE="There is a new version available."
 WANTTODOWNLOADMESSAGE="Do you want to download it and have the latest improvements? y/n or s/n"
 HAVELASTVERSION="${OK}[OK]${NC} No updates available. You have the latest version $version"
+CURLNOTINSTALLED="${ERROR}[ERROR]${NC} You don't have Curl installed. It is necessary to search updates. Install curl first."
 ################
 # HELP MESSAGES
 #######################################
