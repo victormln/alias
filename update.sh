@@ -22,6 +22,7 @@
 #  Descripción: Comprueba si el script está a la ultima version
 
 today=$(date +%Y-%m-%d)
+
 if ! command -v curl >/dev/null 2>&1
 then
   echo -e "$CURLNOTINSTALLED"
