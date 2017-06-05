@@ -59,6 +59,7 @@ function add {
       echo "$ASKCREATEANOTHERALIAS $OPTIONSCONFIRM"
       read continuar
     fi
+    shift
 	done
 }
 
