@@ -17,6 +17,16 @@ function comprobarShell {
     fi
 }
 
+function importAlias {
+    numberAlias=$(cat "$CURRENTDIR/$1" | wc -l) > /dev/null
+    echo -e "$IMPORTALIAS $1"
+    echo -e "$ASKIMPORTALIAS"
+    read import
+    confirmYes $import
+    $(cat "$CURRENTDIR/$1" >> ${FILE_WITH_ALIAS})
+    echo -e "$IMPORTDONE"
+}
+
 function add {
   echo -e ${WARNNEWALIAS}
 	continuar="y"
@@ -466,6 +476,9 @@ function parseOption {
     elif [ $1 == "--update" ]
     then
       echo "$EXITSCRIPT"
+    elif [ $1 == "--import" ]
+    then
+      importAlias $2
     elif [ $1 == "--conf" ]
     then
       echo ""

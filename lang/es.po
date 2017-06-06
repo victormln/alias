@@ -19,6 +19,10 @@ REMEMBERFILEALIAS="Recuerde poner correctamente en el archivo user.conf el archi
 RESTOREHELPMESSAGE="Si cree que ha sido a causa de un problema del script, puede restaurar la copia de seguridad con --restore"
 FORCEUPDATE="Buscando actualizaciones disponibles..."
 CONFIGURATIONMSG="Abriendo archivo de configuración."
+######################
+# IMPORT
+##############
+IMPORTALIAS="Se van a importar alias a través del fichero"
 ###############
 # DONE MESSAGES
 #######################################
@@ -29,6 +33,7 @@ EMPTYLINESDELETED="${OK}[OK] ${NC}Se han eliminado todas las lineas en blanco"
 EMPTYALIASDELETED="${OK}[OK] ${NC}Se ha/n eliminado el/los alia/s vacio/s"
 COPIEDDONE="${OK}[OK]${NC} Ahora también podrás usar el alias"
 BACKUPDONE="${OK}[OK]${NC} Se ha restaurado correctamente la copia de seguridad."
+IMPORTDONE="${OK}[OK]${NC} Se han importado correctamente los alias."
 ###############
 # ASK MESSAGES
 #######################################
@@ -43,6 +48,7 @@ DELETEEMPTYLINES="Quieres eliminarlas todas?"
 EMPTYALIAS="Tienes alias vacio/s en ${FILE_WITH_ALIAS}"
 DELETEEMPTYALIAS="Quieres eliminarlo/s?"
 SELECTCOPYALIAS="Seleccione el número o nombre del alias que quiere copiar"
+ASKIMPORTALIAS="${NC}¿Seguro que quieres importarlos?."
 #################
 # ERROR MESSAGES
 #######################################

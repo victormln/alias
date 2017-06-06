@@ -19,6 +19,7 @@ REMEMBERFILEALIAS="Remember to put correctly where the file are that contains th
 RESTOREHELPMESSAGE="If you believe that is caused by the script, you can restore a backup with --restore"
 FORCEUPDATE="Looking for updates..."
 CONFIGURATIONMSG="Opening configuration file."
+IMPORTALIAS="Aliases will be imported through the file"
 ###############
 # DONE MESSAGES
 #######################################
@@ -29,6 +30,7 @@ EMPTYLINESDELETED="${OK}[OK] ${NC}All blank lines have been deletedo"
 EMPTYALIASDELETED="${OK}[OK] ${NC}Empty alias have been removed"
 COPIEDDONE="${OK}[OK]${NC} Now you can also use the alias"
 BACKUPDONE="${OK}[OK]${NC} Backup successfully restored."
+IMPORTDONE="${OK}[OK]${NC} Aliases have been imported successfully."
 ###############
 # ASK MESSAGES
 #######################################
@@ -43,6 +45,7 @@ DELETEEMPTYLINES="Do you want to delete all of them?"
 EMPTYALIAS="You have $numberEmptyAlias empty aliases in ${FILE_WITH_ALIAS}"
 DELETEEMPTYALIAS="Do you want to remove them?"
 SELECTCOPYALIAS="Select the number or name of the alias you want to copy"
+ASKIMPORTALIAS="${NC}Are you sure you want to import them?."
 #################
 # ERROR MESSAGES
 #######################################

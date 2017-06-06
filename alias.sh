@@ -16,7 +16,7 @@ CYAN='\033[0;36m'
 # Get the current version
 CURRENTVERSION=$(grep '# Versión:' $0 | cut -d: -f 2 | head -1)
 CURRENTVERSION=${CURRENTVERSION//[[:blank:]]/}
-
+CURRENTDIR=$(pwd)
 ##########################
 # Aquí empieza el script #
 ##########################
