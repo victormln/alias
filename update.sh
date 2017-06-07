@@ -77,29 +77,33 @@ else
     			then
     				# Si es así, hacemos un pull y le actualizamos el script
     				echo $AVAILABLEVERSIONMESSAGE
-            git stash > /dev/null
+                    git stash > /dev/null
     				git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
     				echo -e "$UPDATEDONEMESSAGE"
     			else
-    			  echo "$AVAILABLEUPDATEMESSAGE"
-    			  echo "$WANTTODOWNLOADMESSAGE"
-    			  # Preguntamos si quiere actualizar
-    			  read actualizar
-    			  if [ $actualizar == "s" ] || [ $actualizar == "y" ]
-    			  then
-              git stash > /dev/null
-    			    # Si es así, hacemos un pull y le actualizamos el script
-    			  	git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
-    					echo -e "$UPDATEDONEMESSAGE"
-              exit
-    			  else
-    			    # En el caso que seleccione que no, muestro un mensaje.
-    			    echo -e "$NOTUPDATEDMESSAGE"
-    					echo -e "**************************"
-    					# Damos por su puesto que tiene la ultima version,
-    					# para que el script no entre en bucle
-    					tieneUltimaVersion=true
-    			  fi
+    			    echo "$AVAILABLEUPDATEMESSAGE"
+    			    echo "$WANTTODOWNLOADMESSAGE"
+    			    # Preguntamos si quiere actualizar
+    			    read actualizar
+    			    if [ $actualizar == "s" ] || [ $actualizar == "y" ] || [ $actualizar == "S" ] || [ $actualizar == "Y" ]
+    			    then
+    			    echo "dentro"
+    			    exit
+                        git stash > /dev/null
+                        # Si es así, hacemos un pull y le actualizamos el script
+                        git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
+                        echo -e "$UPDATEDONEMESSAGE"
+                        exit
+                    else
+                    echo "fuera"
+                    exit
+                        # En el caso que seleccione que no, muestro un mensaje.
+                        echo -e "$NOTUPDATEDMESSAGE"
+                        echo -e "**************************"
+                        # Damos por su puesto que tiene la ultima version,
+                        # para que el script no entre en bucle
+                        tieneUltimaVersion=true
+                    fi
     			fi
     		fi
       fi
