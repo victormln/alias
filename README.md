@@ -43,6 +43,8 @@ Todos los argumentos disponibles:
 |`copy`     |`-cp`  | Copia uno o varios alias a través de otro ya creado   |`malias -cp alias_origen alias_nuevo alias_nuevo2`      |
 |`--conf`     |  | Abre/edita el archivo de configuración del script  |`malias --conf`      |.
 |`--empty`     |  | Elimina alias y líneas vacías   |`malias --empty`      |
+|`--import`     |  | Importa unos alias que se encuentren en un archivo especificado.  |`malias --import directory/fileName.txt`      |
+|`--install`     |  | Instala unos alias ya preparados.  |`malias --install deliverea`      |
 |`--restore`     |  | Restaura una copia de seguridad que se haya hecho antes de una acción.  |`malias --restore`      |
 |`--update`     |  | Fuerza el buscar una actualización.  |`malias --update`      |
 |     |`-v`  | Muestra la versión del script.  |`malias -v`      |
