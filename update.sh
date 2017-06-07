@@ -87,16 +87,12 @@ else
     			    read actualizar
     			    if [ $actualizar == "s" ] || [ $actualizar == "y" ] || [ $actualizar == "S" ] || [ $actualizar == "Y" ]
     			    then
-    			    echo "dentro"
-    			    exit
                         git stash > /dev/null
                         # Si es así, hacemos un pull y le actualizamos el script
                         git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
                         echo -e "$UPDATEDONEMESSAGE"
                         exit
                     else
-                    echo "fuera"
-                    exit
                         # En el caso que seleccione que no, muestro un mensaje.
                         echo -e "$NOTUPDATEDMESSAGE"
                         echo -e "**************************"
