@@ -27,6 +27,15 @@ function importAlias {
     echo -e "$IMPORTDONE"
 }
 
+function installAlias {
+    numberAlias=$(cat "$CURRENTDIR/alias/$1.txt" | wc -l) > /dev/null
+    currentAliasName=$(head -n 1 "$CURRENTDIR/alias/$1.txt")
+    onlyName="${currentAliasName##* }"
+    echo -e "$INSTALLALIAS $onlyName"
+    $(cat "$CURRENTDIR/alias/$1.txt" >> ${FILE_WITH_ALIAS})
+    echo -e "$INSTALLALIASDONE $onlyName"
+}
+
 function add {
   echo -e ${WARNNEWALIAS}
 	continuar="y"
@@ -403,6 +412,8 @@ function showHelp {
   echo -e "$CONFIGHELPUSAGE"
   echo -e "$RESTOREHELPMESSAGE"
   echo -e "$EMPTYHELPMESSAGE"
+  echo -e "$IMPORTUSAGE"
+  echo -e "$INSTALLUSAGE"
 }
 
 function parseOption {
@@ -479,6 +490,9 @@ function parseOption {
     elif [ $1 == "--import" ]
     then
       importAlias $2
+    elif [ $1 == "--install" ]
+    then
+      installAlias $2
     elif [ $1 == "--conf" ]
     then
       echo ""

@@ -20,6 +20,7 @@ RESTOREHELPMESSAGE="If you believe that is caused by the script, you can restore
 FORCEUPDATE="Looking for updates..."
 CONFIGURATIONMSG="Opening configuration file."
 IMPORTALIAS="Aliases will be imported through the file"
+INSTALLALIAS="Installing"
 ###############
 # DONE MESSAGES
 #######################################
@@ -31,6 +32,7 @@ EMPTYALIASDELETED="${OK}[OK] ${NC}Empty alias have been removed"
 COPIEDDONE="${OK}[OK]${NC} Now you can also use the alias"
 BACKUPDONE="${OK}[OK]${NC} Backup successfully restored."
 IMPORTDONE="${OK}[OK]${NC} Aliases have been imported successfully."
+INSTALLALIASDONE="${OK}[OK]${NC} Aliases have been correctly installed"
 ###############
 # ASK MESSAGES
 #######################################
@@ -69,7 +71,7 @@ YOUHAVEVERSIONMESSAGE="You have the version"
 AVAILABLEVERSIONMESSAGE="Available version"
 NOTHAVEINTERNETMESSAGE="${WARNING}[WARNING] ${NC}You don't have internet. Is needed to check for updates"
 NOTUPDATEDMESSAGE="${WARNING}WARNING!${NC} It will NOT be updated (although recommended)."
-UPDATEDONEMESSAGE="${OK}[OK] ${NC}The update is finish, please re-start the script.";
+UPDATEDONEMESSAGE="${OK}[OK] ${NC}The update is finish, please re-start the script."
 UPDATINGPLEASEWAITMESSAGE="Updating... Please, wait ..."
 AVAILABLEUPDATEMESSAGE="There is a new version available."
 WANTTODOWNLOADMESSAGE="Do you want to download it and have the latest improvements? y/n or s/n"
@@ -87,3 +89,5 @@ COPYHELPUSAGE="\n${CYAN}[-cp] [copy] [copy nombre_alias_creado] [copy nombre_ali
 RESTOREHELPUSAGE="\n${CYAN}[--restore]${NC}\n\tThe [--restore] parameter is used to restore a backup of the file containing the alias.\n\tThis backup runs automatically each time the script do an edit, delete or copy action (when the file with alias is modified)."
 EMPTYHELPMESSAGE="\n${CYAN}[--empty]${NC}\n\tThe [--empty] parameter is used to remove blank lines from the file containing the alias.\n\tThis also serves to remove the empty alias from the file."
 CONFIGHELPUSAGE="\n${CYAN}[--conf]${NC}\n\tThe [--conf] parameter is used to open/edit the script configuration file. \n\tYou can edit the editor with which the file is opened by opening the user.conf."
+IMPORTUSAGE="\n${CYAN}[--import directory/fileName.txt]${NC}\n\tThe [--import] parameter is used to import aliases from a file"
+INSTALLUSAGE="\n${CYAN}[--install name]${NC}\n\tThe [--install] parameter is used to import aliases from a file"
