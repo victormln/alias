@@ -2,7 +2,7 @@
 # Fichero: alias.sh
 # Autor: Víctor Molina Ferreira (www.victormln.es)
 # Fecha: 12/11/16
-# Versión: 2.1.0
+# Versión: 2.1.1
 
 # Mensajes de color
 ERROR='\033[0;31m'
@@ -17,6 +17,7 @@ CYAN='\033[0;36m'
 CURRENTVERSION=$(grep '# Versión:' $0 | cut -d: -f 2 | head -1)
 CURRENTVERSION=${CURRENTVERSION//[[:blank:]]/}
 CURRENTDIR=$(pwd)
+INSTALLALIASDIRECTORY=$( dirname "${BASH_SOURCE[0]}" )
 ##########################
 # Aquí empieza el script #
 ##########################

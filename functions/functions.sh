@@ -28,11 +28,11 @@ function importAlias {
 }
 
 function installAlias {
-    numberAlias=$(cat "$CURRENTDIR/alias/$1.txt" | wc -l) > /dev/null
-    currentAliasName=$(head -n 1 "$CURRENTDIR/alias/$1.txt")
+    numberAlias=$(cat "$INSTALLALIASDIRECTORY/alias/$1.txt" | wc -l) > /dev/null
+    currentAliasName=$(head -n 1 "$INSTALLALIASDIRECTORY/alias/$1.txt")
     onlyName="${currentAliasName##* }"
     echo -e "$INSTALLALIAS $onlyName"
-    $(cat "$CURRENTDIR/alias/$1.txt" >> ${FILE_WITH_ALIAS})
+    $(cat "$INSTALLALIASDIRECTORY/alias/$1.txt" >> ${FILE_WITH_ALIAS})
     echo -e "$INSTALLALIASDONE $onlyName"
 }
 
