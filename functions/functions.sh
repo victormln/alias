@@ -18,6 +18,11 @@ function comprobarShell {
 }
 
 function importAlias {
+    if ! [ -e "$CURRENTDIR/$1" ]
+    then
+        echo -e "$IMPORTFILENOTFOUND [$CURRENTDIR/$1]"
+        exit
+    fi
     numberAlias=$(cat "$CURRENTDIR/$1" | wc -l) > /dev/null
     echo -e "$IMPORTALIAS $1"
     echo -e "$ASKIMPORTALIAS"
@@ -28,7 +33,13 @@ function importAlias {
 }
 
 function installAlias {
-    numberAlias=$(cat "$INSTALLALIASDIRECTORY/alias/$1.txt" | wc -l) > /dev/null
+    if ! [ -e "$INSTALLALIASDIRECTORY/alias/$1.txt" ]
+    then
+        echo -e "$ALIASINSTALLNOTFOUND [$1]"
+        exit
+    fi
+    numberAlias=$(cat "$INSTALLALIASDIRECTORY/alias/$1.txt" | wc -l)
+    echo $?
     currentAliasName=$(head -n 1 "$INSTALLALIASDIRECTORY/alias/$1.txt")
     onlyName="${currentAliasName##* }"
     echo -e "$INSTALLALIAS $onlyName"

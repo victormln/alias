@@ -62,6 +62,8 @@ UNKNOWNPROBLEM="${ERROR}[ERROR]${NC}Ha ocurrido un problema. Vuelva a ejecutar e
 COPYERROR="${ERROR}[ERROR]${NC} Ha ocurrido un error y no se ha copiado correctamente."
 BACKUPNOTFOUND="${ERROR}[ERROR]${NC} Lo siento. No se ha encontrado ninguna copia de seguridad."
 ALIASFILENOTFOUND="No existe el archivo ${FILE_WITH_ALIAS}."
+IMPORTFILENOTFOUND="${ERROR}[ERROR]${NC} No se ha encontrado el archivo"
+ALIASINSTALLNOTFOUND="${ERROR}[ERROR]${NC} No existe el nombre"
 ################
 # OTHER MESSAGES
 #######################################

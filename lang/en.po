@@ -59,6 +59,8 @@ UNKNOWNPROBLEM="${ERROR}[ERROR]${NC}A problem has occurred. Re-start the script"
 COPYERROR="${ERROR}[ERROR]${NC} An error occurred and was not copied correctly."
 BACKUPNOTFOUND="${ERROR}[ERROR]${NC} I am sorry. No backup was found."
 ALIASFILENOTFOUND="File ${FILE_WITH_ALIAS} not exist."
+IMPORTFILENOTFOUND="${ERROR}[ERROR]${NC} File not found"
+ALIASINSTALLNOTFOUND="${ERROR}[ERROR]${NC} Alias name not exist."
 ################
 # OTHER MESSAGES
 #######################################
