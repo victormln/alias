@@ -2,7 +2,7 @@
 # Fichero: alias.sh
 # Autor: Víctor Molina Ferreira (www.victormln.es)
 # Fecha: 12/11/16
-# Versión: 2.1.2
+# Versión: 2.1.3
 
 # Mensajes de color
 ERROR='\033[0;31m'
