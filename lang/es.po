@@ -95,4 +95,4 @@ RESTOREHELPUSAGE="\n${CYAN}[--restore]${NC}\n\tEl parámetro [--restore] sirve p
 EMPTYHELPMESSAGE="\n${CYAN}[--empty]${NC}\n\tEl parámetro [--empty] sirve para eliminar las lineas en blanco del archivo que contenga los alias.\n\tTambién sirve para eliminar los alias vacios del archivo."
 CONFIGHELPUSAGE="\n${CYAN}[--conf]${NC}\n\tEl parámetro [--conf] sirve para abrir/editar el archivo de configuración del script.\n\tPuedes editar el editor con el que se abre el archivo abriendo el user.conf."
 IMPORTUSAGE="\n${CYAN}[--import directory/fileName.txt]${NC}\n\tEl parámetro [--import] sirve para importar un archivo que contiene alias."
-INSTALLUSAGE="\n${CYAN}[--install name]${NC}\n\tEl parámetro [--install] sirve para instalar alias de varios tipos."
+INSTALLUSAGE="\n${CYAN}[install name]${NC}\n\tEl parámetro [install] sirve para instalar alias de varios tipos."

@@ -39,7 +39,6 @@ function installAlias {
         exit
     fi
     numberAlias=$(cat "$INSTALLALIASDIRECTORY/alias/$1.txt" | wc -l)
-    echo $?
     currentAliasName=$(head -n 1 "$INSTALLALIASDIRECTORY/alias/$1.txt")
     onlyName="${currentAliasName##* }"
     echo -e "$INSTALLALIAS $onlyName"
@@ -501,7 +500,7 @@ function parseOption {
     elif [ $1 == "--import" ]
     then
       importAlias $2
-    elif [ $1 == "--install" ]
+    elif [ $1 == "--install" ] || [ $1 == "install" ]
     then
       installAlias $2
     elif [ $1 == "--conf" ]
