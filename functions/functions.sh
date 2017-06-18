@@ -57,6 +57,7 @@ function add {
     then
       echo -e "$INSERTNAMEOFALIAS:"
       read name
+      name=$(echo $name | sed 's/ //g')
     fi
     if cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
     then
@@ -66,13 +67,14 @@ function add {
       do
         echo -e "$CHOOSEANOTHERNAME"
         read name
+        name=$(echo $name | sed 's/ //g')
       done
       if [ $name == "q" ] || [ $name == "Q" ]
       then
         exit
       else
         echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
-        read alias_command
+        read -e alias_command
         #Añadimos al .bashrc el alias
         echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
         aliasAdded
@@ -81,7 +83,7 @@ function add {
       fi
     else
       echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
-      read alias_command
+      read -e alias_command
       #Añadimos al .bashrc el alias
       echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
       aliasAdded
@@ -159,6 +161,7 @@ function editSpecificAlias {
   echo -e "$ALIASSELECTED ${ORANGE}$1${NC}"
   echo "$INSERTNAMEOFALIAS:"
   read -e -i "$1" name
+  name=$(echo $name | sed 's/ //g')
   echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
   read -e -i "$commando" alias_command
   echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
