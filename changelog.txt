@@ -2,6 +2,13 @@
 # Changelog #
 #############
 
+* Version: 2.1.4 *
+#----------------#
+
+- Añadido importador de alias a través de un archivo local. Por ejemplo con "malias --import archivoAlias.txt" importará todos los alias que haya en el archivo "archivoAlias.txt".
+- Añadida opción "install" para instalar distintos alias ya creados. Por ejemplo con "malias install deliverea" instalará alias útiles de Deliverea.
+-Solucionados bugs y mejoras varias
+
 * Version: 2.0.4 *
 #----------------#
 
