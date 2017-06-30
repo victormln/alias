@@ -44,7 +44,7 @@ Todos los argumentos disponibles:
 |`--conf`     |  | Abre/edita el archivo de configuración del script  |`malias --conf`      |.
 |`--empty`     |  | Elimina alias y líneas vacías   |`malias --empty`      |
 |`--import`     |  | Importa unos alias que se encuentren en un archivo especificado.  |`malias --import directory/fileName.txt`      |
-|`--install`     |  | Instala unos alias ya preparados.  |`malias --install deliverea`      |
+|`install`     |  | Instala unos alias ya preparados.  |`malias install deliverea`      |
 |`--restore`     |  | Restaura una copia de seguridad que se haya hecho antes de una acción.  |`malias --restore`      |
 |`--update`     |  | Fuerza el buscar una actualización.  |`malias --update`      |
 |     |`-v`  | Muestra la versión del script.  |`malias -v`      |

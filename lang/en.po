@@ -39,11 +39,11 @@ INSTALLALIASDONE="${OK}[OK]${NC} Aliases have been correctly installed"
 WARNNEWALIAS="${WARNING}A new alias will be created${NC}"
 INSERTNAMEOFALIAS="Enter the alias name"
 INSERTCOMMAND="Enter the command you want to execute with the alias"
-ASKCREATEANOTHERALIAS="Do you want to create another alias?"
+ASKCREATEANOTHERALIAS="Do you want to create another alias? ${OPTIONSSELECT}"
 SELECTALIAS="Select the number or name of the alias you want to edit"
 NAMEALIASDELETE="Select the number or name of the alias you want to delete"
 CONFIRMDELETE="Are you sure you want to delete the alias"
-DELETEEMPTYLINES="Do you want to delete all of them?"
+DELETEEMPTYLINES="Do you want to delete all of them? ${OPTIONSSELECT}"
 EMPTYALIAS="You have $numberEmptyAlias empty aliases in ${FILE_WITH_ALIAS}"
 DELETEEMPTYALIAS="Do you want to remove them?"
 SELECTCOPYALIAS="Select the number or name of the alias you want to copy"
@@ -64,6 +64,7 @@ ALIASINSTALLNOTFOUND="${ERROR}[ERROR]${NC} Alias name not exist."
 ################
 # OTHER MESSAGES
 #######################################
+OPTIONSSELECT="[y/n]"
 OPTIONSCONFIRM="Type: [y / n] or [s / n] to continue"
 ###################
 # UPDATE MESSAGES

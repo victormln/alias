@@ -3,6 +3,10 @@ function aliasAdded {
   echo -e $ALIASCREATED
 }
 
+function printOptions {
+    echo "[y/n Y/N]"
+}
+
 function comprobarShell {
     ACTUALSHELL=$(echo $SHELL | grep zsh)
     errorLevel=$(echo $?)
@@ -78,7 +82,7 @@ function add {
         #Añadimos al .bashrc el alias
         echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
         aliasAdded
-        echo -e "$ASKCREATEANOTHERALIAS $OPTIONSCONFIRM"
+        echo -e "$ASKCREATEANOTHERALIAS"
         read continuar
       fi
     else
@@ -87,7 +91,7 @@ function add {
       #Añadimos al .bashrc el alias
       echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
       aliasAdded
-      echo "$ASKCREATEANOTHERALIAS $OPTIONSCONFIRM"
+      echo "$ASKCREATEANOTHERALIAS"
       read continuar
     fi
     shift
@@ -231,7 +235,7 @@ function deleteSpecificAlias {
   temp="${commando%\"}"
   # Elimino las comillas del prefijo
   comando="${temp#\"}"
-  echo -e "$CONFIRMDELETE ${ORANGE}$1${NC}?"
+  echo -e "$CONFIRMDELETE ${ORANGE}$1${NC}? ${OPTIONSSELECT}"
   read confirmation
   if ! confirmYes $confirmation
   then
