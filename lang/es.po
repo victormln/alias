@@ -80,7 +80,7 @@ NOTUPDATEDMESSAGE="${WARNING}¡AVISO!${NC} NO se actualizará (aunque se recomie
 UPDATEDONEMESSAGE="${OK}[OK] ${NC}La actualización ha acabado, por favor, vuelva a iniciar el script."
 UPDATINGPLEASEWAITMESSAGE="Actualizando... Por favor, espere ..."
 AVAILABLEUPDATEMESSAGE="Hay una nueva versión disponible."
-WANTTODOWNLOADMESSAGE="Quieres descargarla y así tener las últimas mejoras? [y/n] o [s/n]"
+WANTTODOWNLOADMESSAGE="Quieres descargarla y así tener las últimas mejoras? $OPTIONSSELECT"
 HAVELASTVERSION="${OK}[OK]${NC} No hay actualizaciones nuevas. Tienes la última versión $version"
 CURLNOTINSTALLED="${WARNING}[AVISO]${NC} No tienes curl instalado, por lo que no se pueden buscar actualizaciones."
 ################

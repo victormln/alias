@@ -77,7 +77,7 @@ NOTUPDATEDMESSAGE="${WARNING}WARNING!${NC} It will NOT be updated (although reco
 UPDATEDONEMESSAGE="${OK}[OK] ${NC}The update is finish, please re-start the script."
 UPDATINGPLEASEWAITMESSAGE="Updating... Please, wait ..."
 AVAILABLEUPDATEMESSAGE="There is a new version available."
-WANTTODOWNLOADMESSAGE="Do you want to download it and have the latest improvements? y/n or s/n"
+WANTTODOWNLOADMESSAGE="Do you want to download it and have the latest improvements? $OPTIONSSELECT"
 HAVELASTVERSION="${OK}[OK]${NC} No updates available. You have the latest version $version"
 CURLNOTINSTALLED="${WARNING}[WARNING]${NC} You don't have Curl installed. It is necessary to search updates. Install curl first."
 ################
