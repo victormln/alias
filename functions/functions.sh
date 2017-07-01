@@ -82,7 +82,7 @@ function add {
         #Añadimos al .bashrc el alias
         echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
         aliasAdded
-        echo -e "$ASKCREATEANOTHERALIAS"
+        echo -e "$ASKCREATEANOTHERALIAS $OPTIONSSELECT"
         read continuar
       fi
     else
@@ -91,7 +91,7 @@ function add {
       #Añadimos al .bashrc el alias
       echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
       aliasAdded
-      echo "$ASKCREATEANOTHERALIAS"
+      echo "$ASKCREATEANOTHERALIAS $OPTIONSSELECT"
       read continuar
     fi
     shift
