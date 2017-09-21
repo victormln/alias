@@ -19,13 +19,8 @@ CURRENTVERSION=${CURRENTVERSION//[[:blank:]]/}
 CURRENTDIR=$(pwd)
 INSTALLALIASDIRECTORY=$( dirname "${BASH_SOURCE[0]}" )
 ##########################
-# Aquí empieza el script #
+# Script code            #
 ##########################
-# Pendiente
-# Poder hacer edit pasandole 2 argumentos
-# Copiar el sed del edit para el delete
-# Sugerencia, buscar comando para eliminar todas las ocurrencias menos la primera
-# para eliminar todos los alias repetidos menos el primero
 
 # Primero cambiamos al directorio del script
 cd $( dirname "${BASH_SOURCE[0]}" )
@@ -73,7 +68,7 @@ then
 elif [ "$1" == "--conf" ]
 then
 	echo -e "$CONFIGURATIONMSG"
-  $default_editor user.conf
+    $default_editor user.conf
 fi
 
 # Comprobaré si hay alguna versión nueva del programa autopush

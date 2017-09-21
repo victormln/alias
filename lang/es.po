@@ -86,7 +86,7 @@ CURLNOTINSTALLED="${WARNING}[AVISO]${NC} No tienes curl instalado, por lo que no
 ################
 # HELP MESSAGES
 #######################################
-USAGEMESSAGE="usage: malias [add] [edit] [copy] [list] [delete] - Script que te permite crear, modificar, copiar, listar o eliminar alias de tu pc."
+USAGEMESSAGE="uso: malias [add] [edit] [copy] [list] [delete] - Script que te permite crear, modificar, copiar, listar o eliminar alias de tu pc."
 ADDHELPUSAGE="\n${CYAN}[-a] [add] [add nombre_alias]${NC}\n\tPodrás añadir un alias.\n\tEl nombre de alias que quieres añadir, puedes poner [add nombre] y el nombre del alias."
 EDITHELPUSAGE="\n${CYAN}[-e] [edit] [edit nombre_alias]${NC}\n\tPodrás modificar un alias que tengas ya creado.\n\tSi sabes el nombre del alias, puedes poner [edit nombre]\n\tSi no lo sabes, puedes poner [edit] a secas y te saldrá el listado de alias que tienes."
 LISTHELPUSAGE="\n${CYAN}[-l] [list] [view] [show] ${NC}\n\tPodrás listar/ver todos los alias que tienes."

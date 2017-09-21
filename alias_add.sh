@@ -23,7 +23,7 @@ while [[ $? == 0 ]]; do
 		zenity --warning --title="Información" --text="No se ha introducido ningún nombre/comando. No se ha creado ningún alias."
 		exit 1
 	fi
-	#Añadimos al .bashrc los comandos
+    #Añadimos al .bashrc los comandos
   echo alias $nombre=\"$comando\" >> ${FILE_WITH_ALIAS}
   continuar=$(zenity --question \
   --text="¿Quieres crear otro alias?")

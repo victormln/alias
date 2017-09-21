@@ -417,20 +417,20 @@ function restore {
 }
 
 function showHelp {
-	echo -e "$USAGEMESSAGE"
+    echo -e "$USAGEMESSAGE"
 
-  echo -e "$ADDHELPUSAGE"
-  echo -e "$EDITHELPUSAGE"
-  echo -e "$LISTHELPUSAGE"
+    echo -e "$ADDHELPUSAGE"
+    echo -e "$EDITHELPUSAGE"
+    echo -e "$LISTHELPUSAGE"
 
-  echo -e "$DELETEHELPUSAGE"
+    echo -e "$DELETEHELPUSAGE"
 
-  echo -e "$COPYHELPUSAGE"
-  echo -e "$CONFIGHELPUSAGE"
-  echo -e "$RESTOREHELPMESSAGE"
-  echo -e "$EMPTYHELPMESSAGE"
-  echo -e "$IMPORTUSAGE"
-  echo -e "$INSTALLUSAGE"
+    echo -e "$COPYHELPUSAGE"
+    echo -e "$CONFIGHELPUSAGE"
+    echo -e "$RESTOREHELPMESSAGE"
+    echo -e "$EMPTYHELPMESSAGE"
+    echo -e "$IMPORTUSAGE"
+    echo -e "$INSTALLUSAGE"
 }
 
 function parseOption {
