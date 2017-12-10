@@ -517,5 +517,6 @@ function parseOption {
       # Cualquier otro parámetro, mostramos la ayuda
       showHelp
   	fi
+    exec ${ABBREVIATION_SHELL}
   fi
 }
