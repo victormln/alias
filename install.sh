@@ -13,10 +13,8 @@ actualShell=$(echo $SHELL | grep zsh)
 if [ $? -eq 0 ]
 then
     actualShell="zshrc"
-    ABBREVIATION_SHELL="zsh"
 else
     actualShell="bashrc"
-    ABBREVIATION_SHELL="bash"
 fi
 chmod +x alias.sh
 echo "alias malias=\"$actualDir/alias.sh\"" >> ~/.$actualShell

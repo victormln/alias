@@ -78,13 +78,6 @@ source update.sh
 # Primero compruebo que el archivo tenga alias dentro
 if cat ${FILE_WITH_ALIAS} | grep "^alias " > /dev/null
 then
-  actualShell=$(echo $SHELL | grep zsh)
-  if [ $? -eq 0 ]
-  then
-      ABBREVIATION_SHELL="zsh"
-  else
-      ABBREVIATION_SHELL="bash"
-  fi
   # Iniciamos el script
   if ! [ -z $1 ]
   then
