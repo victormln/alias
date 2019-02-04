@@ -1,5 +1,5 @@
 #!/bin/bash
-# Hace una instalación del script
+# Hace una instalación del script malias
 
 # Mensajes de color
 ERROR='\033[0;31m'
@@ -18,6 +18,6 @@ else
 fi
 chmod +x alias.sh
 echo "alias malias=\"$actualDir/alias.sh\"" >> ~/.$actualShell
-echo -e "${OK}[OK]${NC} Instalación finalizada."
-echo -e "Ahora tiene que ejecutar: "${BLUE}source ~/.$actualShell${NC}" y después ya podrá usar malias.Para comprobar que se ha instalado correctamente use: ${BLUE}malias -v${NC}."
+echo -e "${OK}[OK]${NC} Installed successfully."
+echo -e "Now, you can execute: "${BLUE}source ~/.$actualShell${NC}" and then use \"malias\"". To check that everything is OK, use: ${BLUE}malias -v${NC}."
 exit

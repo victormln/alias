@@ -27,7 +27,7 @@ if ! command -v curl >/dev/null 2>&1
 then
   echo -e "$CURLNOTINSTALLED"
 else
-  if [[ "$today" > "$lastChecked" ]] || [ "$1" == "--update" ]
+  if [[ "$today" > "$last_checked" ]] || [ "$1" == "--update" ]
   then
     # Compruebo que sistema está usando para hacer ping
     # Si es Linux o Mac
@@ -46,9 +46,9 @@ else
     if [ $has_internet -eq 0 ]
     then
       # Si están activadas las actualizaciones automáticas
-      if $search_ota || [ "$1" == "--update" ]
+      if $SEARCH_OTA || [ "$1" == "--update" ]
       then
-        sed -i 's,^\(lastChecked=\).*,\1'$(date +%Y-%m-%d)',' $( dirname "${BASH_SOURCE[0]}" )/update.sh
+        sed -i 's,^\(last_checked=\).*,\1'$(date +%Y-%m-%d)',' $( dirname "${BASH_SOURCE[0]}" )/update.sh
     		tieneUltimaVersion=false
     		# Conseguimos la ultima version que hay en github y le quitamos los puntos
     		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Versión:' | cut -d: -f 2 | head -1) > /dev/null
@@ -73,7 +73,7 @@ else
     			echo "$AVAILABLEVERSIONMESSAGE: $ultimaVersion"
     			echo "###########################################"
     			# Si tiene las actualizaciones automaticas, no se le pide nada
-    			if $automatic_update
+    			if $AUTOMATIC_UPDATE
     			then
     				# Si es así, hacemos un pull y le actualizamos el script
     				echo $AVAILABLEVERSIONMESSAGE

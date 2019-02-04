@@ -1,8 +1,0 @@
-# Deliverea
-alias box="cd ~/Workspace/Code/Deliverea/box"
-alias boxup="cd ~/Workspace/Code/Deliverea/box;vagrant up"
-alias core="cd ~/Workspace/Code/Deliverea/code/deliverea-core"
-alias v1="cd ~/Workspace/Code/Deliverea/code/v1"
-alias connector="cd ~/Workspace/Code/Deliverea/code/connector"
-alias clients="cd ~/Workspace/Code/Deliverea/code/dlvrclients"
-alias web="cd ~/Workspace/Code/Deliverea/code/dlvrweb"

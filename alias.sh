@@ -57,7 +57,7 @@ then
 fi
 
 echo "Alias Manager v$CURRENTVERSION"
-if $show_author; then echo "$AUTHORMESSAGE: Víctor Molina [victormln.com] <contact@victormln.com> "; fi;
+if $SHOW_AUTHOR; then echo "$AUTHORMESSAGE: Víctor Molina <github.com/victormln> "; fi;
 
 # Doy permiso al update.sh
 chmod +x update.sh
@@ -68,7 +68,7 @@ then
 elif [ "$1" == "--conf" ]
 then
 	echo -e "$CONFIGURATIONMSG"
-    $default_editor user.conf
+    $DEFAULT_EDITOR user.conf
 fi
 
 # Comprobaré si hay alguna versión nueva del programa autopush

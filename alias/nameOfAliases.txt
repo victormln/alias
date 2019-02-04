@@ -1,0 +1,2 @@
+# NameOfAliases
+alias maliaswsp="cd ~/workspace/"
