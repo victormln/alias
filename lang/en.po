@@ -19,8 +19,11 @@ REMEMBERFILEALIAS="Remember to put correctly where the file are that contains th
 RESTOREHELPMESSAGE="If you believe that is caused by the script, you can restore a backup with --restore"
 FORCEUPDATE="Looking for updates..."
 CONFIGURATIONMSG="Opening configuration file."
-IMPORTALIAS="Aliases will be imported through the file"
 INSTALLALIAS="Installing"
+######################
+# IMPORT
+##############
+IMPORTALIAS="Aliases will be imported through the file"
 ###############
 # DONE MESSAGES
 #######################################
