@@ -1,5 +1,4 @@
 #!/bin/bash
-# Hace una instalación del script malias
 
 # Mensajes de color
 ERROR='\033[0;31m'

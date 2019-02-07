@@ -1,8 +1,8 @@
 #!/bin/bash
-# Fichero: alias.sh
-# Autor: Víctor Molina Ferreira (www.victormln.es)
-# Fecha: 12/11/16
-# Versión: 1.0
+# Filename: alias.sh
+# Author: Víctor Molina Ferreira (www.victormln.es)
+# Creating date: 12/11/16
+# Version: 1.0
 
 # Le preguntamos al usuario si quiere instalar el programa
 if ! zenity --question \

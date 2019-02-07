@@ -1,8 +1,8 @@
 #!/bin/bash
-# Fichero: alias.sh
-# Autor: Víctor Molina Ferreira (www.victormln.es)
-# Fecha: 12/11/16
-# Versión: 2.1.4
+# Filename: alias.sh
+# Author: Víctor Molina Ferreira (www.victormln.es)
+# Creating date: 12/11/16
+# Version: 2.1.4
 
 # Mensajes de color
 ERROR='\033[0;31m'
@@ -14,7 +14,7 @@ PURPLE='\033[0;35m'
 ORANGE='\033[0;33m'
 CYAN='\033[0;36m'
 # Get the current version
-CURRENTVERSION=$(grep '# Versión:' $0 | cut -d: -f 2 | head -1)
+CURRENTVERSION=$(grep '# Version:' $0 | cut -d: -f 2 | head -1)
 CURRENTVERSION=${CURRENTVERSION//[[:blank:]]/}
 CURRENTDIR=$(pwd)
 INSTALLALIASDIRECTORY=$( dirname "${BASH_SOURCE[0]}" )
@@ -36,7 +36,7 @@ comprobarShell
 # Cogemos las variables de idioma
 source lang/${LANGUAGE}.po
 
-# Comprobamos primero si ha ejecutado el restaurar la copia de seguridads
+# Comprobamos primero si ha ejecutado el restaurar la copia de seguridad
 if [ "$1" == "--restore" ]
 then
   parseOption $1

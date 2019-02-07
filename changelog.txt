@@ -2,6 +2,12 @@
 # Changelog #
 #############
 
+# Next update will have #
+- Full tested on mac
+- Solving minor bugs
+- When you add an alias, you can use it immediately
+- Fully translated to English
+
 * Version: 2.1.4 *
 #----------------#
 
