@@ -1,0 +1,2 @@
+# PutYourAliasesHere
+alias uselessalias="echo Hi! I am a useless alias"
