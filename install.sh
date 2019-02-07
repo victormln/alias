@@ -16,7 +16,7 @@ else
     actualShell="bashrc"
 fi
 chmod +x $actualDir/.alias/alias.sh
-echo "alias malias=\"$actualDir/alias.sh\"" >> ~/.$actualShell
+echo "alias malias=\"$actualDir/.alias/alias.sh\"" >> ~/.$actualShell
 echo -e "${OK}[OK]${NC} Installed successfully."
 echo -e "Now, you can execute: "${BLUE}source ~/.$actualShell${NC}" and then use malias. To check that everything is OK, use: ${BLUE}malias -v${NC}."
 exit
