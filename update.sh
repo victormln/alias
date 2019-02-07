@@ -1,8 +1,8 @@
 #!/bin/bash
-# Fitxer: update.sh
-# Autor: Víctor Molina Ferreira (victor)
-# Data: 26/12/2016
-# Versión: 1.0
+# Filename: update.sh
+# Author: Víctor Molina Ferreira (victor)
+# Creation date: 26/12/2016
+# Version: 1.0
 
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -19,15 +19,13 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 
-#  Descripción: Comprueba si el script está a la ultima version
-
 today=$(date +%Y-%m-%d)
 
 if ! command -v curl >/dev/null 2>&1
 then
   echo -e "$CURLNOTINSTALLED"
 else
-  if [[ "$today" > "$last_checked" ]] || [ "$1" == "--update" ]
+  if [[ "$today" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]
   then
     # Compruebo que sistema está usando para hacer ping
     # Si es Linux o Mac
@@ -48,7 +46,11 @@ else
       # Si están activadas las actualizaciones automáticas
       if $SEARCH_OTA || [ "$1" == "--update" ]
       then
-        sed -i 's,^\(last_checked=\).*,\1'$(date +%Y-%m-%d)',' $( dirname "${BASH_SOURCE[0]}" )/update.sh
+        CURRENT_DIRECTORY=$(pwd)
+        SCRIPT_DIRECTORY=$(cd `dirname $0` && pwd)
+        TODAY=$(date +%Y-%m-%d)
+        #sed 's'"@$TODAY"'@'"$LAST_UPDATE_CHECKED_IN"'@' -i $SCRIPT_DIRECTORY/user.conf
+        sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'$TODAY',' -i $SCRIPT_DIRECTORY/user.conf >/dev/null 2>&1
     		tieneUltimaVersion=false
     		# Conseguimos la ultima version que hay en github y le quitamos los puntos
     		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Versión:' | cut -d: -f 2 | head -1) > /dev/null
@@ -87,19 +89,19 @@ else
     			    read actualizar
     			    if [ $actualizar == "s" ] || [ $actualizar == "y" ] || [ $actualizar == "S" ] || [ $actualizar == "Y" ]
     			    then
-                        git stash > /dev/null
-                        # Si es así, hacemos un pull y le actualizamos el script
-                        git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
-                        echo -e "$UPDATEDONEMESSAGE"
-                        exit
-                    else
-                        # En el caso que seleccione que no, muestro un mensaje.
-                        echo -e "$NOTUPDATEDMESSAGE"
-                        echo -e "**************************"
-                        # Damos por su puesto que tiene la ultima version,
-                        # para que el script no entre en bucle
-                        tieneUltimaVersion=true
-                    fi
+                  git stash > /dev/null
+                  # Si es así, hacemos un pull y le actualizamos el script
+                  git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
+                  echo -e "$UPDATEDONEMESSAGE"
+                  exit
+              else
+                  # En el caso que seleccione que no, muestro un mensaje.
+                  echo -e "$NOTUPDATEDMESSAGE"
+                  echo -e "**************************"
+                  # Damos por su puesto que tiene la ultima version,
+                  # para que el script no entre en bucle
+                  tieneUltimaVersion=true
+              fi
     			fi
     		fi
       fi
