@@ -15,9 +15,9 @@ malias -l
 Es una instalación muy básica, solo te añade un alias para ejecutar el script
 
 ```shell
-git clone https://github.com/victormln/alias.git
-cd alias
-./install.sh
+git clone https://github.com/victormln/alias.git ~/.alias
+~/.alias/install.sh
+source ~/.bashrc   # or source ~/.zshrc
 ```
 
 ## Configuración
