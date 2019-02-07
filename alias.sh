@@ -2,7 +2,7 @@
 # Filename: alias.sh
 # Author: Víctor Molina Ferreira (www.victormln.es)
 # Creating date: 12/11/16
-# Version: 2.1.3
+# Version: 2.1.4
 
 # Mensajes de color
 ERROR='\033[0;31m'
