@@ -10,7 +10,7 @@ Ejemplo para listar/ver los alias.
 malias -l
 ```
 
-## Instalación
+## Installation
 
 Es una instalación muy básica, solo te añade un alias para ejecutar el script
 
@@ -23,7 +23,6 @@ source ~/.bashrc   # or source ~/.zshrc
 ```shell
 uninstall_malias
 ```
-
 
 ## Configuración
 

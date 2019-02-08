@@ -164,10 +164,42 @@ function editSpecificAlias {
   commando="${temp#\"}"
   echo -e "$ALIASSELECTED ${ORANGE}$1${NC}"
   echo "$INSERTNAMEOFALIAS:"
-  read -e -i "$1" name
+  if [[ $OSTYPE == "Darwin" ]]; then
+    read -p "(current: $1): " name
+    if [[ -z $name ]]
+    then
+      name=$1
+    fi
+  else
+    if [[ $OSTYPE == "Darwin" ]]; then
+      read -p "(current: $1): " name
+      if [[ -z $name ]]
+      then
+        name=$1
+      fi
+    else
+      read -e -i "$1" name
+    fi
+  fi
   name=$(echo $name | sed 's/ //g')
   echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
-  read -e -i "$commando" alias_command
+  if [[ $OSTYPE == "Darwin" ]]; then
+    read -p "(current: $commando): " alias_command
+    if [[ -z $alias_command ]]
+    then
+      alias_command=$commando
+    fi
+  else
+    if [[ $OSTYPE == "Darwin" ]]; then
+      read -p "(current: $commando): " alias_command
+      if [[ -z $alias_command ]]
+      then
+        alias_command=$commando
+      fi
+    else
+      read -e -i "$commando" alias_command
+    fi
+  fi
   echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
@@ -260,8 +292,8 @@ function deleteSpecificAlias {
   fi
 }
 
-function empty {
-  numberEmptyLines=$(grep -cvP '\S' ${FILE_WITH_ALIAS})
+function clear {
+  numberEmptyLines=$(grep -cvE '[^[:space:]]' ${FILE_WITH_ALIAS})
   numberEmptyAlias=$(grep '^alias .*=\"\"$' ${FILE_WITH_ALIAS} | wc -l)
   numberEmptyAliasWithoutQuotes=$(grep '^alias .*=$' ${FILE_WITH_ALIAS} | wc -l)
   numberEmptyAlias=$(($numberEmptyAlias + $numberEmptyAliasWithoutQuotes))
@@ -272,7 +304,11 @@ function empty {
     read delete
     if confirmYes $delete
     then
-      sed -i '/^\s*$/d' ${FILE_WITH_ALIAS}
+      sed="sed -i"
+      if [[ $OSTYPE == "Darwin" ]]; then
+        sed="sed -i ''"
+      fi
+      $sed '/^\s*$/d' ${FILE_WITH_ALIAS}
       echo -e "$EMPTYLINESDELETED"
     fi
   else
@@ -286,8 +322,12 @@ function empty {
     read delete
     if confirmYes $delete
     then
-      sed -i '/^alias .*=\"\"*$/d' ${FILE_WITH_ALIAS}
-      sed -i '/^alias .*=$/d' ${FILE_WITH_ALIAS}
+      sed="sed -i"
+      if [[ $OSTYPE == "Darwin" ]]; then
+        sed="sed -i ''"
+      fi
+      $sed '/^alias .*=\"\"*$/d' ${FILE_WITH_ALIAS}
+      $sed '/^alias .*=$/d' ${FILE_WITH_ALIAS}
       echo -e "$EMPTYALIASDELETED"
     fi
   else
@@ -495,9 +535,9 @@ function parseOption {
     elif [ $1 == "show" ] || [ $1 == "view" ] || [ $1 == "list" ] || [ $1 == "-l" ]
     then
       show
-    elif [ $1 == "--empty" ]
+    elif [ $1 == "--clear" ]
     then
-      empty
+      clear
     elif [ $1 == "--restore" ]
     then
       restore
