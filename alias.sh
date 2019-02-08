@@ -1,6 +1,6 @@
 #!/bin/bash
 # Filename: alias.sh
-# Author: Víctor Molina Ferreira (www.victormln.es)
+# Author: Víctor Molina Ferreira (github.com/victormln)
 # Creating date: 12/11/16
 # Version: 2.1.4
 
@@ -18,6 +18,13 @@ CURRENTVERSION=$(grep '# Version:' $0 | cut -d: -f 2 | head -1)
 CURRENTVERSION=${CURRENTVERSION//[[:blank:]]/}
 CURRENTDIR=$(pwd)
 INSTALLALIASDIRECTORY=$( dirname "${BASH_SOURCE[0]}" )
+OSTYPE="Linux"
+if [ "$(uname)" == "Darwin" ]; then
+  OSTYPE="Darwin"
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] ||
+  [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+    OSTYPE="Windows"
+fi
 ##########################
 # Script code            #
 ##########################

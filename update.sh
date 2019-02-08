@@ -1,6 +1,6 @@
 #!/bin/bash
 # Filename: update.sh
-# Author: Víctor Molina Ferreira (victor)
+# Author: Víctor Molina Ferreira (github.com/victormln)
 # Creation date: 26/12/2016
 # Version: 1.0
 
@@ -29,12 +29,11 @@ else
   then
     # Compruebo que sistema está usando para hacer ping
     # Si es Linux o Mac
-    if [ "$(uname -s)" == "Linux" ] || [ "$(uname)" == "Darwin" ]; then
+    if [ $OSTYPE == "Linux" ] || [ $OSTYPE == "Darwin" ]; then
         ping -c 1 8.8.8.8 &> /dev/null
         has_internet=$(echo $?)
         # Si es Windows
-    elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] ||
-      [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+    elif [ $OSTYPE == "Windows" ]; then
         ping -n 1 www.google.com > /dev/null
         has_internet=$(echo $?)
     fi
@@ -49,11 +48,14 @@ else
         CURRENT_DIRECTORY=$(pwd)
         SCRIPT_DIRECTORY=$(cd `dirname $0` && pwd)
         TODAY=$(date +%Y-%m-%d)
-        #sed 's'"@$TODAY"'@'"$LAST_UPDATE_CHECKED_IN"'@' -i $SCRIPT_DIRECTORY/user.conf
-        sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'$TODAY',' -i $SCRIPT_DIRECTORY/user.conf >/dev/null 2>&1
+        sed="sed -i"
+        if [ $OSTYPE == "Darwin" ]; then
+          sed="sed -i ''"
+        fi
+        $sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'$TODAY',' $SCRIPT_DIRECTORY/user.conf >/dev/null 2>&1
     		tieneUltimaVersion=false
     		# Conseguimos la ultima version que hay en github y le quitamos los puntos
-    		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Versión:' | cut -d: -f 2 | head -1) > /dev/null
+    		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Version:' | cut -d: -f 2 | head -1) > /dev/null
         ultimaVersion=${ultimaVersion//[[:blank:]]/}
         ultimaVersionSinPuntos=$( echo $ultimaVersion | tr -d ".")
     		# Miramos que versión tiene el usuario actualmente
@@ -80,7 +82,7 @@ else
     				# Si es así, hacemos un pull y le actualizamos el script
     				echo $AVAILABLEVERSIONMESSAGE
                     git stash > /dev/null
-    				git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
+    				git pull origin master | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
     				echo -e "$UPDATEDONEMESSAGE"
     			else
     			    echo "$AVAILABLEUPDATEMESSAGE"

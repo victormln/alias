@@ -1,6 +1,6 @@
 #!/bin/bash
 # Filename: alias.sh
-# Author: Víctor Molina Ferreira (www.victormln.es)
+# Author: Víctor Molina Ferreira (github.com/victormln)
 # Creating date: 12/11/16
 # Version: 1.0
 
