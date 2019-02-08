@@ -19,6 +19,11 @@ git clone https://github.com/victormln/alias.git ~/.alias
 ~/.alias/install.sh
 source ~/.bashrc   # or source ~/.zshrc
 ```
+*Note: To uninstall you can use in your console:*
+```shell
+uninstall_malias
+```
+
 
 ## Configuración
 

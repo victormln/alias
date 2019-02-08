@@ -17,6 +17,6 @@ fi
 for rc in bashrc zshrc; do
   if [ -f "$HOME/.$rc" ]; then
     $sed '/alias malias/d' "$HOME/.$rc" && $sed '/alias uninstall_malias/d' "$HOME/.$rc" &&
-      printf "Removed malias from %s\n" "$HOME/.$rc" && source "$HOME/.$rc"
+      printf "Removed malias from %s\n" "$HOME/.$rc"
   fi
 done
