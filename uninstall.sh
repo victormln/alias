@@ -8,7 +8,7 @@ fi
 
 for rc in bashrc zshrc; do
   if [ -f "$HOME/.$rc" ]; then
-    $sed '/malias/d' "$HOME/.$rc" &&
+    $sed '/alias malias/d' "$HOME/.$rc" > /dev/null 2>&1 &&
       printf "Removed malias from %s\n" "$HOME/.$rc"
   fi
 done
