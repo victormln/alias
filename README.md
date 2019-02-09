@@ -10,6 +10,14 @@ Example to show your current aliases.
 malias -l
 ```
 
+- [Installation](#installation)
+- [Uninstalling](#uninstalling)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Updating](#updating)
+- [Contributing](#contributing)
+
+
 ## Installation
 
 ```shell
@@ -24,17 +32,25 @@ The install script adds the following line to your .bashrc or .zshrc:
 alias malias="~/.alias/alias.sh"
 ```
 
-**Note:** To uninstall you can use in your console:
+## Uninstalling
+
+To uninstall you can use in your console:
 ```shell
 uninstall_malias
 ```
+**NOTE:** If you want to totally uninstall the script, delete the folder:
+~/.alias
+
+The uninstall script removes the following line from your `.bashrc` or
+`.zshrc`:
+
+`alias malias="~/.alias/alias.sh"`
 
 ## Configuration
 
-
 You can configure a lot of paramaters. For example, don't search for automatic updates, change the language or change the directory of the file that contains your aliases. To change all this parameters you can open the file user.conf.
 
-## Use
+## Usage
 
 For example, if you want to add an alias, you can execute:
 ```shell
@@ -58,3 +74,23 @@ All available arguments:
 |`--restore`     |  | Restore a backup file with all your aliases before executing any action.  |`malias --restore`      |
 |`--update`     |  | Search for available updates.  |`malias --update`      |
 |     |`-v`  | Shows the version of the script.  |`malias -v`      |
+
+
+## Updating
+
+You can update this script with the option --update:
+
+```shell
+malias --update
+```
+
+If this options does not work:
+```shell
+cd ~/.alias
+git pull origin master
+```
+
+
+## Contributing
+
+If you have some improvements to this script, feel free to make a pull request.
