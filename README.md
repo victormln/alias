@@ -6,9 +6,7 @@ ___
 Malias is a shell script that let's you to add, edit, delete and more to manage your aliases on linux/mac. It's compatible with bash and zshrc (or either use your own file).
 
 Example to show your current aliases.
-```shell
-malias -l
-```
+`malias -l`
 
 - [Installation](#installation)
 - [Uninstalling](#uninstalling)
