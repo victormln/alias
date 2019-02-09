@@ -54,7 +54,7 @@ All available arguments:
 |`--conf`     |  | Open the file with all the configurations. By default the file is opened with "vi", you can change it in the opened file.  |`malias --conf`      |.
 |`--clear`     |  | Remove from the file that contains the aliases, those that are empty and empty lines  |`malias --clear`      |
 |`--import`     |  | Import alises from specific file.  |`malias --import directory/fileName.txt`      |
-|`install`     |  | Install an aliases from the directory "alias".  |`malias install deliverea`      |
+|`install`     |  | Install an aliases from the directory "alias".  |`malias install name_of_file`      |
 |`--restore`     |  | Restore a backup file with all your aliases before executing any action.  |`malias --restore`      |
 |`--update`     |  | Search for available updates.  |`malias --update`      |
 |     |`-v`  | Shows the version of the script.  |`malias -v`      |
