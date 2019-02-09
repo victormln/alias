@@ -3,6 +3,8 @@ ___
 
 # Malias
 
+![](images/malias_list.gif)
+
 Malias is a shell script that let's you to add, edit, delete and more to manage your aliases on linux/mac. It's compatible with bash and zshrc (or either use your own file).
 
 Example to show your current aliases:
@@ -14,8 +16,6 @@ Example to show your current aliases:
 - [Usage](#usage)
 - [Updating](#updating)
 - [Contributing](#contributing)
-
-![](images/malias_list.gif)
 
 ## Installation
 
