@@ -28,16 +28,12 @@ source ~/.bashrc   # or source ~/.zshrc
 
 The install script adds the following line to your .bashrc or .zshrc:
 
-```shell
-alias malias="~/.alias/alias.sh"
-```
+`alias malias="~/.alias/alias.sh"`
 
 ## Uninstalling
 
 To uninstall you can use in your console:
-```shell
-uninstall_malias
-```
+`uninstall_malias`
 **NOTE:** If you want to totally uninstall the script, delete the folder:
 ~/.alias
 
@@ -53,9 +49,7 @@ You can configure a lot of paramaters. For example, don't search for automatic u
 ## Usage
 
 For example, if you want to add an alias, you can execute:
-```shell
-malias -a your_alias
-```
+`malias -a your_alias`
 
 All available arguments:
 
@@ -80,9 +74,7 @@ All available arguments:
 
 You can update this script with the option --update:
 
-```shell
-malias --update
-```
+`malias --update`
 
 If this options does not work:
 ```shell
