@@ -1,6 +1,7 @@
 function aliasAdded {
   #Mostramos mensaje conforme se han creado los alias y se ha salido del programa
   echo -e $ALIASCREATED
+  echo -e $EXECUTESOURCECOMMAND "source ${FILE_WITH_ALIAS}" ${NC}
 }
 
 function printOptions {
@@ -79,7 +80,7 @@ function add {
       else
         echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
         read -e alias_command
-        #Añadimos al .bashrc el alias
+        #Añadimos al .bashrc || .zshrc el alias
         echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
         aliasAdded
         echo -e "$ASKCREATEANOTHERALIAS $OPTIONSSELECT"
@@ -88,7 +89,7 @@ function add {
     else
       echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
       read -e alias_command
-      #Añadimos al .bashrc el alias
+      #Añadimos al .bashrc || .zshrc el alias
       echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
       aliasAdded
       echo "$ASKCREATEANOTHERALIAS $OPTIONSSELECT"

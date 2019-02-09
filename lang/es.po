@@ -27,6 +27,7 @@ IMPORTALIAS="Se van a importar alias a través del fichero"
 ###############
 # DONE MESSAGES
 #######################################
+EXECUTESOURCECOMMAND="${NC} Necesitas refrescar tu archivo que contiene los alias. Para hacerlo ejecuta: ${BLUE}"
 ALIASCREATED="${OK}[OK]${NC} Alias creado"
 MODIFIEDDONE="${OK}[OK]${NC} Se ha modificado el alias correctamente"
 DELETEDONE="${OK}[OK]${NC} Se ha eliminado el alias correctamente"

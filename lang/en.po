@@ -27,6 +27,7 @@ IMPORTALIAS="Aliases will be imported through the file"
 ###############
 # DONE MESSAGES
 #######################################
+EXECUTESOURCECOMMAND="${NC} You need to refresh your alias file. To do so execute: ${BLUE}"
 ALIASCREATED="${OK}[OK]${NC} Alias successfully created"
 MODIFIEDDONE="${OK}[OK]${NC} Alias successfully modified"
 DELETEDONE="${OK}[OK]${NC} Alias successfully deleted"
