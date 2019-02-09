@@ -89,10 +89,10 @@ then
   if ! [ -z $1 ]
   then
   	parseOption $@
-  	exit
   else
     parseOption
   fi
+  exit
 else
   echo -e "$FILENOTCONTAINALIAS"
   echo -e "$CANNOTUSEOPTIONS"

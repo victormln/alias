@@ -37,7 +37,16 @@ else
         ping -n 1 www.google.com > /dev/null
         has_internet=$(echo $?)
     fi
-
+    CURRENT_DIRECTORY=$(pwd)
+    SCRIPT_DIRECTORY=$(cd `dirname $0` && pwd)
+    TODAY=$(date +%Y-%m-%d)
+    sed="sed -i"
+      if [[ $OSTYPE == "Darwin" ]]; then
+        sed="sed -i ''"
+      fi
+    $sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'$TODAY',' $SCRIPT_DIRECTORY/user.conf
+    # In mac, creates a file with user.conf"
+    rm "$SCRIPT_DIRECTORY/user.conf''" > /dev/null
     # Si el ping se ha realizado correctamente es que tiene internet
     # por lo que se buscaran actualizaciones
     if [ $has_internet -eq 0 ]
@@ -45,11 +54,7 @@ else
       # Si están activadas las actualizaciones automáticas
       if $SEARCH_OTA || [ "$1" == "--update" ]
       then
-        CURRENT_DIRECTORY=$(pwd)
-        SCRIPT_DIRECTORY=$(cd `dirname $0` && pwd)
-        TODAY=$(date +%Y-%m-%d)
-        sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'$TODAY',' -i $SCRIPT_DIRECTORY/user.conf >/dev/null 2>&1
-    		tieneUltimaVersion=false
+        tieneUltimaVersion=false
     		# Conseguimos la ultima version que hay en github y le quitamos los puntos
     		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Version:' | cut -d: -f 2 | head -1) > /dev/null
         ultimaVersion=${ultimaVersion//[[:blank:]]/}
