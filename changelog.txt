@@ -5,8 +5,9 @@
 # Next update will have #
 - Full tested on mac
 - When you add an alias, you can use it immediately
+- On edit/delete two or more alias with same name with the option of select number, edit/delete only the selected one
 - Fully translated to English
-- Option to uninstall script
+- (/) Option to uninstall script
 - Solving minor bugs
 
 * Version: 2.1.4 *
