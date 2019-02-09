@@ -15,6 +15,7 @@ Example to show your current aliases:
 - [Updating](#updating)
 - [Contributing](#contributing)
 
+![](how_to.gif)
 
 ## Installation
 
