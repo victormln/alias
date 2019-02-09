@@ -19,13 +19,13 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 
-today=$(date +%Y-%m-%d)
+TODAY=$(date +%Y-%m-%d)
 
 if ! command -v curl >/dev/null 2>&1
 then
   echo -e "$CURLNOTINSTALLED"
 else
-  if [[ "$today" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]
+  if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]
   then
     # Compruebo que sistema está usando para hacer ping
     # Si es Linux o Mac
@@ -39,7 +39,6 @@ else
     fi
     CURRENT_DIRECTORY=$(pwd)
     SCRIPT_DIRECTORY=$(cd `dirname $0` && pwd)
-    TODAY=$(date +%Y-%m-%d)
     sed="sed -i"
       if [[ $OSTYPE == "Darwin" ]]; then
         sed="sed -i ''"

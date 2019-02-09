@@ -1,7 +1,14 @@
 function aliasAdded {
   #Mostramos mensaje conforme se han creado los alias y se ha salido del programa
   echo -e $ALIASCREATED
+}
+
+function showExecuteSourceMessage {
   echo -e $EXECUTESOURCECOMMAND "source ${FILE_WITH_ALIAS}" ${NC}
+}
+
+function executeSourceAlias {
+  source ${FILE_WITH_ALIAS}
 }
 
 function printOptions {
