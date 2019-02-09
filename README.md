@@ -18,7 +18,7 @@ git clone https://github.com/victormln/alias.git ~/.alias
 source ~/.bashrc   # or source ~/.zshrc
 ```
 
-The install script creates required default configs and adds the following line to your .bashrc or .zshrc:
+The install script adds the following line to your .bashrc or .zshrc:
 
 ```shell
 alias malias="~/.alias/alias.sh"
