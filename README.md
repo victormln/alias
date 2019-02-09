@@ -41,7 +41,7 @@ For example, if you want to add an alias, you can execute:
 malias -a your_alias
 ```
 
-All arguments available:
+All available arguments:
 
 |Argument           |Abbreviation|Meaning                                   |Use|
 | ------------- | ---- | ---------------------------------------- |----------|
