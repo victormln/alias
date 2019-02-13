@@ -65,6 +65,7 @@ BACKUPNOTFOUND="${ERROR}[ERROR]${NC} Lo siento. No se ha encontrado ninguna copi
 ALIASFILENOTFOUND="No existe el archivo ${FILE_WITH_ALIAS}."
 IMPORTFILENOTFOUND="${ERROR}[ERROR]${NC} No se ha encontrado el archivo"
 ALIASINSTALLNOTFOUND="${ERROR}[ERROR]${NC} No existe el nombre"
+CANNOTDELETEBECAUSEDUPLICATED="${ERROR}[ERROR]${NC} Tienes este nombre de alias duplicado. Por favor, edita el nombre de los duplicados y vuelve a probar."
 ################
 # OTHER MESSAGES
 #######################################

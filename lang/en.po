@@ -65,6 +65,7 @@ BACKUPNOTFOUND="${ERROR}[ERROR]${NC} I am sorry. No backup was found."
 ALIASFILENOTFOUND="File ${FILE_WITH_ALIAS} not exist."
 IMPORTFILENOTFOUND="${ERROR}[ERROR]${NC} File not found"
 ALIASINSTALLNOTFOUND="${ERROR}[ERROR]${NC} Alias name not exist."
+CANNOTDELETEBECAUSEDUPLICATED="${ERROR}[ERROR]${NC} You have this alias duplicated. Please, edit the name of the duplicated ones, and try again."
 ################
 # OTHER MESSAGES
 #######################################

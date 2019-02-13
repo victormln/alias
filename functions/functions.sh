@@ -165,6 +165,11 @@ function edit {
 
 # A esta funcion le paso un argumento, que será el nombre del alias a editar
 function editSpecificAlias {
+  if checkIfAliasNameIsDuplicated $1
+  then
+    echo -e $CANNOTDELETEBECAUSEDUPLICATED
+    exit
+  fi
   commando=$(cat .alias.tmp | grep -E "alias $1=$2" | cut -d"=" -f 2 | head -1)
   # Elimino las comillas del sufijo
   temp="${commando%\"}"
@@ -208,7 +213,6 @@ function editSpecificAlias {
       read -e -i "$commando" alias_command
     fi
   fi
-  echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
   # Miramos si tiene o no comillas el alias antiguo
@@ -230,6 +234,16 @@ function editSpecificAlias {
   else
     echo -e "$UNKNOWNPROBLEM"
   fi
+}
+
+function checkIfAliasNameIsDuplicated {
+  numberOfRepeteadAlias=$(grep -c "^alias $1=" ${FILE_WITH_ALIAS})
+  if [ $numberOfRepeteadAlias -gt 1 ]
+  then
+    return 0
+  fi
+
+  return 1
 }
 
 function delete {
@@ -271,6 +285,11 @@ function delete {
 
 function deleteSpecificAlias {
   comando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"=" -f 2 | head -1)
+  if checkIfAliasNameIsDuplicated $1
+  then
+    echo -e $CANNOTDELETEBECAUSEDUPLICATED
+    exit
+  fi
   # Elimino las comillas del sufijo
   temp="${commando%\"}"
   # Elimino las comillas del prefijo
@@ -464,6 +483,10 @@ function restore {
   fi
 }
 
+function openFileWithAlias {
+  $DEFAULT_EDITOR ${FILE_WITH_ALIAS}
+}
+
 function showHelp {
     echo -e "$USAGEMESSAGE"
 
@@ -561,6 +584,9 @@ function parseOption {
     elif [ $1 == "--conf" ]
     then
       echo ""
+    elif [ $1 == "--open" ] || [ $1 == "open" ]
+    then
+      openFileWithAlias
     else
       # Cualquier otro parámetro, mostramos la ayuda
       showHelp
