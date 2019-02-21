@@ -114,7 +114,7 @@ function show {
   while read linea
   do
     nombreScript=$(echo "$linea" | cut -d"=" -f 1)
-    comando=$(echo "$linea" | cut -d"=" -f 2)
+    comando=$(echo "$linea" | cut -d"=" -f 2-)
     # Elimino la palabra alias para que solo se vea lo que importa
     echo -e " ${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
     contador=$(($contador + 1))
