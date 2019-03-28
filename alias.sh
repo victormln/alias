@@ -38,7 +38,7 @@ source functions/functions.sh
 source user.conf
 
 # Comprobamos que shell tiene el usuario para modificar la variable FILE_WITH_ALIAS
-comprobarShell
+checkShell
 
 # Cogemos las variables de idioma
 source lang/${LANGUAGE}.po
@@ -63,7 +63,6 @@ then
   exit 1
 fi
 
-echo "Alias Manager v$CURRENTVERSION"
 if $SHOW_AUTHOR; then echo "$AUTHORMESSAGE: Víctor Molina <github.com/victormln> "; fi;
 
 # Doy permiso al update.sh

@@ -1,3 +1,8 @@
+################
+# GENERIC MESSAGES
+#######################################
+OPTIONSSELECT="${CYAN}[y/n]${NC}"
+OPTIONSCONFIRM="Type: [y / n] or [s / n] to continue"
 ###############
 # INFO MESSAGES
 #######################################
@@ -49,9 +54,9 @@ NAMEALIASDELETE="Select the number or name of the alias you want to delete"
 CONFIRMDELETE="Are you sure you want to delete the alias"
 DELETEEMPTYLINES="Do you want to delete all of them? $OPTIONSSELECT"
 EMPTYALIAS="You have $numberEmptyAlias empty aliases in ${FILE_WITH_ALIAS}"
-DELETEEMPTYALIAS="Do you want to remove them?"
+DELETEEMPTYALIAS="Do you want to remove them? $OPTIONSSELECT"
 SELECTCOPYALIAS="Select the number or name of the alias you want to copy"
-ASKIMPORTALIAS="${NC}Are you sure you want to import them?."
+ASKIMPORTALIAS="${NC}Are you sure you want to import them? $OPTIONSSELECT"
 #################
 # ERROR MESSAGES
 #######################################
@@ -66,11 +71,9 @@ ALIASFILENOTFOUND="File ${FILE_WITH_ALIAS} not exist."
 IMPORTFILENOTFOUND="${ERROR}[ERROR]${NC} File not found"
 ALIASINSTALLNOTFOUND="${ERROR}[ERROR]${NC} Alias name not exist."
 CANNOTDELETEBECAUSEDUPLICATED="${ERROR}[ERROR]${NC} You have this alias duplicated. Please, edit the name of the duplicated ones, and try again."
-################
-# OTHER MESSAGES
-#######################################
-OPTIONSSELECT="[y/n]"
-OPTIONSCONFIRM="Type: [y / n] or [s / n] to continue"
+EMPTYIMPORTFILEGIVEN="${ERROR}[ERROR] ${NC}You have to pass the path and the file you want to import. \nUsage: ${BLUE}--import path/file.txt ${NC}"
+EMPTYINSTALLFILEGIVEN="${ERROR}[ERROR] ${NC}You have to pass the path OR url of the file that you want to install the aliases. \nUsage: ${BLUE}install path/file.txt || https://example.org/aliases.txt ${NC}"
+URLISNOTRETURNINGAFILE="${ERROR}[ERROR] Something is wrong with the url. Check if the url is correct and returns a file or text/plain"
 ###################
 # UPDATE MESSAGES
 #######################################
@@ -92,7 +95,7 @@ USAGEMESSAGE="usage: malias [add] [edit] [copy] [list] [delete] - Script that al
 ADDHELPUSAGE="\n${CYAN}[-a] [add] [add nombre_alias]${NC}\n\tTo add an alias.\n\tYou can put [add name] where <name> is the name of the alias."
 EDITHELPUSAGE="\n${CYAN}[-e] [edit] [edit nombre_alias]${NC}\n\tYou can modify an alias you have already.\n\tIf you know the alias name, you can put [edit name] \n\tIf you don't know, you can put [edit] and you will get the list of alias you have."
 LISTHELPUSAGE="\n${CYAN}[-l] [list] [view] [show] ${NC}\n\tYou will be able to list/view all the alias you have."
-DELETEHELPUSAGE="\n${CYAN}[-d] [delete] [delete nombre_alias] [-d]${NC}\n\tYou can delete an alias."
+DELETEHELPUSAGE="\n${CYAN}[-d] [delete] [delete nombre_alias]${NC}\n\tYou can delete an alias."
 COPYHELPUSAGE="\n${CYAN}[-cp] [copy] [copy nombre_alias_creado] [copy nombre_alias_creado nombre_alias_a_crear]${NC}\n\tYou can copy an alias."
 RESTOREHELPUSAGE="\n${CYAN}[--restore]${NC}\n\tThe [--restore] parameter is used to restore a backup of the file containing the alias.\n\tThis backup runs automatically each time the script do an edit, delete or copy action (when the file with alias is modified)."
 EMPTYHELPMESSAGE="\n${CYAN}[--clear]${NC}\n\tThe [--clear] parameter is used to remove blank lines from the file containing the alias.\n\tThis also serves to remove the empty alias from the file."

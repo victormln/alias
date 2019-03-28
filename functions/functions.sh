@@ -15,7 +15,7 @@ function printOptions {
     echo "[y/n Y/N]"
 }
 
-function comprobarShell {
+function checkShell {
     ACTUALSHELL=$(echo $SHELL | grep zsh)
     errorLevel=$(echo $?)
     if [ -z "${FILE_WITH_ALIAS}" ]
@@ -30,6 +30,11 @@ function comprobarShell {
 }
 
 function importAlias {
+    if [ -z "$1" ]
+    then
+        echo -e "$EMPTYIMPORTFILEGIVEN"
+        exit
+    fi
     if ! [ -e "$CURRENTDIR/$1" ]
     then
         echo -e "$IMPORTFILENOTFOUND [$CURRENTDIR/$1]"
@@ -45,11 +50,43 @@ function importAlias {
 }
 
 function installAlias {
+    if [ -z "$1" ]
+    then
+        echo -e "$EMPTYINSTALLFILEGIVEN"
+        exit
+    fi
+    if [[ $1 =~ ^http?(s)://* ]]
+    then 
+        installAliasesFromUrl $1
+        exit
+    fi
+    exit
     if ! [ -e "$INSTALLALIASDIRECTORY/alias/$1.txt" ]
     then
         echo -e "$ALIASINSTALLNOTFOUND [$1]"
         exit
     fi
+    installAliasesFromFile $1
+}
+
+function installAliasesFromUrl {
+    urlWithAliases=$1
+    nameOfFileWithDownloadedAliases="install_aliases"
+    validateThatUrlIsATextPlain $urlWithAliases
+    if wget "$urlWithAliases" -O "$INSTALLALIASDIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt 2>/dev/null; then
+      installAliasesFromFile "$nameOfFileWithDownloadedAliases"
+      rm -f "$INSTALLALIASDIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt
+    fi
+}
+
+function validateThatUrlIsATextPlain {
+    if [[ ! `wget -S --spider $1  2>&1 | grep 'Content-Type: text/plain;'` ]]; 
+    then
+      echo -e "$URLISNOTRETURNINGAFILE";
+    fi
+}
+
+function installAliasesFromFile {
     numberAlias=$(cat "$INSTALLALIASDIRECTORY/alias/$1.txt" | wc -l)
     currentAliasName=$(head -n 1 "$INSTALLALIASDIRECTORY/alias/$1.txt")
     onlyName="${currentAliasName##* }"

@@ -1,3 +1,8 @@
+################
+# GENERIC MESSAGES
+#######################################
+OPTIONSSELECT="[y/n] o [s/n]"
+OPTIONSCONFIRM="Escribe: [y/n] o [s/n] para continuar"
 ###############
 # INFO MESSAGES
 #######################################
@@ -66,11 +71,9 @@ ALIASFILENOTFOUND="No existe el archivo ${FILE_WITH_ALIAS}."
 IMPORTFILENOTFOUND="${ERROR}[ERROR]${NC} No se ha encontrado el archivo"
 ALIASINSTALLNOTFOUND="${ERROR}[ERROR]${NC} No existe el nombre"
 CANNOTDELETEBECAUSEDUPLICATED="${ERROR}[ERROR]${NC} Tienes este nombre de alias duplicado. Por favor, edita el nombre de los duplicados y vuelve a probar."
-################
-# OTHER MESSAGES
-#######################################
-OPTIONSSELECT="[y/n] o [s/n]"
-OPTIONSCONFIRM="Escribe: [y/n] o [s/n] para continuar"
+EMPTYIMPORTFILEGIVEN="${ERROR}[ERROR] ${NC}Tienes que pasarle el path y el archivo como argumento. \nUso: ${BLUE}--import path/archivo.txt ${NC}"
+EMPTYINSTALLFILEGIVEN="${ERROR}[ERROR] ${NC}Tienes que pasarle el path o la url del archivo del cual quieres instalar los alias. \nUsage: ${BLUE}install path/archivo.txt || https://example.org/aliases.txt ${NC}"
+URLISNOTRETURNINGAFILE="${ERROR}[ERROR] Something is wrong with the url. Check if the url is correct and returns a file or text/plain"
 ###################
 # UPDATE MESSAGES
 #######################################
@@ -92,7 +95,7 @@ USAGEMESSAGE="uso: malias [add] [edit] [copy] [list] [delete] - Script que te pe
 ADDHELPUSAGE="\n${CYAN}[-a] [add] [add nombre_alias]${NC}\n\tPodrás añadir un alias.\n\tEl nombre de alias que quieres añadir, puedes poner [add nombre] y el nombre del alias."
 EDITHELPUSAGE="\n${CYAN}[-e] [edit] [edit nombre_alias]${NC}\n\tPodrás modificar un alias que tengas ya creado.\n\tSi sabes el nombre del alias, puedes poner [edit nombre]\n\tSi no lo sabes, puedes poner [edit] a secas y te saldrá el listado de alias que tienes."
 LISTHELPUSAGE="\n${CYAN}[-l] [list] [view] [show] ${NC}\n\tPodrás listar/ver todos los alias que tienes."
-DELETEHELPUSAGE="\n${CYAN}[-d] [delete] [delete nombre_alias] [-d]${NC}\n\tPodrás eliminar un alias."
+DELETEHELPUSAGE="\n${CYAN}[-d] [delete] [delete nombre_alias]${NC}\n\tPodrás eliminar un alias."
 COPYHELPUSAGE="\n${CYAN}[-cp] [copy] [copy nombre_alias_creado] [copy nombre_alias_creado nombre_alias_a_crear]${NC}\n\tPodrás copiar un alias."
 RESTOREHELPUSAGE="\n${CYAN}[--restore]${NC}\n\tEl parámetro [--restore] sirve para restaurar una copia de seguridad del archivo que contiene los alias.\n\tEsta copia de seguridad se ejecuta automáticamente cada vez que se hace una acción de editar, eliminar o copiar (es decir, cuando el archivo que contiene los alias, se modifica)."
 EMPTYHELPMESSAGE="\n${CYAN}[--clear]${NC}\n\tEl parámetro [--clear] sirve para eliminar las lineas en blanco del archivo que contenga los alias.\n\tTambién sirve para eliminar los alias vacios del archivo."
