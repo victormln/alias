@@ -1,7 +1,7 @@
 ################
 # GENERIC MESSAGES
 #######################################
-CONFIRM_OPTIONS="${CYAN}[y/n]${NC}"
+CONFIRM_OPTIONS="[y/n]"
 CONFIRM_OPTIONS_MESSAGE="Type: [y / n] or [s / n] to continue"
 ###############
 # INFO MESSAGES
