@@ -23,7 +23,7 @@ TODAY=$(date +%Y-%m-%d)
 
 if ! command -v curl >/dev/null 2>&1
 then
-  echo -e "$CURLNOTINSTALLED"
+  echo -e "$CURL_NOT_INSTALLED_MESSAGE"
 else
   if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]
   then
@@ -67,38 +67,38 @@ else
     			tieneUltimaVersion=true
           if [ "$1" == "--update" ]
           then
-            echo -e "$HAVELASTVERSION"
+            echo -e "$NO_UPDATES_AVAILABLE"
           fi
     		else
     			# Mostramos el mensaje de que hay una nueva actualización
     			echo "###########################################"
-    			echo -e "$NEWUPDATEMESSAGE${NC}"
-    			echo "$YOUHAVEVERSIONMESSAGE: $CURRENTVERSION"
-    			echo "$AVAILABLEVERSIONMESSAGE: $ultimaVersion"
+    			echo -e "$NEW_UPDATE_MESSAGE${NC}"
+    			echo "$YOU_HAVE_VERSION_MESSAGE: $CURRENTVERSION"
+    			echo "$AVAILABLE_VERSION_MESSAGE: $ultimaVersion"
     			echo "###########################################"
     			# Si tiene las actualizaciones automaticas, no se le pide nada
     			if $AUTOMATIC_UPDATE
     			then
     				# Si es así, hacemos un pull y le actualizamos el script
-    				echo $AVAILABLEVERSIONMESSAGE
+    				echo $AVAILABLE_VERSION_MESSAGE
                     git stash > /dev/null
-    				git pull origin master | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
-    				echo -e "$UPDATEDONEMESSAGE"
+    				git pull origin master | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
+    				echo -e "$UPDATE_DONE_MESSAGE"
     			else
-    			    echo "$AVAILABLEUPDATEMESSAGE"
-    			    echo "$WANTTODOWNLOADMESSAGE"
+    			    echo "$AVAILABLE_UPDATE_MESSAGE"
+    			    echo "$ASK_TO_DOWNLOAD_MESSAGE"
     			    # Preguntamos si quiere actualizar
     			    read actualizar
     			    if [ $actualizar == "s" ] || [ $actualizar == "y" ] || [ $actualizar == "S" ] || [ $actualizar == "Y" ]
     			    then
                   git stash > /dev/null
                   # Si es así, hacemos un pull y le actualizamos el script
-                  git pull | tee >(echo "$UPDATINGPLEASEWAITMESSAGE")
-                  echo -e "$UPDATEDONEMESSAGE"
+                  git pull | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
+                  echo -e "$UPDATE_DONE_MESSAGE"
                   exit
               else
                   # En el caso que seleccione que no, muestro un mensaje.
-                  echo -e "$NOTUPDATEDMESSAGE"
+                  echo -e "$NOT_UPDATED_MESSAGE"
                   echo -e "**************************"
                   # Damos por su puesto que tiene la ultima version,
                   # para que el script no entre en bucle
@@ -108,7 +108,7 @@ else
     		fi
       fi
     else
-    	echo -e "$NOTHAVEINTERNETMESSAGE"
+    	echo -e "$NO_INTERNET_CONNECTION_MESSAGE"
     fi
   fi
 fi

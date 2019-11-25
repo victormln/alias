@@ -1,0 +1,104 @@
+################
+# GENERIC MESSAGES
+#######################################
+CONFIRM_OPTIONS="${CYAN}[y/n]${NC}"
+CONFIRM_OPTIONS_MESSAGE="Type: [y / n] or [s / n] to continue"
+###############
+# INFO MESSAGES
+#######################################
+SHOW_ALIAS_CREATED="Alias created until now:"
+SCRIPT_OPTIONS="If you want to add, edit, delete or copy some alias, you can execute the script with the arguments [add] [edit] [delete] or [copy]."
+SELECTED_ALIAS="You selected the alias"
+EMPTY_LINES_MESSAGE="You have empty lines in the file ${FILE_WITH_ALIAS}"
+NO_EMPTY_LINES_FOUND="${OK}[OK] ${NC}There aren't empty lines in your file"
+NO_EMPTY_ALIAS_FOUND="${OK}[OK] ${NC}There aren't empty alias"
+SELECTED_OPTION="You selected"
+EXIT_SCRIPT="Leaving the script"
+EXIT_SCRIPT_WITH_OPTIONS="You leave the script because you didn't put one of this options [y] [s] [n]"
+ROUTE_BACKUP_MESSAGE="You can modify the route where the backup is saved it, in the file user.conf that is in this script."
+ROUTE_ALIAS_FILE_MESSAGE="You can modify this route in user.conf that is in this script."
+AUTHOR="Author"
+FILE_DOES_NOT_CONTAIN_ALIAS="\n${WARNING}[WARNING] ${NC}The file ${FILE_WITH_ALIAS} doesn't contain alias."
+CANNOT_USE_OPTIONS="You can't use the params [edit], [delete] or [copy], just can use [add]."
+REMEMBER_FILE_ALIAS="Remember to put correctly where the file are that contains the alias in user.conf."
+RESTORE_HELP_MESSAGE="If you believe that is caused by the script, you can restore a backup with --restore"
+FORCE_UPDATE_MESSAGE="Looking for updates..."
+OPENING_CONFIGURATION_MESSAGE="Opening configuration file."
+INSTALL_ALIAS="Installing"
+######################
+# IMPORT
+##############
+IMPORT_ALIAS="Aliases will be imported through the file"
+###############
+# DONE MESSAGES
+#######################################
+EXECUTE_SOURCE_COMMAND="${NC} You need to refresh your alias file. To do so execute: ${BLUE}"
+ALIAS_CREATED_MESSAGE="${OK}[OK]${NC} Alias successfully created"
+ALIAS_MODIFIED_SUCCESFULLY="${OK}[OK]${NC} Alias successfully modified"
+ALIAS_DELETED_SUCCESSFULLY="${OK}[OK]${NC} Alias successfully deleted"
+EMPTY_LINES_DELETED_SUCCESSFULLY="${OK}[OK] ${NC}All blank lines have been deletedo"
+EMPTY_ALIAS_DELETED_SUCCESSFULLY="${OK}[OK] ${NC}Empty alias have been removed"
+ALIAS_COPIED_SUCCESSFULLY="${OK}[OK]${NC} Now you can also use the alias"
+BACKUP_DONE="${OK}[OK]${NC} Backup successfully restored."
+IMPORT_DONE="${OK}[OK]${NC} Aliases have been imported successfully."
+INSTALL_ALIAS_DONE="${OK}[OK]${NC} Aliases have been correctly installed"
+###############
+# ASK MESSAGES
+#######################################
+NEW_ALIAS_WILL_BE_CREATED="${WARNING}A new alias will be created${NC}"
+INSERT_NAME_OF_ALIAS_MESSAGE="Enter the alias name"
+INSERT_COMMAND_MESSAGE="Enter the command you want to execute with the alias"
+ASK_CREATE_ANOTHER_ALIAS="Do you want to create another alias?"
+SELECT_ALIAS_TO_EDIT="Select the number or name of the alias you want to edit"
+NUMBER_OF_THE_ALIAS_TO_BE_DELETED="Select the number or name of the alias you want to delete"
+CONFIRM_ALIAS_DELETE="Are you sure you want to delete the alias"
+DELETE_EMPTY_LINES_MESSAGE="Do you want to delete all of them? $CONFIRM_OPTIONS"
+EMPTY_ALIAS="You have $numberEmptyAlias empty aliases in ${FILE_WITH_ALIAS}"
+DELETE_EMPTY_ALIAS="Do you want to remove them? $CONFIRM_OPTIONS"
+SELECT_NUMBER_OF_ALIAS_TO_BE_COPIED="Select the number or name of the alias you want to copy"
+CONFIRM_ALIAS_IMPORT="${NC}Are you sure you want to import them? $CONFIRM_OPTIONS"
+#################
+# ERROR MESSAGES
+#######################################
+ALIAS_EXISTS="${ERROR}[ERROR] ${NC}That alias already exists and there can not be 2 equal"
+CHOOSE_ANOTHER_NAME="Enter a name that not exists (q to exit)"
+ALIAS_EXISTS_MESSAGE="\n${ERROR}[ERROR] ${NC}That alias already exists and there can not be 2 equal alias.\nPlease think another name for your alias. Remember: you can edit an alias or delete it with [-e] or [-d]"
+ALIAS_DOES_NOT_EXISTS="${ERROR}[ERROR]${NC} Alias doesn't exists"
+UNKNOWN_PROBLEM="${ERROR}[ERROR]${NC}A problem has occurred. Re-start the script"
+COPY_ERROR="${ERROR}[ERROR]${NC} An error occurred and was not copied correctly."
+BACKUP_NOT_FOUND="${ERROR}[ERROR]${NC} I am sorry. No backup was found."
+ALIAS_FILE_NOT_FOUND="File ${FILE_WITH_ALIAS} not exist."
+IMPORT_FILE_NOT_FOUND="${ERROR}[ERROR]${NC} File not found"
+ALIAS_NAME_NOT_EXISTS="${ERROR}[ERROR]${NC} Alias name not exist."
+ALIAS_DUPLICATED_MESSAGE="${ERROR}[ERROR]${NC} You have this alias duplicated. Please, edit the name of the duplicated ones, and try again."
+EMPTY_IMPORT_FILE_GIVEN="${ERROR}[ERROR] ${NC}You have to pass the path and the file you want to import. \nUsage: ${BLUE}--import path/file.txt ${NC}"
+EMPTY_INSTALL_FILE_GIVEN="${ERROR}[ERROR] ${NC}You have to pass the path OR url of the file that you want to install the aliases. \nUsage: ${BLUE}install path/file.txt || https://example.org/aliases.txt ${NC}"
+URL_IS_NOT_RETURNING_A_FILE="${ERROR}[ERROR] Something is wrong with the url. Check if the url is correct and returns a file or text/plain"
+###################
+# UPDATE MESSAGES
+#######################################
+NEW_UPDATE_MESSAGE="${WARNING}¡NEW UPDATE!"
+YOU_HAVE_VERSION_MESSAGE="You have the version"
+AVAILABLE_VERSION_MESSAGE="Available version"
+NO_INTERNET_CONNECTION_MESSAGE="${WARNING}[WARNING] ${NC}You don't have internet. Is needed to check for updates"
+NOT_UPDATED_MESSAGE="${WARNING}WARNING!${NC} It will NOT be updated (although recommended)."
+UPDATE_DONE_MESSAGE="${OK}[OK] ${NC}The update is finish, please re-start the script."
+UPDATING_PLEASE_WAIT_MESSAGE="Updating... Please, wait ..."
+AVAILABLE_UPDATE_MESSAGE="There is a new version available."
+ASK_TO_DOWNLOAD_MESSAGE="Do you want to download it and have the latest improvements? $CONFIRM_OPTIONS"
+NO_UPDATES_AVAILABLE="${OK}[OK]${NC} No updates available. You have the latest version $version"
+CURL_NOT_INSTALLED_MESSAGE="${WARNING}[WARNING]${NC} You don't have Curl installed. It is necessary to search updates. Install curl first."
+################
+# HELP MESSAGES
+#######################################
+USAGE_MESSAGE="usage: malias [add] [edit] [copy] [list] [delete] - Script that allows you to create, modify, copy, list or delete alias of your pc."
+ADD_OPTION_HELP_MESSAGE="\n${CYAN}[-a] [add] [add nombre_alias]${NC}\n\tTo add an alias.\n\tYou can put [add name] where <name> is the name of the alias."
+EDIT_OPTION_HELP_USAGE="\n${CYAN}[-e] [edit] [edit nombre_alias]${NC}\n\tYou can modify an alias you have already.\n\tIf you know the alias name, you can put [edit name] \n\tIf you don't know, you can put [edit] and you will get the list of alias you have."
+LIST_OPTION_HELP_USAGE="\n${CYAN}[-l] [list] [view] [show] ${NC}\n\tYou will be able to list/view all the alias you have."
+DELETE_OPTION_HELP_USAGE="\n${CYAN}[-d] [delete] [delete nombre_alias]${NC}\n\tYou can delete an alias."
+COPY_OPTION_HELP_USAGE="\n${CYAN}[-cp] [copy] [copy nombre_alias_creado] [copy nombre_alias_creado nombre_alias_a_crear]${NC}\n\tYou can copy an alias."
+RESTORE_OPTION_HELP_USAGE="\n${CYAN}[--restore]${NC}\n\tThe [--restore] parameter is used to restore a backup of the file containing the alias.\n\tThis backup runs automatically each time the script do an edit, delete or copy action (when the file with alias is modified)."
+EMPTY_OPTION_HELP_MESSAGE="\n${CYAN}[--clear]${NC}\n\tThe [--clear] parameter is used to remove blank lines from the file containing the alias.\n\tThis also serves to remove the empty alias from the file."
+CONFIG_OPTION_HELP_USAGE="\n${CYAN}[--conf]${NC}\n\tThe [--conf] parameter is used to open/edit the script configuration file. \n\tYou can edit the editor with which the file is opened by opening the user.conf."
+IMPORT_OPTION_USAGE="\n${CYAN}[--import directory/fileName.txt]${NC}\n\tThe [--import] parameter is used to import aliases from a file"
+INSTALL_OPTION_USAGE="\n${CYAN}[install name]${NC}\n\tThe [install] parameter is used to import aliases from a file"

@@ -17,7 +17,7 @@ CYAN='\033[0;36m'
 CURRENTVERSION=$(grep '# Version:' $0 | cut -d: -f 2 | head -1)
 CURRENTVERSION=${CURRENTVERSION//[[:blank:]]/}
 CURRENTDIR=$(pwd)
-INSTALLALIASDIRECTORY=$( dirname "${BASH_SOURCE[0]}" )
+INSTALL_ALIASDIRECTORY=$( dirname "${BASH_SOURCE[0]}" )
 OSTYPE="Linux"
 if [ "$(uname)" == "Darwin" ]; then
   OSTYPE="Darwin"
@@ -41,7 +41,7 @@ source user.conf
 checkShell
 
 # Cogemos las variables de idioma
-source lang/${LANGUAGE}.po
+source lang/${LANGUAGE}.lang
 
 # Comprobamos primero si ha ejecutado el restaurar la copia de seguridad
 if [ "$1" == "--restore" ]
@@ -58,22 +58,22 @@ fi
 
 if ! [ -e ${FILE_WITH_ALIAS} ]
 then
-  echo "$ALIASFILENOTFOUND"
-  echo "$ROUTEALIASFILEMESSAGE"
+  echo "$ALIAS_FILE_NOT_FOUND"
+  echo "$ROUTE_ALIAS_FILE_MESSAGE"
   exit 1
 fi
 
-if $SHOW_AUTHOR; then echo "$AUTHORMESSAGE: Víctor Molina <github.com/victormln> "; fi;
+if $SHOW_AUTHOR; then echo "$AUTHOR: Víctor Molina <github.com/victormln> "; fi;
 
 # Doy permiso al update.sh
 chmod +x update.sh
 
 if [ "$1" == "--update" ]
 then
-	echo -e "$FORCEUPDATE"
+	echo -e "$FORCE_UPDATE_MESSAGE"
 elif [ "$1" == "--conf" ]
 then
-	echo -e "$CONFIGURATIONMSG"
+	echo -e "$OPENING_CONFIGURATION_MESSAGE"
     $DEFAULT_EDITOR user.conf
 fi
 
@@ -93,9 +93,9 @@ then
   fi
   exit
 else
-  echo -e "$FILENOTCONTAINALIAS"
-  echo -e "$CANNOTUSEOPTIONS"
-  echo "$REMEMBERFILEALIAS"
-  echo "$RESTOREHELPMESSAGE"
+  echo -e "$FILE_DOES_NOT_CONTAIN_ALIAS"
+  echo -e "$CANNOT_USE_OPTIONS"
+  echo "$REMEMBER_FILE_ALIAS"
+  echo "$RESTORE_HELP_MESSAGE"
   parseOption
 fi

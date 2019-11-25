@@ -1,10 +1,10 @@
 function aliasAdded {
   #Mostramos mensaje conforme se han creado los alias y se ha salido del programa
-  echo -e $ALIASCREATED
+  echo -e $ALIAS_CREATED_MESSAGE
 }
 
 function showExecuteSourceMessage {
-  echo -e $EXECUTESOURCECOMMAND "source ${FILE_WITH_ALIAS}" ${NC}
+  echo -e $EXECUTE_SOURCE_COMMAND "source ${FILE_WITH_ALIAS}" ${NC}
 }
 
 function executeSourceAlias {
@@ -16,7 +16,7 @@ function printOptions {
 }
 
 function checkShell {
-    ACTUALSHELL=$(echo $SHELL | grep zsh)
+    ACTUAL_SHELL=$(echo $SHELL | grep zsh)
     errorLevel=$(echo $?)
     if [ -z "${FILE_WITH_ALIAS}" ]
     then
@@ -32,27 +32,27 @@ function checkShell {
 function importAlias {
     if [ -z "$1" ]
     then
-        echo -e "$EMPTYIMPORTFILEGIVEN"
+        echo -e "$EMPTY_IMPORT_FILE_GIVEN"
         exit
     fi
     if ! [ -e "$CURRENTDIR/$1" ]
     then
-        echo -e "$IMPORTFILENOTFOUND [$CURRENTDIR/$1]"
+        echo -e "$IMPORT_FILE_NOT_FOUND [$CURRENTDIR/$1]"
         exit
     fi
     numberAlias=$(cat "$CURRENTDIR/$1" | wc -l) > /dev/null
-    echo -e "$IMPORTALIAS $1"
-    echo -e "$ASKIMPORTALIAS"
+    echo -e "$IMPORT_ALIAS $1"
+    echo -e "$CONFIRM_ALIAS_IMPORT"
     read import
     confirmYes $import
     $(cat "$CURRENTDIR/$1" >> ${FILE_WITH_ALIAS})
-    echo -e "$IMPORTDONE"
+    echo -e "$IMPORT_DONE"
 }
 
 function installAlias {
     if [ -z "$1" ]
     then
-        echo -e "$EMPTYINSTALLFILEGIVEN"
+        echo -e "$EMPTY_INSTALL_FILE_GIVEN"
         exit
     fi
     if [[ $1 =~ ^http?(s)://* ]]
@@ -61,9 +61,9 @@ function installAlias {
         exit
     fi
     exit
-    if ! [ -e "$INSTALLALIASDIRECTORY/alias/$1.txt" ]
+    if ! [ -e "$INSTALL_ALIASDIRECTORY/alias/$1.txt" ]
     then
-        echo -e "$ALIASINSTALLNOTFOUND [$1]"
+        echo -e "$ALIAS_NAME_NOT_EXISTS [$1]"
         exit
     fi
     installAliasesFromFile $1
@@ -73,30 +73,30 @@ function installAliasesFromUrl {
     urlWithAliases=$1
     nameOfFileWithDownloadedAliases="install_aliases"
     validateThatUrlIsATextPlain $urlWithAliases
-    if wget "$urlWithAliases" -O "$INSTALLALIASDIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt 2>/dev/null; then
+    if wget "$urlWithAliases" -O "$INSTALL_ALIASDIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt 2>/dev/null; then
       installAliasesFromFile "$nameOfFileWithDownloadedAliases"
-      rm -f "$INSTALLALIASDIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt
+      rm -f "$INSTALL_ALIASDIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt
     fi
 }
 
 function validateThatUrlIsATextPlain {
     if [[ ! `wget -S --spider $1  2>&1 | grep 'Content-Type: text/plain;'` ]]; 
     then
-      echo -e "$URLISNOTRETURNINGAFILE";
+      echo -e "$URL_IS_NOT_RETURNING_A_FILE";
     fi
 }
 
 function installAliasesFromFile {
-    numberAlias=$(cat "$INSTALLALIASDIRECTORY/alias/$1.txt" | wc -l)
-    currentAliasName=$(head -n 1 "$INSTALLALIASDIRECTORY/alias/$1.txt")
+    numberAlias=$(cat "$INSTALL_ALIASDIRECTORY/alias/$1.txt" | wc -l)
+    currentAliasName=$(head -n 1 "$INSTALL_ALIASDIRECTORY/alias/$1.txt")
     onlyName="${currentAliasName##* }"
-    echo -e "$INSTALLALIAS $onlyName"
-    $(cat "$INSTALLALIASDIRECTORY/alias/$1.txt" >> ${FILE_WITH_ALIAS})
-    echo -e "$INSTALLALIASDONE $onlyName"
+    echo -e "$INSTALL_ALIAS $onlyName"
+    $(cat "$INSTALL_ALIASDIRECTORY/alias/$1.txt" >> ${FILE_WITH_ALIAS})
+    echo -e "$INSTALL_ALIAS_DONE $onlyName"
 }
 
 function add {
-  echo -e ${WARNNEWALIAS}
+  echo -e ${NEW_ALIAS_WILL_BE_CREATED}
 	continuar="y"
 	# Preguntamos hasta que el usuario quiera, si quiere crear alias
 	while confirmYes $continuar
@@ -104,17 +104,17 @@ function add {
     name=$1
     if [ -z $1 ]
     then
-      echo -e "$INSERTNAMEOFALIAS:"
+      echo -e "$INSERT_NAME_OF_ALIAS_MESSAGE:"
       read name
       name=$(echo $name | sed 's/ //g')
     fi
     if cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
     then
-      echo -e "$ERRORALIASEXISTS"
+      echo -e "$ALIAS_EXISTS_MESSAGE"
       nombreErroneo=1
       while cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
       do
-        echo -e "$CHOOSEANOTHERNAME"
+        echo -e "$CHOOSE_ANOTHER_NAME"
         read name
         name=$(echo $name | sed 's/ //g')
       done
@@ -122,21 +122,21 @@ function add {
       then
         exit
       else
-        echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
+        echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
         read -e alias_command
         #Añadimos al .bashrc || .zshrc el alias
         echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
         aliasAdded
-        echo -e "$ASKCREATEANOTHERALIAS $OPTIONSSELECT"
+        echo -e "$ASK_CREATE_ANOTHER_ALIAS $CONFIRM_OPTIONS"
         read continuar
       fi
     else
-      echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
+      echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
       read -e alias_command
       #Añadimos al .bashrc || .zshrc el alias
       echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
       aliasAdded
-      echo "$ASKCREATEANOTHERALIAS $OPTIONSSELECT"
+      echo "$ASK_CREATE_ANOTHER_ALIAS $CONFIRM_OPTIONS"
       read continuar
     fi
     shift
@@ -144,7 +144,7 @@ function add {
 }
 
 function show {
-  echo "$SHOWALIASCREATED"
+  echo "$SHOW_ALIAS_CREATED"
   echo "*---------------------------------------------------*"
   # Meto todos los alias en un archivo temporal y los muestro
   cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
@@ -158,7 +158,7 @@ function show {
   done < .alias.tmp
   rm .alias.tmp
   echo "*---------------------------------------------------*"
-  echo "$OPTIONSSCRIPT"
+  echo "$SCRIPT_OPTIONS"
   exit
 }
 
@@ -170,7 +170,7 @@ function edit {
   if [ -z $1 ]
   then
     showAlias
-    echo "$SELECTALIAS"
+    echo "$SELECT_ALIAS_TO_EDIT"
     read selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
@@ -193,7 +193,7 @@ function edit {
       else
         # Si no existe el alias que el usuario ha pasado por argumento
         # ejecuto otra vez la funcion edit para que seleccione un alias que exista
-        echo -e "$ALIASNOTEXISTS ${ORANGE}$param${NC}"
+        echo -e "$ALIAS_DOES_NOT_EXISTS ${ORANGE}$param${NC}"
         edit
       fi
     done
@@ -204,7 +204,7 @@ function edit {
 function editSpecificAlias {
   if checkIfAliasNameIsDuplicated $1
   then
-    echo -e $CANNOTDELETEBECAUSEDUPLICATED
+    echo -e $ALIAS_DUPLICATED_MESSAGE
     exit
   fi
   commando=$(cat .alias.tmp | grep -E "alias $1=$2" | cut -d"=" -f 2 | head -1)
@@ -212,8 +212,8 @@ function editSpecificAlias {
   temp="${commando%\"}"
   # Elimino las comillas del prefijo
   commando="${temp#\"}"
-  echo -e "$ALIASSELECTED ${ORANGE}$1${NC}"
-  echo "$INSERTNAMEOFALIAS:"
+  echo -e "$SELECTED_ALIAS ${ORANGE}$1${NC}"
+  echo "$INSERT_NAME_OF_ALIAS_MESSAGE:"
   if [[ $OSTYPE == "Darwin" ]]; then
     read -p "(current: $1): " name
     if [[ -z $name ]]
@@ -232,7 +232,7 @@ function editSpecificAlias {
     fi
   fi
   name=$(echo $name | sed 's/ //g')
-  echo -e "$INSERTCOMMAND ${ORANGE}$name${NC}:"
+  echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
   if [[ $OSTYPE == "Darwin" ]]; then
     read -p "(current: $commando): " alias_command
     if [[ -z $alias_command ]]
@@ -267,9 +267,9 @@ function editSpecificAlias {
   mv ~/bash.txt ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
   then
-    echo -e "$MODIFIEDDONE"
+    echo -e "$ALIAS_MODIFIED_SUCCESFULLY"
   else
-    echo -e "$UNKNOWNPROBLEM"
+    echo -e "$UNKNOWN_PROBLEM"
   fi
 }
 
@@ -291,7 +291,7 @@ function delete {
   if [ -z $1 ]
   then
     showAlias
-    echo "$NAMEALIASDELETE"
+    echo "$NUMBER_OF_THE_ALIAS_TO_BE_DELETED"
     read selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
@@ -313,7 +313,7 @@ function delete {
       else
         # Si no existe el alias que el usuario ha pasado por argumento
         # ejecuto otra vez la funcion delete para que seleccione un alias que exista
-        echo -e "$ALIASNOTEXISTS ${ORANGE}$param${NC}"
+        echo -e "$ALIAS_DOES_NOT_EXISTS ${ORANGE}$param${NC}"
         delete
       fi
     done
@@ -324,14 +324,14 @@ function deleteSpecificAlias {
   comando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"=" -f 2 | head -1)
   if checkIfAliasNameIsDuplicated $1
   then
-    echo -e $CANNOTDELETEBECAUSEDUPLICATED
+    echo -e $ALIAS_DUPLICATED_MESSAGE
     exit
   fi
   # Elimino las comillas del sufijo
   temp="${commando%\"}"
   # Elimino las comillas del prefijo
   comando="${temp#\"}"
-  echo -e "$CONFIRMDELETE ${ORANGE}$1${NC}? ${OPTIONSSELECT}"
+  echo -e "$CONFIRM_ALIAS_DELETE ${ORANGE}$1${NC}? ${CONFIRM_OPTIONS}"
   read confirmation
   if ! confirmYes $confirmation
   then
@@ -350,9 +350,9 @@ function deleteSpecificAlias {
   mv ~/bash.txt ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
   then
-    echo -e "$DELETEDONE"
+    echo -e "$ALIAS_DELETED_SUCCESSFULLY"
   else
-    echo -e "$UNKNOWNPROBLEM"
+    echo -e "$UNKNOWN_PROBLEM"
   fi
 }
 
@@ -363,8 +363,8 @@ function clear {
   numberEmptyAlias=$(($numberEmptyAlias + $numberEmptyAliasWithoutQuotes))
   if [ $numberEmptyLines != 0 ]
   then
-    echo "$MESSAGEEMPTYLINES"
-    echo "$DELETEEMPTYLINES"
+    echo "$EMPTY_LINES_MESSAGE"
+    echo "$DELETE_EMPTY_LINES_MESSAGE"
     read delete
     if confirmYes $delete
     then
@@ -373,16 +373,16 @@ function clear {
         sed="sed -i ''"
       fi
       $sed '/^\s*$/d' ${FILE_WITH_ALIAS}
-      echo -e "$EMPTYLINESDELETED"
+      echo -e "$EMPTY_LINES_DELETED_SUCCESSFULLY"
     fi
   else
-    echo -e "$NOEMPTYLINES"
+    echo -e "$NO_EMPTY_LINES_FOUND"
   fi
   # Comprobamos si tiene alias en blanco
   if ! [ $numberEmptyAlias -eq 0 ]
   then
-    echo "$EMPTYALIAS"
-    echo "$DELETEEMPTYALIAS"
+    echo "$EMPTY_ALIAS"
+    echo "$DELETE_EMPTY_ALIAS"
     read delete
     if confirmYes $delete
     then
@@ -392,10 +392,10 @@ function clear {
       fi
       $sed '/^alias .*=\"\"*$/d' ${FILE_WITH_ALIAS}
       $sed '/^alias .*=$/d' ${FILE_WITH_ALIAS}
-      echo -e "$EMPTYALIASDELETED"
+      echo -e "$EMPTY_ALIAS_DELETED_SUCCESSFULLY"
     fi
   else
-    echo -e "$NOEMPTYALIAS"
+    echo -e "$NO_EMPTY_ALIAS_FOUND"
   fi
 
 
@@ -409,7 +409,7 @@ function copy {
   if [ -z $1 ]
   then
     showAlias
-    echo "$SELECTCOPYALIAS"
+    echo "$SELECT_NUMBER_OF_ALIAS_TO_BE_COPIED"
     read selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
@@ -441,7 +441,7 @@ function copy {
       else
         # Si no existe el alias que el usuario ha pasado por argumento
         # ejecuto otra vez la funcion edit para que seleccione un alias que exista
-        echo -e "$ALIASNOTEXISTS ${ORANGE}$1${NC}"
+        echo -e "$ALIAS_DOES_NOT_EXISTS ${ORANGE}$1${NC}"
         copy
       fi
     done
@@ -456,18 +456,18 @@ function copySpecificAlias {
   commando="${temp#\"}"
   if [ -z $2 ]
   then
-    echo -e "$ALIASSELECTED ${ORANGE}$1${NC}."
-    echo "$INSERTNAMEOFALIAS:"
+    echo -e "$SELECTED_ALIAS ${ORANGE}$1${NC}."
+    echo "$INSERT_NAME_OF_ALIAS_MESSAGE:"
     read name_alias
     echo alias $name_alias=\"$commando\" >> ${FILE_WITH_ALIAS}
-    echo -e "$COPIEDDONE ${ORANGE}$name_alias${NC}."
+    echo -e "$ALIAS_COPIED_SUCCESSFULLY ${ORANGE}$name_alias${NC}."
   else
     echo alias $2=\"$commando\" >> ${FILE_WITH_ALIAS}
     if [ $? -eq 0 ]
     then
-      echo -e "$COPIEDDONE ${ORANGE}$2${NC}."
+      echo -e "$ALIAS_COPIED_SUCCESSFULLY ${ORANGE}$2${NC}."
     else
-      echo -e "$COPYERROR"
+      echo -e "$COPY_ERROR"
     fi
   fi
 }
@@ -481,17 +481,17 @@ function confirmYes {
     then
       return 0
     else
-      echo "$MENUSELECTION $1. $EXITSCRIPT."
+      echo "$SELECTED_OPTION $1. $EXIT_SCRIPT."
       return 1
     fi
   else
-    echo "$EXITSCRIPTWITHOPTIONS"
+    echo "$EXIT_SCRIPT_WITH_OPTIONS"
     exit -1
   fi
 }
 
 function showAlias {
-  echo "$SHOWALIASCREATED"
+  echo "$SHOW_ALIAS_CREATED"
   # Mientras hayan alias, irlos mostrando
   contador=1
   while read linea
@@ -512,11 +512,11 @@ function restore {
   if ! [ -e ${DIR_BACKUP}.alias_backup.txt ]
   then
     cat ${DIR_BACKUP}.alias_backup.txt
-    echo -e "$BACKUPNOTFOUND"
-    echo "$ROUTEBACKUPMESSAGE"
+    echo -e "$BACKUP_NOT_FOUND"
+    echo "$ROUTE_BACKUP_MESSAGE"
   else
     cp ${DIR_BACKUP}.alias_backup.txt ${FILE_WITH_ALIAS}
-    echo -e "$BACKUPDONE"
+    echo -e "$BACKUP_DONE"
   fi
 }
 
@@ -525,20 +525,20 @@ function openFileWithAlias {
 }
 
 function showHelp {
-    echo -e "$USAGEMESSAGE"
+    echo -e "$USAGE_MESSAGE"
 
-    echo -e "$ADDHELPUSAGE"
-    echo -e "$EDITHELPUSAGE"
-    echo -e "$LISTHELPUSAGE"
+    echo -e "$ADD_OPTION_HELP_MESSAGE"
+    echo -e "$EDIT_OPTION_HELP_USAGE"
+    echo -e "$LIST_OPTION_HELP_USAGE"
 
-    echo -e "$DELETEHELPUSAGE"
+    echo -e "$DELETE_OPTION_HELP_USAGE"
 
-    echo -e "$COPYHELPUSAGE"
-    echo -e "$CONFIGHELPUSAGE"
-    echo -e "$RESTOREHELPMESSAGE"
-    echo -e "$EMPTYHELPMESSAGE"
-    echo -e "$IMPORTUSAGE"
-    echo -e "$INSTALLUSAGE"
+    echo -e "$COPY_OPTION_HELP_USAGE"
+    echo -e "$CONFIG_OPTION_HELP_USAGE"
+    echo -e "$RESTORE_HELP_MESSAGE"
+    echo -e "$EMPTY_OPTION_HELP_MESSAGE"
+    echo -e "$IMPORT_OPTION_USAGE"
+    echo -e "$INSTALL_OPTION_USAGE"
 }
 
 function parseOption {
@@ -611,7 +611,7 @@ function parseOption {
       restore
     elif [ $1 == "--update" ]
     then
-      echo "$EXITSCRIPT"
+      echo "$EXIT_SCRIPT"
     elif [ $1 == "--import" ]
     then
       importAlias $2

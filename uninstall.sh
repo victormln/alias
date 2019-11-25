@@ -1,16 +1,16 @@
 #!/bin/sh
 # Uninstall
 
-OSTYPE="Linux"
+OS_TYPE="Linux"
 if [ "$(uname)" == "Darwin" ]; then
-  OSTYPE="Darwin"
+  OS_TYPE="Darwin"
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] ||
   [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    OSTYPE="Windows"
+    OS_TYPE="Windows"
 fi
 
 sed="sed -i"
-if [[ $OSTYPE == "Darwin" ]]; then
+if [[ $OS_TYPE == "Darwin" ]]; then
   sed="sed -i ''"
 fi
 
