@@ -127,7 +127,7 @@ function add {
         #Añadimos al .bashrc || .zshrc el alias
         echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
         aliasAdded
-        echo -e "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}$CONFIRM_OPTIONS${NC}"
+        echo -e "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}"
         read continuar
       fi
     else
@@ -136,7 +136,7 @@ function add {
       #Añadimos al .bashrc || .zshrc el alias
       echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
       aliasAdded
-      echo -e "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}$CONFIRM_OPTIONS${NC}"
+      echo -e "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}"
       read continuar
     fi
     shift
