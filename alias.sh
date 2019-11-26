@@ -77,7 +77,7 @@ then
     $DEFAULT_EDITOR user.conf
 fi
 
-# Comprobaré si hay alguna versión nueva del programa autopush
+# Comprobaré si hay alguna versión nueva del programa
 # y lo mostraré en pantalla
 source update.sh
 
@@ -87,7 +87,7 @@ then
   # Iniciamos el script
   if ! [ -z $1 ]
   then
-  	parseOption $@
+  	parseOption "$@"
   else
     parseOption
   fi

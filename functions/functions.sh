@@ -1,14 +1,14 @@
 function aliasAdded {
   #Mostramos mensaje conforme se han creado los alias y se ha salido del programa
-  echo -e $ALIAS_CREATED_MESSAGE
+  echo -e "$ALIAS_CREATED_MESSAGE"
 }
 
 function showExecuteSourceMessage {
-  echo -e $EXECUTE_SOURCE_COMMAND "source ${FILE_WITH_ALIAS}" ${NC}
+  echo -e "$EXECUTE_SOURCE_COMMAND" "source ${FILE_WITH_ALIAS}" "${NC}"
 }
 
 function executeSourceAlias {
-  source ${FILE_WITH_ALIAS}
+  source "${FILE_WITH_ALIAS}"
 }
 
 function printOptions {
@@ -16,11 +16,10 @@ function printOptions {
 }
 
 function checkShell {
-    ACTUAL_SHELL=$(echo $SHELL | grep zsh)
-    errorLevel=$(echo $?)
+    error_level=$(echo $?)
     if [ -z "${FILE_WITH_ALIAS}" ]
     then
-        if [ $errorLevel -eq 0 ]
+        if [ $error_level -eq 0 ]
         then
             FILE_WITH_ALIAS=~/.zshrc
         else
@@ -335,7 +334,7 @@ function deleteSpecificAlias {
   read confirmation
   if ! confirmYes $confirmation
   then
-    exit -1
+    exit 6
   fi
   # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
@@ -486,7 +485,7 @@ function confirmYes {
     fi
   else
     echo "$EXIT_SCRIPT_WITH_OPTIONS"
-    exit -1
+    exit 4
   fi
 }
 
@@ -568,7 +567,7 @@ function parseOption {
         # Recorro un argumento ya que sino, le pasaria también
         # el -e o el edit (y solo quiero los nombres de los alias)
         shift
-        edit $@
+        edit "$@"
       fi
   	elif [ $1 == "delete" ] || [ $1 == "-d" ]
   	then
@@ -581,7 +580,7 @@ function parseOption {
           # Recorro un argumento ya que sino, le pasaria también
           # el -d o el delete (y solo quiero los nombres de los alias)
           shift
-          delete $@
+          delete "$@"
         fi
     elif [ $1 == "copy" ] || [ $1 == "-cp" ]
     then
@@ -595,7 +594,7 @@ function parseOption {
         # Recorro un argumento ya que sino, le pasaria también
         # el -copy o el copy (y solo quiero los nombres de los alias)
         shift
-        copy $@
+        copy "$@"
       fi
   	elif [ $1 == "-h" ] || [ $1 == "--help" ]
   	then
