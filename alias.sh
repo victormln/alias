@@ -14,16 +14,16 @@ PURPLE='\033[0;35m'
 ORANGE='\033[0;33m'
 CYAN='\033[0;36m'
 # Get the current version
-CURRENTVERSION=$(grep '# Version:' $0 | cut -d: -f 2 | head -1)
-CURRENTVERSION=${CURRENTVERSION//[[:blank:]]/}
-CURRENTDIR=$(pwd)
-INSTALL_ALIASDIRECTORY=$( dirname "${BASH_SOURCE[0]}" )
-OSTYPE="Linux"
+CURRENT_VERSION=$(grep '# Version:' $0 | cut -d: -f 2 | head -1)
+CURRENT_VERSION=${CURRENT_VERSION//[[:blank:]]/}
+CURRENT_DIR=$(pwd)
+INSTALL_ALIAS_DIRECTORY=$( dirname "${BASH_SOURCE[0]}" )
+OS_TYPE="Linux"
 if [ "$(uname)" == "Darwin" ]; then
-  OSTYPE="Darwin"
+  OS_TYPE="Darwin"
 elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ] ||
   [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-    OSTYPE="Windows"
+    OS_TYPE="Windows"
 fi
 ##########################
 # Script code            #
@@ -52,7 +52,7 @@ fi
 
 if [ "$1" == "-v" ]
 then
-  echo $CURRENTVERSION
+  echo $CURRENT_VERSION
   exit 0
 fi
 

@@ -35,17 +35,17 @@ function importAlias {
         echo -e "$EMPTY_IMPORT_FILE_GIVEN"
         exit
     fi
-    if ! [ -e "$CURRENTDIR/$1" ]
+    if ! [ -e "$CURRENT_DIR/$1" ]
     then
-        echo -e "$IMPORT_FILE_NOT_FOUND [$CURRENTDIR/$1]"
+        echo -e "$IMPORT_FILE_NOT_FOUND [$CURRENT_DIR/$1]"
         exit
     fi
-    numberAlias=$(cat "$CURRENTDIR/$1" | wc -l) > /dev/null
+    numberAlias=$(cat "$CURRENT_DIR/$1" | wc -l) > /dev/null
     echo -e "$IMPORT_ALIAS $1"
     echo -e "$CONFIRM_ALIAS_IMPORT"
     read import
     confirmYes $import
-    $(cat "$CURRENTDIR/$1" >> ${FILE_WITH_ALIAS})
+    $(cat "$CURRENT_DIR/$1" >> ${FILE_WITH_ALIAS})
     echo -e "$IMPORT_DONE"
 }
 
@@ -61,7 +61,7 @@ function installAlias {
         exit
     fi
     exit
-    if ! [ -e "$INSTALL_ALIASDIRECTORY/alias/$1.txt" ]
+    if ! [ -e "$INSTALL_ALIAS_DIRECTORY/alias/$1.txt" ]
     then
         echo -e "$ALIAS_NAME_NOT_EXISTS [$1]"
         exit
@@ -73,9 +73,9 @@ function installAliasesFromUrl {
     urlWithAliases=$1
     nameOfFileWithDownloadedAliases="install_aliases"
     validateThatUrlIsATextPlain $urlWithAliases
-    if wget "$urlWithAliases" -O "$INSTALL_ALIASDIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt 2>/dev/null; then
+    if wget "$urlWithAliases" -O "$INSTALL_ALIAS_DIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt 2>/dev/null; then
       installAliasesFromFile "$nameOfFileWithDownloadedAliases"
-      rm -f "$INSTALL_ALIASDIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt
+      rm -f "$INSTALL_ALIAS_DIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt
     fi
 }
 
@@ -87,11 +87,11 @@ function validateThatUrlIsATextPlain {
 }
 
 function installAliasesFromFile {
-    numberAlias=$(cat "$INSTALL_ALIASDIRECTORY/alias/$1.txt" | wc -l)
-    currentAliasName=$(head -n 1 "$INSTALL_ALIASDIRECTORY/alias/$1.txt")
+    numberAlias=$(cat "$INSTALL_ALIAS_DIRECTORY/alias/$1.txt" | wc -l)
+    currentAliasName=$(head -n 1 "$INSTALL_ALIAS_DIRECTORY/alias/$1.txt")
     onlyName="${currentAliasName##* }"
     echo -e "$INSTALL_ALIAS $onlyName"
-    $(cat "$INSTALL_ALIASDIRECTORY/alias/$1.txt" >> ${FILE_WITH_ALIAS})
+    $(cat "$INSTALL_ALIAS_DIRECTORY/alias/$1.txt" >> ${FILE_WITH_ALIAS})
     echo -e "$INSTALL_ALIAS_DONE $onlyName"
 }
 
@@ -214,14 +214,14 @@ function editSpecificAlias {
   commando="${temp#\"}"
   echo -e "$SELECTED_ALIAS ${ORANGE}$1${NC}"
   echo "$INSERT_NAME_OF_ALIAS_MESSAGE:"
-  if [[ $OSTYPE == "Darwin" ]]; then
+  if [[ $OS_TYPE == "Darwin" ]]; then
     read -p "(current: $1): " name
     if [[ -z $name ]]
     then
       name=$1
     fi
   else
-    if [[ $OSTYPE == "Darwin" ]]; then
+    if [[ $OS_TYPE == "Darwin" ]]; then
       read -p "(current: $1): " name
       if [[ -z $name ]]
       then
@@ -233,14 +233,14 @@ function editSpecificAlias {
   fi
   name=$(echo $name | sed 's/ //g')
   echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
-  if [[ $OSTYPE == "Darwin" ]]; then
+  if [[ $OS_TYPE == "Darwin" ]]; then
     read -p "(current: $commando): " alias_command
     if [[ -z $alias_command ]]
     then
       alias_command=$commando
     fi
   else
-    if [[ $OSTYPE == "Darwin" ]]; then
+    if [[ $OS_TYPE == "Darwin" ]]; then
       read -p "(current: $commando): " alias_command
       if [[ -z $alias_command ]]
       then
@@ -369,7 +369,7 @@ function clear {
     if confirmYes $delete
     then
       sed="sed -i"
-      if [[ $OSTYPE == "Darwin" ]]; then
+      if [[ $OS_TYPE == "Darwin" ]]; then
         sed="sed -i ''"
       fi
       $sed '/^\s*$/d' ${FILE_WITH_ALIAS}
@@ -387,7 +387,7 @@ function clear {
     if confirmYes $delete
     then
       sed="sed -i"
-      if [[ $OSTYPE == "Darwin" ]]; then
+      if [[ $OS_TYPE == "Darwin" ]]; then
         sed="sed -i ''"
       fi
       $sed '/^alias .*=\"\"*$/d' ${FILE_WITH_ALIAS}

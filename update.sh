@@ -29,18 +29,18 @@ else
   then
     # Compruebo que sistema está usando para hacer ping
     # Si es Linux o Mac
-    if [ $OSTYPE == "Linux" ] || [ $OSTYPE == "Darwin" ]; then
+    if [ $OS_TYPE == "Linux" ] || [ $OS_TYPE == "Darwin" ]; then
         ping -c 1 8.8.8.8 &> /dev/null
         has_internet=$(echo $?)
         # Si es Windows
-    elif [ $OSTYPE == "Windows" ]; then
+    elif [ $OS_TYPE == "Windows" ]; then
         ping -n 1 www.google.com > /dev/null
         has_internet=$(echo $?)
     fi
     CURRENT_DIRECTORY=$(pwd)
     SCRIPT_DIRECTORY=$(cd `dirname $0` && pwd)
     sed="sed -i"
-      if [[ $OSTYPE == "Darwin" ]]; then
+      if [[ $OS_TYPE == "Darwin" ]]; then
         sed="sed -i ''"
       fi
     $sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'$TODAY',' $SCRIPT_DIRECTORY/user.conf
@@ -59,7 +59,7 @@ else
         ultimaVersion=${ultimaVersion//[[:blank:]]/}
         ultimaVersionSinPuntos=$( echo $ultimaVersion | tr -d ".")
     		# Miramos que versión tiene el usuario actualmente
-    		versionActualSinPuntos=$(echo $CURRENTVERSION | tr -d ".")
+    		versionActualSinPuntos=$(echo $CURRENT_VERSION | tr -d ".")
     		# Comprobamos si la versionActual es igual o mas grande que la ultimaVersion
     		# es igual a la versionActual.
     		if (( $versionActualSinPuntos>=$ultimaVersionSinPuntos ))
@@ -73,7 +73,7 @@ else
     			# Mostramos el mensaje de que hay una nueva actualización
     			echo "###########################################"
     			echo -e "$NEW_UPDATE_MESSAGE${NC}"
-    			echo "$YOU_HAVE_VERSION_MESSAGE: $CURRENTVERSION"
+    			echo "$YOU_HAVE_VERSION_MESSAGE: $CURRENT_VERSION"
     			echo "$AVAILABLE_VERSION_MESSAGE: $ultimaVersion"
     			echo "###########################################"
     			# Si tiene las actualizaciones automaticas, no se le pide nada
