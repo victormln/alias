@@ -101,7 +101,7 @@ function add {
 	while confirmYes $continuar
 	do
     name=$1
-    if [ -z $1 ]
+    if [ -z "$1" ]
     then
       echo -e "$INSERT_NAME_OF_ALIAS_MESSAGE:"
       read name
@@ -126,8 +126,7 @@ function add {
         #Añadimos al .bashrc || .zshrc el alias
         echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
         aliasAdded
-        echo -e "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}"
-        read continuar
+        echo -en "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}: "; read continuar
       fi
     else
       echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
@@ -135,8 +134,7 @@ function add {
       #Añadimos al .bashrc || .zshrc el alias
       echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
       aliasAdded
-      echo -e "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}"
-      read continuar
+      echo -en "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}: "; read continuar
     fi
     shift
 	done
@@ -330,8 +328,7 @@ function deleteSpecificAlias {
   temp="${commando%\"}"
   # Elimino las comillas del prefijo
   comando="${temp#\"}"
-  echo -e "$CONFIRM_ALIAS_DELETE ${ORANGE}$1${NC}? ${CONFIRM_OPTIONS}"
-  read confirmation
+  echo -en "$CONFIRM_ALIAS_DELETE ${ORANGE}$1${NC}? ${CONFIRM_OPTIONS}: "; read confirmation
   if ! confirmYes $confirmation
   then
     exit 6

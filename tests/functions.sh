@@ -1,7 +1,7 @@
 #! /bin/sh
 # file: functions.sh
 
-source ../functions/functions.sh
+source ../src/functions.sh
 
 testThatPrintOptions()
 {

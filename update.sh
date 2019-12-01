@@ -21,94 +21,69 @@
 
 TODAY=$(date +%Y-%m-%d)
 
-if ! command -v curl >/dev/null 2>&1
-then
+if ! command -v curl >/dev/null 2>&1; then
   echo -e "$CURL_NOT_INSTALLED_MESSAGE"
-else
-  if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]
-  then
-    # Compruebo que sistema está usando para hacer ping
-    # Si es Linux o Mac
-    if [ $OS_TYPE == "Linux" ] || [ $OS_TYPE == "Darwin" ]; then
-        ping -c 1 8.8.8.8 &> /dev/null
-        has_internet=$(echo $?)
-        # Si es Windows
-    elif [ $OS_TYPE == "Windows" ]; then
-        ping -n 1 www.google.com > /dev/null
-        has_internet=$(echo $?)
-    fi
-    CURRENT_DIRECTORY=$(pwd)
-    SCRIPT_DIRECTORY=$(cd `dirname $0` && pwd)
-    sed="sed -i"
-      if [[ $OS_TYPE == "Darwin" ]]; then
-        sed="sed -i ''"
+  exit 10
+fi
+
+if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]; then
+  sed="sed -i"
+  if [ "$OS_TYPE" == "Linux" ]; then
+    ping -c 1 8.8.8.8 &>/dev/null
+    has_internet=$(echo $?)
+    # Si es Windows
+  elif [ "$OS_TYPE" == "Windows" ]; then
+    ping -n 1 www.google.com >/dev/null
+    has_internet=$(echo $?)
+  elif [ "$OS_TYPE" == "Darwin" ]; then
+    ping -c 1 8.8.8.8 &>/dev/null
+    has_internet=$(echo $?)
+    sed="sed -i ''"
+  fi
+
+  SCRIPT_DIRECTORY=$(cd $(dirname $0) && pwd)
+  $sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'"$TODAY"',' "$SCRIPT_DIRECTORY"/conf/user.conf
+  rm "$SCRIPT_DIRECTORY/conf/user.conf''" >/dev/null
+  if [ "$has_internet" -ne 0 ]; then
+    echo -e "$NO_INTERNET_CONNECTION_MESSAGE"
+  fi
+
+  if $SEARCH_OTA || [ "$1" == "--update" ]; then
+    last_version=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Version:' | cut -d: -f 2 | head -1) >/dev/null
+    last_version=${last_version//[[:blank:]]/}
+    last_version_without_dots=$(echo "$last_version" | tr -d ".")
+    actual_version_without_dots=$(echo "$CURRENT_VERSION" | tr -d ".")
+    if ((actual_version_without_dots >= last_version_without_dots)); then
+      if [ "$1" == "--update" ]; then
+        echo -e "$NO_UPDATES_AVAILABLE"
+        exit 11
       fi
-    $sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'$TODAY',' $SCRIPT_DIRECTORY/user.conf
-    # In mac, creates a file with user.conf"
-    rm "$SCRIPT_DIRECTORY/user.conf''" > /dev/null
-    # Si el ping se ha realizado correctamente es que tiene internet
-    # por lo que se buscaran actualizaciones
-    if [ $has_internet -eq 0 ]
-    then
-      # Si están activadas las actualizaciones automáticas
-      if $SEARCH_OTA || [ "$1" == "--update" ]
-      then
-        tieneUltimaVersion=false
-    		# Conseguimos la ultima version que hay en github y le quitamos los puntos
-    		ultimaVersion=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Version:' | cut -d: -f 2 | head -1) > /dev/null
-        ultimaVersion=${ultimaVersion//[[:blank:]]/}
-        ultimaVersionSinPuntos=$( echo $ultimaVersion | tr -d ".")
-    		# Miramos que versión tiene el usuario actualmente
-    		versionActualSinPuntos=$(echo $CURRENT_VERSION | tr -d ".")
-    		# Comprobamos si la versionActual es igual o mas grande que la ultimaVersion
-    		# es igual a la versionActual.
-    		if (( $versionActualSinPuntos>=$ultimaVersionSinPuntos ))
-    		then
-    			tieneUltimaVersion=true
-          if [ "$1" == "--update" ]
-          then
-            echo -e "$NO_UPDATES_AVAILABLE"
-          fi
-    		else
-    			# Mostramos el mensaje de que hay una nueva actualización
-    			echo "###########################################"
-    			echo -e "$NEW_UPDATE_MESSAGE${NC}"
-    			echo "$YOU_HAVE_VERSION_MESSAGE: $CURRENT_VERSION"
-    			echo "$AVAILABLE_VERSION_MESSAGE: $ultimaVersion"
-    			echo "###########################################"
-    			# Si tiene las actualizaciones automaticas, no se le pide nada
-    			if $AUTOMATIC_UPDATE
-    			then
-    				# Si es así, hacemos un pull y le actualizamos el script
-    				echo $AVAILABLE_VERSION_MESSAGE
-                    git stash > /dev/null
-    				git pull origin master | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
-    				echo -e "$UPDATE_DONE_MESSAGE"
-    			else
-    			    echo "$AVAILABLE_UPDATE_MESSAGE"
-    			    echo "$ASK_TO_DOWNLOAD_MESSAGE"
-    			    # Preguntamos si quiere actualizar
-    			    read actualizar
-    			    if [ $actualizar == "s" ] || [ $actualizar == "y" ] || [ $actualizar == "S" ] || [ $actualizar == "Y" ]
-    			    then
-                  git stash > /dev/null
-                  # Si es así, hacemos un pull y le actualizamos el script
-                  git pull | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
-                  echo -e "$UPDATE_DONE_MESSAGE"
-                  exit
-              else
-                  # En el caso que seleccione que no, muestro un mensaje.
-                  echo -e "$NOT_UPDATED_MESSAGE"
-                  echo -e "**************************"
-                  # Damos por su puesto que tiene la ultima version,
-                  # para que el script no entre en bucle
-                  tieneUltimaVersion=true
-              fi
-    			fi
-    		fi
+
+      echo "###########################################"
+      echo -e "$NEW_UPDATE_MESSAGE${NC}"
+      echo "$YOU_HAVE_VERSION_MESSAGE: $CURRENT_VERSION"
+      echo "$AVAILABLE_VERSION_MESSAGE: $last_version"
+      echo "###########################################"
+      
+      if $AUTOMATIC_UPDATE; then
+        echo "$AVAILABLE_VERSION_MESSAGE"
+        git stash >/dev/null
+        git pull origin master | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
+        echo -e "$UPDATE_DONE_MESSAGE"
+      else
+        echo "$AVAILABLE_UPDATE_MESSAGE"
+        echo "$ASK_TO_DOWNLOAD_MESSAGE"
+        read -r want_to_update
+        if [ "$want_to_update" == "s" ] || [ "$want_to_update" == "y" ] || [ "$want_to_update" == "S" ] || [ "$want_to_update" == "Y" ]; then
+          git stash >/dev/null
+          git pull | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
+          echo -e "$UPDATE_DONE_MESSAGE"
+          exit
+        else
+          echo -e "$NOT_UPDATED_MESSAGE"
+          echo -e "**************************"
+        fi
       fi
-    else
-    	echo -e "$NO_INTERNET_CONNECTION_MESSAGE"
     fi
   fi
 fi
