@@ -67,7 +67,7 @@ if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]; then
         echo -e "$UPDATE_DONE_MESSAGE"
       else
         echo "$AVAILABLE_UPDATE_MESSAGE"
-        echo -en "$ASK_TO_DOWNLOAD_MESSAGE ${CYAN}$CONFIRM_OPTIONS${NC}"; read -r want_to_update
+        echo -en "$ASK_TO_DOWNLOAD_MESSAGE ${CYAN}$CONFIRM_OPTIONS${NC}: "; read -r want_to_update
         if [ "$want_to_update" == "s" ] || [ "$want_to_update" == "y" ] || [ "$want_to_update" == "S" ] || [ "$want_to_update" == "Y" ]; then
           git stash >/dev/null
           git pull | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
