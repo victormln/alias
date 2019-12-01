@@ -10,4 +10,4 @@ testThatPrintOptions()
 }
 
 # load shunit2
-. /usr/local/bin/shunit2
+. tests/shunit2
