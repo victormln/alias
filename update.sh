@@ -53,7 +53,7 @@ if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]; then
     last_version=${last_version//[[:blank:]]/}
     last_version_without_dots=$(echo "$last_version" | tr -d ".")
     actual_version_without_dots=$(echo "$CURRENT_VERSION" | tr -d ".")
-    if ((actual_version_without_dots >= last_version_without_dots)); then
+    if ((actual_version_without_dots < last_version_without_dots)); then
       echo "###########################################"
       echo -e "$NEW_UPDATE_MESSAGE${NC}"
       echo "$YOU_HAVE_VERSION_MESSAGE: $CURRENT_VERSION"
