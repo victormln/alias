@@ -43,7 +43,7 @@ The uninstall script removes the following line from your `.bashrc` or
 
 ## Configuration
 
-You can configure a lot of paramaters. For example, don't search for automatic updates, change the language or change the directory of the file that contains your aliases. To change all this parameters you can open the file user.conf.
+You can configure a lot of paramaters. For example, don't search for automatic updates, change the language or change the directory of the file that contains your aliases. To change all this parameters you can open the file conf/user.conf.
 
 ## Usage
 

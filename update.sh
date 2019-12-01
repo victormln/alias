@@ -43,9 +43,9 @@ else
       if [[ $OS_TYPE == "Darwin" ]]; then
         sed="sed -i ''"
       fi
-    $sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'$TODAY',' $SCRIPT_DIRECTORY/user.conf
-    # In mac, creates a file with user.conf"
-    rm "$SCRIPT_DIRECTORY/user.conf''" > /dev/null
+    $sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'$TODAY',' $SCRIPT_DIRECTORY/conf/user.conf
+    # In mac, creates a file with conf/user.conf"
+    rm "$SCRIPT_DIRECTORY/conf/user.conf''" > /dev/null
     # Si el ping se ha realizado correctamente es que tiene internet
     # por lo que se buscaran actualizaciones
     if [ $has_internet -eq 0 ]

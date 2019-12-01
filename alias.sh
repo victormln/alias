@@ -1,8 +1,8 @@
 #!/bin/bash
 # Filename: alias.sh
 # Author: Víctor Molina Ferreira (github.com/victormln)
-# Creating date: 12/11/16
-# Version: 2.1.4
+# Creation date: 12/11/16
+# Version: 2.1.5
 
 # Mensajes de color
 ERROR='\033[0;31m'
@@ -33,15 +33,15 @@ fi
 cd $( dirname "${BASH_SOURCE[0]}" )
 
 # Importamos las funciones
-source functions/functions.sh
+source src/functions.sh
 # Cogemos los datos del archivo .conf
-source user.conf
+source conf/user.conf
 
 # Comprobamos que shell tiene el usuario para modificar la variable FILE_WITH_ALIAS
 checkShell
 
 # Cogemos las variables de idioma
-source lang/${LANGUAGE}.lang
+source conf/lang/${LANGUAGE}.lang
 
 # Comprobamos primero si ha ejecutado el restaurar la copia de seguridad
 if [ "$1" == "--restore" ]
@@ -74,7 +74,7 @@ then
 elif [ "$1" == "--conf" ]
 then
 	echo -e "$OPENING_CONFIGURATION_MESSAGE"
-    $DEFAULT_EDITOR user.conf
+    $DEFAULT_EDITOR conf/user.conf
 fi
 
 # Comprobaré si hay alguna versión nueva del programa
