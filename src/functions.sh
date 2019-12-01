@@ -41,9 +41,8 @@ function importAlias {
     fi
     numberAlias=$(cat "$CURRENT_DIR/$1" | wc -l) > /dev/null
     echo -e "$IMPORT_ALIAS $1"
-    echo -e "$CONFIRM_ALIAS_IMPORT"
-    read import
-    confirmYes $import
+    echo -en "$CONFIRM_ALIAS_IMPORT"; read -r import
+    confirmYes "$import"
     $(cat "$CURRENT_DIR/$1" >> ${FILE_WITH_ALIAS})
     echo -e "$IMPORT_DONE"
 }
@@ -360,7 +359,7 @@ function clear {
   if [ $numberEmptyLines != 0 ]
   then
     echo "$EMPTY_LINES_MESSAGE"
-    echo "$DELETE_EMPTY_LINES_MESSAGE"
+    echo -e "$DELETE_EMPTY_LINES_MESSAGE ${CYAN}$CONFIRM_OPTIONS${NC}"
     read delete
     if confirmYes $delete
     then
@@ -378,8 +377,7 @@ function clear {
   if ! [ $numberEmptyAlias -eq 0 ]
   then
     echo "$EMPTY_ALIAS"
-    echo "$DELETE_EMPTY_ALIAS"
-    read delete
+    echo -en "$DELETE_EMPTY_ALIAS"; read -r delete
     if confirmYes $delete
     then
       sed="sed -i"

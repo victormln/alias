@@ -2,6 +2,7 @@
 # GENERIC MESSAGES
 #######################################
 CONFIRM_OPTIONS="[y/n]"
+CONFIRM_OPTIONS_WITH_COLORS="${CYAN}[y/n]${NC}"
 CONFIRM_OPTIONS_MESSAGE="Type: [y / n] or [s / n] to continue"
 ###############
 # INFO MESSAGES
@@ -52,11 +53,11 @@ ASK_CREATE_ANOTHER_ALIAS="Do you want to create another alias?"
 SELECT_ALIAS_TO_EDIT="Select the number or name of the alias you want to edit"
 NUMBER_OF_THE_ALIAS_TO_BE_DELETED="Select the number or name of the alias you want to delete"
 CONFIRM_ALIAS_DELETE="Are you sure you want to delete the alias"
-DELETE_EMPTY_LINES_MESSAGE="Do you want to delete all of them? $CONFIRM_OPTIONS"
+DELETE_EMPTY_LINES_MESSAGE="Do you want to delete all of them?"
 EMPTY_ALIAS="You have $numberEmptyAlias empty aliases in ${FILE_WITH_ALIAS}"
-DELETE_EMPTY_ALIAS="Do you want to remove them? $CONFIRM_OPTIONS"
+DELETE_EMPTY_ALIAS="Do you want to remove them? $CONFIRM_OPTIONS_WITH_COLORS"
 SELECT_NUMBER_OF_ALIAS_TO_BE_COPIED="Select the number or name of the alias you want to copy"
-CONFIRM_ALIAS_IMPORT="${NC}Are you sure you want to import them? $CONFIRM_OPTIONS"
+CONFIRM_ALIAS_IMPORT="${NC}Are you sure you want to import them? $CONFIRM_OPTIONS_WITH_COLORS"
 #################
 # ERROR MESSAGES
 #######################################
