@@ -5,6 +5,8 @@ ___
 
 ![](images/malias_list.gif)
 
+[![Build Status](https://travis-ci.org/victormln/alias.svg?branch=master)](https://travis-ci.org/victormln/alias)
+
 Malias is a shell script that let's you to add, edit, delete and more to manage your aliases on linux/mac. It's compatible with bash and zshrc (or either use your own file).
 
 Example to show your current aliases:
