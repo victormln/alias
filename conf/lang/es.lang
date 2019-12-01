@@ -85,7 +85,7 @@ NOT_UPDATED_MESSAGE="${WARNING}¡AVISO!${NC} NO se actualizará (aunque se recom
 UPDATE_DONE_MESSAGE="${OK}[OK] ${NC}La actualización ha acabado, por favor, vuelva a iniciar el script."
 UPDATING_PLEASE_WAIT_MESSAGE="Actualizando... Por favor, espere ..."
 AVAILABLE_UPDATE_MESSAGE="Hay una nueva versión disponible."
-ASK_TO_DOWNLOAD_MESSAGE="Quieres descargarla y así tener las últimas mejoras? $CONFIRM_OPTIONS"
+ASK_TO_DOWNLOAD_MESSAGE="Quieres descargarla y así tener las últimas mejoras?"
 NO_UPDATES_AVAILABLE="${OK}[OK]${NC} No hay actualizaciones nuevas. Tienes la última versión $version"
 CURL_NOT_INSTALLED_MESSAGE="${WARNING}[AVISO]${NC} No tienes curl instalado, por lo que no se pueden buscar actualizaciones."
 ################
