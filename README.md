@@ -6,9 +6,9 @@ ___
 ![](images/malias_list.gif)
 
 [![Build Status](https://travis-ci.org/victormln/alias.svg?branch=master)](https://travis-ci.org/victormln/alias)
-![Open issues](https://img.shields.io/github/issues/victormln/alias)
+[![Open issues](https://img.shields.io/github/issues/victormln/alias)](https://github.com/victormln/alias/issues)
 ![Last version](https://img.shields.io/github/v/tag/victormln/alias)
-![License](https://img.shields.io/github/license/victormln/alias)
+[![License](https://img.shields.io/github/license/victormln/alias)](https://github.com/victormln/alias/blob/master/LICENSE)
 
 Malias is a shell script that let's you to add, edit, delete and more to manage your aliases on linux/mac. It's compatible with bash and zshrc (or either use your own file).
 
