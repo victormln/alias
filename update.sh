@@ -27,6 +27,7 @@ if ! command -v curl >/dev/null 2>&1; then
 fi
 
 if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]; then
+  echo -e "$FORCE_UPDATE_MESSAGE"
   sed="sed -i"
   if [ "$OS_TYPE" == "Linux" ]; then
     ping -c 1 8.8.8.8 &>/dev/null
@@ -80,4 +81,6 @@ if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]; then
       fi
     fi
   fi
+  echo "$EXIT_SCRIPT"
+  exit
 fi

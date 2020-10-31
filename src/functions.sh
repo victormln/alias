@@ -1,5 +1,4 @@
 function aliasAdded {
-  #Mostramos mensaje conforme se han creado los alias y se ha salido del programa
   echo -e "$ALIAS_CREATED_MESSAGE"
 }
 
@@ -67,6 +66,14 @@ function installAlias {
     installAliasesFromFile $1
 }
 
+function addAlias {
+  echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
+  read -e alias_command
+  echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
+  aliasAdded
+  echo -en "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}: "; read continue
+}
+
 function installAliasesFromUrl {
     urlWithAliases=$1
     nameOfFileWithDownloadedAliases="install_aliases"
@@ -95,9 +102,8 @@ function installAliasesFromFile {
 
 function add {
   echo -e ${NEW_ALIAS_WILL_BE_CREATED}
-	continuar="y"
-	# Preguntamos hasta que el usuario quiera, si quiere crear alias
-	while confirmYes $continuar
+	continue="y"
+	while confirmYes $continue
 	do
     name=$1
     if [ -z "$1" ]
@@ -109,7 +115,6 @@ function add {
     if cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
     then
       echo -e "$ALIAS_EXISTS_MESSAGE"
-      nombreErroneo=1
       while cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
       do
         echo -e "$CHOOSE_ANOTHER_NAME"
@@ -119,21 +124,10 @@ function add {
       if [ $name == "q" ] || [ $name == "Q" ]
       then
         exit
-      else
-        echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
-        read -e alias_command
-        #Añadimos al .bashrc || .zshrc el alias
-        echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
-        aliasAdded
-        echo -en "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}: "; read continuar
       fi
+      addAlias
     else
-      echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
-      read -e alias_command
-      #Añadimos al .bashrc || .zshrc el alias
-      echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
-      aliasAdded
-      echo -en "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}: "; read continuar
+      addAlias
     fi
     shift
 	done
@@ -142,13 +136,13 @@ function add {
 function show {
   echo "$SHOW_ALIAS_CREATED"
   echo "*---------------------------------------------------*"
-  # Meto todos los alias en un archivo temporal y los muestro
+  # Cat temporal file with all alias
   cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
   while read linea
   do
     nombreScript=$(echo "$linea" | cut -d"=" -f 1)
     comando=$(echo "$linea" | cut -d"=" -f 2-)
-    # Elimino la palabra alias para que solo se vea lo que importa
+    # Delete word alias to show only the value of alias
     echo -e " ${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
     contador=$(($contador + 1))
   done < .alias.tmp
@@ -159,7 +153,7 @@ function show {
 }
 
 function edit {
-  # Meto todos los alias en un archivo temporal y los muestro
+  # Show all alias
   cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
   # En el caso de que el usuario no le haya pasado un argumento,
   # significa que no sabe cual va a editar
@@ -468,20 +462,17 @@ function copySpecificAlias {
 
 # Le paso como primer argumento la respuesta del usuario (normalmente una s/y/n)
 function confirmYes {
-  if ! [ -z $1 ]
+  if [ -z $1 ]
   then
-    if [ $1 == "y" ] || [ $1 == "Y" ] ||
-     [ $1 == "s" ] || [ $1 == "S" ]
-    then
-      return 0
-    else
-      echo "$SELECTED_OPTION $1. $EXIT_SCRIPT."
-      return 1
-    fi
-  else
     echo "$EXIT_SCRIPT_WITH_OPTIONS"
     exit 4
   fi
+  if [ $1 == "y" ] || [ $1 == "Y" ] || [ $1 == "s" ] || [ $1 == "S" ]
+  then
+    return 0
+  fi
+
+  return 1
 }
 
 function showAlias {
@@ -603,9 +594,6 @@ function parseOption {
     elif [ $1 == "--restore" ]
     then
       restore
-    elif [ $1 == "--update" ]
-    then
-      echo "$EXIT_SCRIPT"
     elif [ $1 == "--import" ]
     then
       importAlias $2

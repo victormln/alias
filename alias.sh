@@ -68,10 +68,7 @@ if $SHOW_AUTHOR; then echo "$AUTHOR: Víctor Molina <github.com/victormln> "; fi
 # Doy permiso al update.sh
 chmod +x update.sh
 
-if [ "$1" == "--update" ]
-then
-	echo -e "$FORCE_UPDATE_MESSAGE"
-elif [ "$1" == "--conf" ]
+if [ "$1" == "--conf" ]
 then
 	echo -e "$OPENING_CONFIGURATION_MESSAGE"
     $DEFAULT_EDITOR conf/user.conf
