@@ -9,5 +9,10 @@ testThatPrintOptions()
   assertEquals "$options" "[y/n Y/N]"
 }
 
+testThatAnAliasIsCreated() {
+  addAlias
+  echo "test"
+}
+
 # load shunit2
 . tests/shunit2

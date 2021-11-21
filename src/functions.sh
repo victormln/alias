@@ -155,8 +155,7 @@ function show {
 function edit {
   # Show all alias
   cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
-  # En el caso de que el usuario no le haya pasado un argumento,
-  # significa que no sabe cual va a editar
+  
   if [ -z $1 ]
   then
     showAlias
@@ -171,18 +170,13 @@ function edit {
       editSpecificAlias $selectedOption
     fi
     rm .alias.tmp
-  # En el caso que le haya pasado un argumento (el nombre de un alias)
-  # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
     for param in "$@"
     do
-      # Compruebo si el alias que ha pasado el usuario existe
       if cat .alias.tmp | grep "^alias $param=" > /dev/null
       then
         editSpecificAlias $param
       else
-        # Si no existe el alias que el usuario ha pasado por argumento
-        # ejecuto otra vez la funcion edit para que seleccione un alias que exista
         echo -e "$ALIAS_DOES_NOT_EXISTS ${ORANGE}$param${NC}"
         edit
       fi
@@ -190,7 +184,6 @@ function edit {
   fi
 }
 
-# A esta funcion le paso un argumento, que será el nombre del alias a editar
 function editSpecificAlias {
   if checkIfAliasNameIsDuplicated $1
   then
@@ -198,9 +191,7 @@ function editSpecificAlias {
     exit
   fi
   commando=$(cat .alias.tmp | grep -E "alias $1=$2" | cut -d"=" -f 2 | head -1)
-  # Elimino las comillas del sufijo
   temp="${commando%\"}"
-  # Elimino las comillas del prefijo
   commando="${temp#\"}"
   echo -e "$SELECTED_ALIAS ${ORANGE}$1${NC}"
   echo "$INSERT_NAME_OF_ALIAS_MESSAGE:"
@@ -240,19 +231,15 @@ function editSpecificAlias {
       read -e -i "$commando" alias_command
     fi
   fi
-  # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
-  # Miramos si tiene o no comillas el alias antiguo
   if cat ${FILE_WITH_ALIAS} | grep "^alias $1=\"$commando\"" &> /dev/null
   then
     sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
     echo alias $name=\"$alias_command\" >> ~/bash.txt
   else
-    # la coma es el delimitador para el sed
     sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
     echo alias $name=\"$alias_command\" >> ~/bash.txt
   fi
-  # Eliminamos
   rm ${FILE_WITH_ALIAS}
   mv ~/bash.txt ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
@@ -274,10 +261,7 @@ function checkIfAliasNameIsDuplicated {
 }
 
 function delete {
-  # Meto todos los alias en un archivo temporal y los muestro
   cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
-  # En el caso de que el usuario no le haya pasado un argumento,
-  # significa que no sabe cual va a editar
   if [ -z $1 ]
   then
     showAlias
@@ -291,18 +275,13 @@ function delete {
       deleteSpecificAlias $selectedOption
     fi
     rm .alias.tmp
-  # En el caso que le haya pasado un argumento (el nombre de un alias)
-  # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
     for param in "$@"
     do
-      # Compruebo si el alias que ha pasado el usuario existe
       if cat .alias.tmp | grep "^alias $param=" > /dev/null
       then
         deleteSpecificAlias $param
       else
-        # Si no existe el alias que el usuario ha pasado por argumento
-        # ejecuto otra vez la funcion delete para que seleccione un alias que exista
         echo -e "$ALIAS_DOES_NOT_EXISTS ${ORANGE}$param${NC}"
         delete
       fi
@@ -317,24 +296,15 @@ function deleteSpecificAlias {
     echo -e $ALIAS_DUPLICATED_MESSAGE
     exit
   fi
-  # Elimino las comillas del sufijo
   temp="${commando%\"}"
-  # Elimino las comillas del prefijo
   comando="${temp#\"}"
   echo -en "$CONFIRM_ALIAS_DELETE ${ORANGE}$1${NC}? ${CONFIRM_OPTIONS}: "; read confirmation
   if ! confirmYes $confirmation
   then
     exit 6
   fi
-  # Antes de nada, le hacemos una copia al usuario de su bashrc
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
-  # la coma es el delimitador para el sed
-  # El 0 es para que solo elimine la primera ocurrencia
   sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
-  #sed "0,/^alias $1=\"$commando\"/{/^alias $1=\"$commando\"/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
-  #sed "0,/^alias $1=\"$commando\"/ d" ${FILE_WITH_ALIAS} > ~/bash.txt
-  #sed "s,^alias $1=\"$commando\",,g" ${FILE_WITH_ALIAS} > ~/bash.txt
-  # Eliminamos
   rm ${FILE_WITH_ALIAS}
   mv ~/bash.txt ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
@@ -367,7 +337,6 @@ function clear {
   else
     echo -e "$NO_EMPTY_LINES_FOUND"
   fi
-  # Comprobamos si tiene alias en blanco
   if ! [ $numberEmptyAlias -eq 0 ]
   then
     echo "$EMPTY_ALIAS"
@@ -385,15 +354,10 @@ function clear {
   else
     echo -e "$NO_EMPTY_ALIAS_FOUND"
   fi
-
-
 }
 
 function copy {
-  # Meto todos los alias en un archivo temporal y los muestro
   cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
-  # En el caso de que el usuario no le haya pasado un argumento,
-  # significa que no sabe cual va a editar
   if [ -z $1 ]
   then
     showAlias
@@ -407,14 +371,10 @@ function copy {
       copySpecificAlias $selectedOption
     fi
     rm .alias.tmp
-  # En el caso que le haya pasado un argumento (el nombre de un alias)
-  # podrá modificarlo, sino le muestra que ese nombre de alias, no existe
   else
-    #Guardo el comandoOrigen para poder hacer shift
     comandoOrigen=$1
     for param in "$@"
     do
-      # Compruebo si el alias que ha pasado el usuario existe
       if cat .alias.tmp | grep "^alias $comandoOrigen=" > /dev/null
       then
         if [ -z $2 ]
@@ -427,8 +387,6 @@ function copy {
           fi
         fi
       else
-        # Si no existe el alias que el usuario ha pasado por argumento
-        # ejecuto otra vez la funcion edit para que seleccione un alias que exista
         echo -e "$ALIAS_DOES_NOT_EXISTS ${ORANGE}$1${NC}"
         copy
       fi
@@ -438,9 +396,7 @@ function copy {
 
 function copySpecificAlias {
   commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"=" -f 2 | head -1)
-  # Elimino las comillas del sufijo
   temp="${commando%\"}"
-  # Elimino las comillas del prefijo
   commando="${temp#\"}"
   if [ -z $2 ]
   then
@@ -460,7 +416,6 @@ function copySpecificAlias {
   fi
 }
 
-# Le paso como primer argumento la respuesta del usuario (normalmente una s/y/n)
 function confirmYes {
   if [ -z $1 ]
   then
@@ -477,13 +432,11 @@ function confirmYes {
 
 function showAlias {
   echo "$SHOW_ALIAS_CREATED"
-  # Mientras hayan alias, irlos mostrando
   contador=1
   while read linea
   do
     nombreScript=$(echo "$linea" | cut -d"=" -f 1)
     comando=$(echo "$linea" | cut -d"=" -f 2)
-    # Elimino la palabra alias para que solo se vea lo que importa
     echo -e "\t${BLUE}[$contador] ${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
     contador=$(($contador + 1))
   done < .alias.tmp
@@ -527,13 +480,10 @@ function showHelp {
 }
 
 function parseOption {
-  # En el caso de que el usuario no le haya pasado un argumento,
-  # por defecto significa que quiere crear un alias
   if [ -z $1 ]
   then
     add
   else
-    # Miramos que ha seleccionado el usuario (add, edit, delete, help, show)
     if [ $1 == "add" ] || [ $1 == "-a" ]
   	then
       if [ -z $2 ]
@@ -544,27 +494,19 @@ function parseOption {
       fi
   	elif [ $1 == "edit" ] || [ $1 == "-e" ]
   	then
-      # Si no le pasa un segundo argumento a edit (el nombre del alias)
-      # le preguntaremos en el edit cual quiere modificar
       if [ -z $2 ]
       then
         edit
       else
-        # Recorro un argumento ya que sino, le pasaria también
-        # el -e o el edit (y solo quiero los nombres de los alias)
         shift
         edit "$@"
       fi
   	elif [ $1 == "delete" ] || [ $1 == "-d" ]
   	then
-        # Si no le pasa un segundo argumento a delete (el nombre del alias)
-        # le preguntaremos en el delete cual quiere eliminarsss
         if [ -z $2 ]
         then
           delete
         else
-          # Recorro un argumento ya que sino, le pasaria también
-          # el -d o el delete (y solo quiero los nombres de los alias)
           shift
           delete "$@"
         fi
@@ -577,8 +519,6 @@ function parseOption {
       then
         copy $2
       else
-        # Recorro un argumento ya que sino, le pasaria también
-        # el -copy o el copy (y solo quiero los nombres de los alias)
         shift
         copy "$@"
       fi
@@ -607,7 +547,6 @@ function parseOption {
     then
       openFileWithAlias
     else
-      # Cualquier otro parámetro, mostramos la ayuda
       showHelp
   	fi
   fi
