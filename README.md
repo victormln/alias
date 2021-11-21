@@ -1,4 +1,4 @@
-If you don't know what is an alias, I recommend you to use them. You can see the link in the wikipedia to know why they are useful: <a href="https://en.wikipedia.org/wiki/Alias_(command)" target="_blank">¿What is an alias?</a>
+If you don't know what is an alias, I recommend you to use them. You can see the link in the wikipedia to know why they are useful: <a href="https://en.wikipedia.org/wiki/Alias_(command)" target="_blank">What is an alias?</a>
 ___
 
 # Malias
@@ -10,7 +10,7 @@ ___
 ![Last version](https://img.shields.io/github/v/tag/victormln/alias)
 [![License](https://img.shields.io/github/license/victormln/alias)](https://github.com/victormln/alias/blob/master/LICENSE)
 
-Malias is a shell script that let's you to add, edit, delete and more to manage your aliases on linux/mac. It's compatible with bash and zshrc (or either use your own file).
+Malias is a shell script that lets you add, edit, delete and more to manage your aliases on linux/mac. It's compatible with bash and zshrc (or either use your own file).
 
 Example to show your current aliases:
 `malias -l`
@@ -48,7 +48,7 @@ The uninstall script removes the following line from your `.bashrc` or
 
 ## Configuration
 
-You can configure a lot of paramaters. For example, don't search for automatic updates, change the language or change the directory of the file that contains your aliases. To change all this parameters you can open the file conf/user.conf.
+You can configure a lot of parameters. For example, don't search for automatic updates, change the language or change the directory of the file that contains your aliases. To change all these parameters you can open the file conf/user.conf.
 
 ## Usage
 
