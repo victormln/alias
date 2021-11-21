@@ -62,7 +62,6 @@ Se puede modificar el user.conf y editar el archivo que contiene los alias.
 - Solución de bugs menores
 - Errores léxicos solucionados
 
-
 * Version: 1.0.3 *
 #----------------#
 

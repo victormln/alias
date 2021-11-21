@@ -44,11 +44,11 @@ fi
 
 if [ "$1" == "-v" ]
 then
-  echo $CURRENT_VERSION
+  echo "$CURRENT_VERSION"
   exit 0
 fi
 
-if ! [ -e ${FILE_WITH_ALIAS} ]
+if ! [ -e "${FILE_WITH_ALIAS}" ]
 then
   echo "$ALIAS_FILE_NOT_FOUND"
   echo "$ROUTE_ALIAS_FILE_MESSAGE"
@@ -69,7 +69,7 @@ source update.sh
 
 if cat ${FILE_WITH_ALIAS} | grep "^alias " > /dev/null
 then
-  if ! [ -z $1 ]
+  if ! [ -z "$1" ]
   then
   	parseOption "$@"
   else

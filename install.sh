@@ -5,16 +5,14 @@ BLUE='\033[0;34m'
 OK='\033[0;32m'
 NC='\033[0m'
 
-actual_shell=$(echo $SHELL | grep zsh)
-if [ $? -eq 0 ]
+shell_file="bashrc"
+if echo "$SHELL" | grep zsh > /dev/null
 then
-    actual_shell="zshrc"
-else
-    actual_shell="bashrc"
+    shell_file="zshrc"
 fi
 chmod +x ~/.alias/alias.sh
-echo "alias malias=\"~/.alias/alias.sh\"" >> ~/.$actual_shell
-echo "alias uninstall_malias=\"~/.alias/uninstall.sh\"" >> ~/.$actual_shell
+echo "alias malias=\"~/.alias/alias.sh\"" >> ~/.$shell_file
+echo "alias uninstall_malias=\"~/.alias/uninstall.sh\"" >> ~/.$shell_file
 echo -e "${OK}[OK]${NC} Installed successfully."
-echo -e "Now, you can execute: "${BLUE}source ~/.$actual_shell${NC}" and then use malias. To check that everything is OK, use: ${BLUE}malias -v${NC}."
+echo -e "Now, you can execute: "${BLUE}source ~/.$shell_file${NC}" and then use malias. To check that everything is OK, use: ${BLUE}malias -v${NC}."
 exit
