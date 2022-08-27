@@ -1,4 +1,4 @@
-If you don't know what is an alias, I recommend you to use them. You can see the link in the wikipedia to know why they are useful: <a href="https://en.wikipedia.org/wiki/Alias_(command)" target="_blank">What is an alias?</a>
+If you don't know what an alias is, I recommend that you use them. <a href="https://en.wikipedia.org/wiki/Alias_(command)" target="_blank">What is an alias?</a>
 ___
 
 # Malias
