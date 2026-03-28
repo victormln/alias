@@ -28,54 +28,47 @@ fi
 
 if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]; then
   echo -e "$FORCE_UPDATE_MESSAGE"
-  sed="sed -i"
-  if [ "$OS_TYPE" == "Linux" ]; then
-    ping -c 1 8.8.8.8 &>/dev/null
-    has_internet=$(echo $?)
-    # Si es Windows
-  elif [ "$OS_TYPE" == "Windows" ]; then
-    ping -n 1 www.google.com >/dev/null
-    has_internet=$(echo $?)
-  elif [ "$OS_TYPE" == "Darwin" ]; then
-    ping -c 1 8.8.8.8 &>/dev/null
-    has_internet=$(echo $?)
-    sed="sed -i ''"
+  if [ "$OS_TYPE" == "Darwin" ]; then
+    sed_cmd=(sed -i '')
+  else
+    sed_cmd=(sed -i)
   fi
 
   SCRIPT_DIRECTORY=$(cd $(dirname $0) && pwd)
-  $sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'"$TODAY"',' "$SCRIPT_DIRECTORY"/conf/user.conf
-  if [ "$has_internet" -ne 0 ]; then
-    echo -e "$NO_INTERNET_CONNECTION_MESSAGE"
-  fi
+  "${sed_cmd[@]}" 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'"$TODAY"',' "$SCRIPT_DIRECTORY"/conf/user.conf
 
   if $SEARCH_OTA || [ "$1" == "--update" ]; then
-    last_version=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Version:' | cut -d: -f 2 | head -1)
-    last_version=${last_version//[[:blank:]]/}
-    last_version_without_dots=$(echo "$last_version" | tr -d ".")
-    actual_version_without_dots=$(echo "$CURRENT_VERSION" | tr -d ".")
-    if ((actual_version_without_dots < last_version_without_dots)); then
-      echo "###########################################"
-      echo -e "$NEW_UPDATE_MESSAGE${NC}"
-      echo "$YOU_HAVE_VERSION_MESSAGE: $CURRENT_VERSION"
-      echo "$AVAILABLE_VERSION_MESSAGE: $last_version"
-      echo "###########################################"
+    last_version=$(curl -s --connect-timeout 5 https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Version:' | cut -d: -f 2 | head -1)
+    if [ -z "$last_version" ]; then
+      echo -e "$NO_INTERNET_CONNECTION_MESSAGE"
+    else
+      last_version=${last_version//[[:blank:]]/}
+      last_version_without_dots=$(echo "$last_version" | tr -d ".")
+      actual_version_without_dots=$(echo "$CURRENT_VERSION" | tr -d ".")
+      if ((actual_version_without_dots < last_version_without_dots)); then
+        echo "###########################################"
+        echo -e "$NEW_UPDATE_MESSAGE${NC}"
+        echo "$YOU_HAVE_VERSION_MESSAGE: $CURRENT_VERSION"
+        echo "$AVAILABLE_VERSION_MESSAGE: $last_version"
+        echo "###########################################"
 
-      if $AUTOMATIC_UPDATE; then
-        echo "$AVAILABLE_VERSION_MESSAGE"
-        git stash >/dev/null
-        git pull origin master | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
-        echo -e "$UPDATE_DONE_MESSAGE"
-      else
-        echo "$AVAILABLE_UPDATE_MESSAGE"
-        echo -en "$ASK_TO_DOWNLOAD_MESSAGE ${CYAN}$CONFIRM_OPTIONS${NC}: "; read -r want_to_update
-        if [ "$want_to_update" == "s" ] || [ "$want_to_update" == "y" ] || [ "$want_to_update" == "S" ] || [ "$want_to_update" == "Y" ]; then
+        if $AUTOMATIC_UPDATE; then
+          echo "$AVAILABLE_VERSION_MESSAGE"
           git stash >/dev/null
-          git pull | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
+          git pull origin master | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
           echo -e "$UPDATE_DONE_MESSAGE"
-          exit
         else
-          echo -e "$NOT_UPDATED_MESSAGE"
-          echo -e "**************************"
+          echo "$AVAILABLE_UPDATE_MESSAGE"
+          echo -en "$ASK_TO_DOWNLOAD_MESSAGE ${CYAN}$CONFIRM_OPTIONS${NC}: "; read -r want_to_update
+          if [ "$want_to_update" == "s" ] || [ "$want_to_update" == "y" ] || [ "$want_to_update" == "S" ] || [ "$want_to_update" == "Y" ]; then
+            git stash >/dev/null
+            git pull | tee >(echo "$UPDATING_PLEASE_WAIT_MESSAGE")
+            echo -e "$UPDATE_DONE_MESSAGE"
+            exit
+          else
+            echo -e "$NOT_UPDATED_MESSAGE"
+            echo -e "**************************"
+          fi
         fi
       fi
     fi

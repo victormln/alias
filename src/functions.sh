@@ -2,14 +2,6 @@ function aliasAdded {
   echo -e "$ALIAS_CREATED_MESSAGE"
 }
 
-function showExecuteSourceMessage {
-  echo -e "$EXECUTE_SOURCE_COMMAND" "source ${FILE_WITH_ALIAS}" "${NC}"
-}
-
-function executeSourceAlias {
-  source "${FILE_WITH_ALIAS}"
-}
-
 function printOptions {
     echo "[y/n Y/N]"
 }
@@ -39,9 +31,10 @@ function importAlias {
     fi
     echo -e "$IMPORT_ALIAS $1"
     echo -en "$CONFIRM_ALIAS_IMPORT"; read -r import
-    confirmYes "$import"
-    cat "$CURRENT_DIR/$1" >> "${FILE_WITH_ALIAS}"
-    echo -e "$IMPORT_DONE"
+    if confirmYes "$import"; then
+        cat "$CURRENT_DIR/$1" >> "${FILE_WITH_ALIAS}"
+        echo -e "$IMPORT_DONE"
+    fi
 }
 
 function installAlias {
@@ -65,26 +58,28 @@ function installAlias {
 
 function addAlias {
   echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
-  read -e alias_command
-  echo alias $name=\"$alias_command\" >> ${FILE_WITH_ALIAS}
+  read -er alias_command
+  echo alias $name=\"$alias_command\" >> "${FILE_WITH_ALIAS}"
   aliasAdded
-  echo -en "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}: "; read continue
+  echo -en "$ASK_CREATE_ANOTHER_ALIAS ${CYAN}${CONFIRM_OPTIONS}${NC}: "; read -r continue
+}
+
+function validateThatUrlIsATextPlain {
+    if [[ ! `wget -S --spider $1  2>&1 | grep 'Content-Type: text/plain;'` ]]; then
+      echo -e "$URL_IS_NOT_RETURNING_A_FILE"
+      return 1
+    fi
 }
 
 function installAliasesFromUrl {
     urlWithAliases=$1
     nameOfFileWithDownloadedAliases="install_aliases"
-    validateThatUrlIsATextPlain $urlWithAliases
+    if ! validateThatUrlIsATextPlain "$urlWithAliases"; then
+        return
+    fi
     if wget "$urlWithAliases" -O "$INSTALL_ALIAS_DIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt 2>/dev/null; then
       installAliasesFromFile "$nameOfFileWithDownloadedAliases"
       rm -f "$INSTALL_ALIAS_DIRECTORY"/alias/"$nameOfFileWithDownloadedAliases".txt
-    fi
-}
-
-function validateThatUrlIsATextPlain {
-    if [[ ! `wget -S --spider $1  2>&1 | grep 'Content-Type: text/plain;'` ]]; 
-    then
-      echo -e "$URL_IS_NOT_RETURNING_A_FILE";
     fi
 }
 
@@ -105,7 +100,7 @@ function add {
     if [ -z "$1" ]
     then
       echo -e "$INSERT_NAME_OF_ALIAS_MESSAGE:"
-      read name
+      read -r name
       name=$(echo $name | sed 's/ //g')
     fi
     if grep "^alias $name=" "${FILE_WITH_ALIAS}" > /dev/null
@@ -114,7 +109,7 @@ function add {
       while grep "^alias $name=" "${FILE_WITH_ALIAS}" > /dev/null
       do
         echo -e "$CHOOSE_ANOTHER_NAME"
-        read name
+        read -r name
         name=$(echo $name | sed 's/ //g')
       done
       if [[ "$name" == "q" ]] || [[ "$name" == "Q" ]]
@@ -132,45 +127,47 @@ function add {
 function show {
   echo "$SHOW_ALIAS_CREATED"
   echo "*---------------------------------------------------*"
-  # Cat temporal file with all alias
-  grep -E "^alias " "${FILE_WITH_ALIAS}" > .alias.tmp
+  local ALIAS_TMP
+  ALIAS_TMP=$(mktemp)
+  grep -E "^alias " "${FILE_WITH_ALIAS}" > "$ALIAS_TMP"
   contador=0
-  while read linea
+  while read -r linea
   do
     nombreScript=$(echo "$linea" | cut -d"=" -f 1)
     comando=$(echo "$linea" | cut -d"=" -f 2-)
     # Delete word alias to show only the value of alias
     echo -e " ${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
     contador=$(($contador + 1))
-  done < .alias.tmp
-  rm .alias.tmp
+  done < "$ALIAS_TMP"
+  rm -f "$ALIAS_TMP"
   echo "*---------------------------------------------------*"
   echo "$SCRIPT_OPTIONS"
   exit
 }
 
 function edit {
-  # Show all alias
-  grep -E "^alias " "${FILE_WITH_ALIAS}" > .alias.tmp
+  local ALIAS_TMP
+  ALIAS_TMP=$(mktemp)
+  grep -E "^alias " "${FILE_WITH_ALIAS}" > "$ALIAS_TMP"
 
   if [ -z $1 ]
   then
     showAlias
     echo "$SELECT_ALIAS_TO_EDIT"
-    read selectedOption
+    read -r selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
-      nombre=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 1 | cut -d" " -f 2)
-      comando=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 2)
+      nombre=$(sed "$selectedOption!d" "$ALIAS_TMP" | cut -d"=" -f 1 | cut -d" " -f 2)
+      comando=$(sed "$selectedOption!d" "$ALIAS_TMP" | cut -d"=" -f 2)
       editSpecificAlias $nombre $comando
     else
       editSpecificAlias $selectedOption
     fi
-    rm .alias.tmp
+    rm -f "$ALIAS_TMP"
   else
     for param in "$@"
     do
-      if grep "^alias $param=" .alias.tmp > /dev/null
+      if grep "^alias $param=" "$ALIAS_TMP" > /dev/null
       then
         editSpecificAlias $param
       else
@@ -178,6 +175,7 @@ function edit {
         edit
       fi
     done
+    rm -f "$ALIAS_TMP"
   fi
 }
 
@@ -187,37 +185,36 @@ function editSpecificAlias {
     echo -e $ALIAS_DUPLICATED_MESSAGE
     exit
   fi
-  commando=$(grep -E "alias $1=$2" .alias.tmp | cut -d"=" -f 2 | head -1)
+  commando=$(grep -E "alias $1=$2" "$ALIAS_TMP" | cut -d"=" -f 2 | head -1)
   temp="${commando%\"}"
   commando="${temp#\"}"
   echo -e "$SELECTED_ALIAS ${ORANGE}$1${NC}"
   echo "$INSERT_NAME_OF_ALIAS_MESSAGE:"
   if [[ $OS_TYPE == "Darwin" ]]; then
-    read -p "(current: $1): " name
+    read -rp "(current: $1): " name
     if [[ -z $name ]]
     then
       name=$1
     fi
   else
-    read -e -i "$1" name
+    read -er -i "$1" name
   fi
   name=$(echo $name | sed 's/ //g')
   echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
   if [[ $OS_TYPE == "Darwin" ]]; then
-    read -p "(current: $commando): " alias_command
+    read -rp "(current: $commando): " alias_command
     if [[ -z $alias_command ]]
     then
       alias_command=$commando
     fi
   else
-    read -e -i "$commando" alias_command
+    read -er -i "$commando" alias_command
   fi
-  cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
+  cp "${FILE_WITH_ALIAS}" "${DIR_BACKUP}.alias_backup.txt"
   tmp_file=$(mktemp)
-  sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > "$tmp_file"
+  sed "/^alias $1=/d" "${FILE_WITH_ALIAS}" > "$tmp_file"
   echo alias $name=\"$alias_command\" >> "$tmp_file"
-  rm ${FILE_WITH_ALIAS}
-  mv "$tmp_file" ${FILE_WITH_ALIAS}
+  mv "$tmp_file" "${FILE_WITH_ALIAS}"
   if [ $? -eq 0 ]
   then
     echo -e "$ALIAS_MODIFIED_SUCCESFULLY"
@@ -227,7 +224,7 @@ function editSpecificAlias {
 }
 
 function checkIfAliasNameIsDuplicated {
-  numberOfRepeteadAlias=$(grep -c "^alias $1=" ${FILE_WITH_ALIAS})
+  numberOfRepeteadAlias=$(grep -c "^alias $1=" "${FILE_WITH_ALIAS}")
   if [ $numberOfRepeteadAlias -gt 1 ]
   then
     return 0
@@ -237,24 +234,26 @@ function checkIfAliasNameIsDuplicated {
 }
 
 function delete {
-  grep -E "^alias " "${FILE_WITH_ALIAS}" > .alias.tmp
+  local ALIAS_TMP
+  ALIAS_TMP=$(mktemp)
+  grep -E "^alias " "${FILE_WITH_ALIAS}" > "$ALIAS_TMP"
   if [ -z $1 ]
   then
     showAlias
     echo "$NUMBER_OF_THE_ALIAS_TO_BE_DELETED"
-    read selectedOption
+    read -r selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
-      nombre=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 1 | cut -d" " -f 2)
+      nombre=$(sed "$selectedOption!d" "$ALIAS_TMP" | cut -d"=" -f 1 | cut -d" " -f 2)
       deleteSpecificAlias $nombre
     else
       deleteSpecificAlias $selectedOption
     fi
-    rm .alias.tmp
+    rm -f "$ALIAS_TMP"
   else
     for param in "$@"
     do
-      if grep "^alias $param=" .alias.tmp > /dev/null
+      if grep "^alias $param=" "$ALIAS_TMP" > /dev/null
       then
         deleteSpecificAlias $param
       else
@@ -262,11 +261,12 @@ function delete {
         delete
       fi
     done
+    rm -f "$ALIAS_TMP"
   fi
 }
 
 function deleteSpecificAlias {
-  comando=$(grep -E "alias $1=" .alias.tmp | cut -d"=" -f 2 | head -1)
+  comando=$(grep -E "alias $1=" "$ALIAS_TMP" | cut -d"=" -f 2 | head -1)
   if checkIfAliasNameIsDuplicated $1
   then
     echo -e $ALIAS_DUPLICATED_MESSAGE
@@ -274,16 +274,15 @@ function deleteSpecificAlias {
   fi
   temp="${comando%\"}"
   comando="${temp#\"}"
-  echo -en "$CONFIRM_ALIAS_DELETE ${ORANGE}$1${NC}? ${CONFIRM_OPTIONS}: "; read confirmation
+  echo -en "$CONFIRM_ALIAS_DELETE ${ORANGE}$1${NC}? ${CONFIRM_OPTIONS}: "; read -r confirmation
   if ! confirmYes $confirmation
   then
     exit 6
   fi
-  cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
+  cp "${FILE_WITH_ALIAS}" "${DIR_BACKUP}.alias_backup.txt"
   tmp_file=$(mktemp)
-  sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > "$tmp_file"
-  rm ${FILE_WITH_ALIAS}
-  mv "$tmp_file" ${FILE_WITH_ALIAS}
+  sed "/^alias $1=/d" "${FILE_WITH_ALIAS}" > "$tmp_file"
+  mv "$tmp_file" "${FILE_WITH_ALIAS}"
   if [ $? -eq 0 ]
   then
     echo -e "$ALIAS_DELETED_SUCCESSFULLY"
@@ -293,22 +292,23 @@ function deleteSpecificAlias {
 }
 
 function clear {
-  numberEmptyLines=$(grep -cvE '[^[:space:]]' ${FILE_WITH_ALIAS})
-  numberEmptyAlias=$(grep '^alias .*=\"\"$' ${FILE_WITH_ALIAS} | wc -l)
-  numberEmptyAliasWithoutQuotes=$(grep '^alias .*=$' ${FILE_WITH_ALIAS} | wc -l)
+  numberEmptyLines=$(grep -cvE '[^[:space:]]' "${FILE_WITH_ALIAS}")
+  numberEmptyAlias=$(grep '^alias .*=\"\"$' "${FILE_WITH_ALIAS}" | wc -l)
+  numberEmptyAliasWithoutQuotes=$(grep '^alias .*=$' "${FILE_WITH_ALIAS}" | wc -l)
   numberEmptyAlias=$(($numberEmptyAlias + $numberEmptyAliasWithoutQuotes))
+  if [[ $OS_TYPE == "Darwin" ]]; then
+    sed_cmd=(sed -i '')
+  else
+    sed_cmd=(sed -i)
+  fi
   if [ "$numberEmptyLines" != 0 ]
   then
     echo "$EMPTY_LINES_MESSAGE"
     echo -e "$DELETE_EMPTY_LINES_MESSAGE ${CYAN}$CONFIRM_OPTIONS${NC}"
-    read delete
+    read -r delete
     if confirmYes $delete
     then
-      sed="sed -i"
-      if [[ $OS_TYPE == "Darwin" ]]; then
-        sed="sed -i ''"
-      fi
-      $sed '/^\s*$/d' ${FILE_WITH_ALIAS}
+      "${sed_cmd[@]}" '/^\s*$/d' "${FILE_WITH_ALIAS}"
       echo -e "$EMPTY_LINES_DELETED_SUCCESSFULLY"
     fi
   else
@@ -320,12 +320,8 @@ function clear {
     echo -en "$DELETE_EMPTY_ALIAS"; read -r delete
     if confirmYes $delete
     then
-      sed="sed -i"
-      if [[ $OS_TYPE == "Darwin" ]]; then
-        sed="sed -i ''"
-      fi
-      $sed '/^alias .*=\"\"*$/d' ${FILE_WITH_ALIAS}
-      $sed '/^alias .*=$/d' ${FILE_WITH_ALIAS}
+      "${sed_cmd[@]}" '/^alias .*=\"\"*$/d' "${FILE_WITH_ALIAS}"
+      "${sed_cmd[@]}" '/^alias .*=$/d' "${FILE_WITH_ALIAS}"
       echo -e "$EMPTY_ALIAS_DELETED_SUCCESSFULLY"
     fi
   else
@@ -334,25 +330,27 @@ function clear {
 }
 
 function copy {
-  grep -E "^alias " "${FILE_WITH_ALIAS}" > .alias.tmp
+  local ALIAS_TMP
+  ALIAS_TMP=$(mktemp)
+  grep -E "^alias " "${FILE_WITH_ALIAS}" > "$ALIAS_TMP"
   if [ -z $1 ]
   then
     showAlias
     echo "$SELECT_NUMBER_OF_ALIAS_TO_BE_COPIED"
-    read selectedOption
+    read -r selectedOption
     if [[ "$selectedOption" =~ ^[0-9]+$ ]]
     then
-      nombre=$(sed "$selectedOption!d" .alias.tmp | cut -d"=" -f 1 | cut -d" " -f 2)
+      nombre=$(sed "$selectedOption!d" "$ALIAS_TMP" | cut -d"=" -f 1 | cut -d" " -f 2)
       copySpecificAlias $nombre
     else
       copySpecificAlias $selectedOption
     fi
-    rm .alias.tmp
+    rm -f "$ALIAS_TMP"
   else
     comandoOrigen=$1
     for param in "$@"
     do
-      if grep "^alias $comandoOrigen=" .alias.tmp > /dev/null
+      if grep "^alias $comandoOrigen=" "$ALIAS_TMP" > /dev/null
       then
         if [ -z $2 ]
         then
@@ -368,22 +366,23 @@ function copy {
         copy
       fi
     done
+    rm -f "$ALIAS_TMP"
   fi
 }
 
 function copySpecificAlias {
-  commando=$(grep -E "alias $1=" .alias.tmp | cut -d"=" -f 2 | head -1)
+  commando=$(grep -E "alias $1=" "$ALIAS_TMP" | cut -d"=" -f 2 | head -1)
   temp="${commando%\"}"
   commando="${temp#\"}"
   if [ -z $2 ]
   then
     echo -e "$SELECTED_ALIAS ${ORANGE}$1${NC}."
     echo "$INSERT_NAME_OF_ALIAS_MESSAGE:"
-    read name_alias
-    echo alias $name_alias=\"$commando\" >> ${FILE_WITH_ALIAS}
+    read -r name_alias
+    echo alias $name_alias=\"$commando\" >> "${FILE_WITH_ALIAS}"
     echo -e "$ALIAS_COPIED_SUCCESSFULLY ${ORANGE}$name_alias${NC}."
   else
-    echo alias $2=\"$commando\" >> ${FILE_WITH_ALIAS}
+    echo alias $2=\"$commando\" >> "${FILE_WITH_ALIAS}"
     if [ $? -eq 0 ]
     then
       echo -e "$ALIAS_COPIED_SUCCESSFULLY ${ORANGE}$2${NC}."
@@ -410,28 +409,28 @@ function confirmYes {
 function showAlias {
   echo "$SHOW_ALIAS_CREATED"
   contador=1
-  while read linea
+  while read -r linea
   do
     nombreScript=$(echo "$linea" | cut -d"=" -f 1)
     comando=$(echo "$linea" | cut -d"=" -f 2)
     echo -e "\t${BLUE}[$contador] ${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
     contador=$(($contador + 1))
-  done < .alias.tmp
+  done < "$ALIAS_TMP"
 }
 
 function restore {
-  if ! [ -e ${DIR_BACKUP}.alias_backup.txt ]
+  if ! [ -e "${DIR_BACKUP}.alias_backup.txt" ]
   then
     echo -e "$BACKUP_NOT_FOUND"
     echo "$ROUTE_BACKUP_MESSAGE"
   else
-    cp ${DIR_BACKUP}.alias_backup.txt ${FILE_WITH_ALIAS}
+    cp "${DIR_BACKUP}.alias_backup.txt" "${FILE_WITH_ALIAS}"
     echo -e "$BACKUP_DONE"
   fi
 }
 
 function openFileWithAlias {
-  $DEFAULT_EDITOR ${FILE_WITH_ALIAS}
+  $DEFAULT_EDITOR "${FILE_WITH_ALIAS}"
 }
 
 function showHelp {
