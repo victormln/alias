@@ -49,7 +49,7 @@ if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]; then
   fi
 
   if $SEARCH_OTA || [ "$1" == "--update" ]; then
-    last_version=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Version:' | cut -d: -f 2 | head -1) >/dev/null
+    last_version=$(curl -s https://raw.githubusercontent.com/victormln/alias/master/alias.sh | grep '# Version:' | cut -d: -f 2 | head -1)
     last_version=${last_version//[[:blank:]]/}
     last_version_without_dots=$(echo "$last_version" | tr -d ".")
     actual_version_without_dots=$(echo "$CURRENT_VERSION" | tr -d ".")

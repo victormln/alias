@@ -37,11 +37,10 @@ function importAlias {
         echo -e "$IMPORT_FILE_NOT_FOUND [$CURRENT_DIR/$1]"
         exit
     fi
-    numberAlias=$(cat "$CURRENT_DIR/$1" | wc -l) > /dev/null
     echo -e "$IMPORT_ALIAS $1"
     echo -en "$CONFIRM_ALIAS_IMPORT"; read -r import
     confirmYes "$import"
-    $(cat "$CURRENT_DIR/$1" >> ${FILE_WITH_ALIAS})
+    cat "$CURRENT_DIR/$1" >> "${FILE_WITH_ALIAS}"
     echo -e "$IMPORT_DONE"
 }
 
@@ -90,11 +89,10 @@ function validateThatUrlIsATextPlain {
 }
 
 function installAliasesFromFile {
-    numberAlias=$(cat "$INSTALL_ALIAS_DIRECTORY/alias/$1.txt" | wc -l)
     currentAliasName=$(head -n 1 "$INSTALL_ALIAS_DIRECTORY/alias/$1.txt")
     onlyName="${currentAliasName##* }"
     echo -e "$INSTALL_ALIAS $onlyName"
-    $(cat "$INSTALL_ALIAS_DIRECTORY/alias/$1.txt" >> ${FILE_WITH_ALIAS})
+    cat "$INSTALL_ALIAS_DIRECTORY/alias/$1.txt" >> "${FILE_WITH_ALIAS}"
     echo -e "$INSTALL_ALIAS_DONE $onlyName"
 }
 
@@ -110,16 +108,16 @@ function add {
       read name
       name=$(echo $name | sed 's/ //g')
     fi
-    if cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
+    if grep "^alias $name=" "${FILE_WITH_ALIAS}" > /dev/null
     then
       echo -e "$ALIAS_EXISTS_MESSAGE"
-      while cat ${FILE_WITH_ALIAS} | grep "^alias $name=" > /dev/null
+      while grep "^alias $name=" "${FILE_WITH_ALIAS}" > /dev/null
       do
         echo -e "$CHOOSE_ANOTHER_NAME"
         read name
         name=$(echo $name | sed 's/ //g')
       done
-      if [ $name == "q" ] || [ $name == "Q" ]
+      if [[ "$name" == "q" ]] || [[ "$name" == "Q" ]]
       then
         exit
       fi
@@ -135,7 +133,7 @@ function show {
   echo "$SHOW_ALIAS_CREATED"
   echo "*---------------------------------------------------*"
   # Cat temporal file with all alias
-  cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
+  grep -E "^alias " "${FILE_WITH_ALIAS}" > .alias.tmp
   contador=0
   while read linea
   do
@@ -153,8 +151,8 @@ function show {
 
 function edit {
   # Show all alias
-  cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
-  
+  grep -E "^alias " "${FILE_WITH_ALIAS}" > .alias.tmp
+
   if [ -z $1 ]
   then
     showAlias
@@ -172,7 +170,7 @@ function edit {
   else
     for param in "$@"
     do
-      if cat .alias.tmp | grep "^alias $param=" > /dev/null
+      if grep "^alias $param=" .alias.tmp > /dev/null
       then
         editSpecificAlias $param
       else
@@ -189,7 +187,7 @@ function editSpecificAlias {
     echo -e $ALIAS_DUPLICATED_MESSAGE
     exit
   fi
-  commando=$(cat .alias.tmp | grep -E "alias $1=$2" | cut -d"=" -f 2 | head -1)
+  commando=$(grep -E "alias $1=$2" .alias.tmp | cut -d"=" -f 2 | head -1)
   temp="${commando%\"}"
   commando="${temp#\"}"
   echo -e "$SELECTED_ALIAS ${ORANGE}$1${NC}"
@@ -239,7 +237,7 @@ function checkIfAliasNameIsDuplicated {
 }
 
 function delete {
-  cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
+  grep -E "^alias " "${FILE_WITH_ALIAS}" > .alias.tmp
   if [ -z $1 ]
   then
     showAlias
@@ -256,7 +254,7 @@ function delete {
   else
     for param in "$@"
     do
-      if cat .alias.tmp | grep "^alias $param=" > /dev/null
+      if grep "^alias $param=" .alias.tmp > /dev/null
       then
         deleteSpecificAlias $param
       else
@@ -268,7 +266,7 @@ function delete {
 }
 
 function deleteSpecificAlias {
-  comando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"=" -f 2 | head -1)
+  comando=$(grep -E "alias $1=" .alias.tmp | cut -d"=" -f 2 | head -1)
   if checkIfAliasNameIsDuplicated $1
   then
     echo -e $ALIAS_DUPLICATED_MESSAGE
@@ -299,7 +297,7 @@ function clear {
   numberEmptyAlias=$(grep '^alias .*=\"\"$' ${FILE_WITH_ALIAS} | wc -l)
   numberEmptyAliasWithoutQuotes=$(grep '^alias .*=$' ${FILE_WITH_ALIAS} | wc -l)
   numberEmptyAlias=$(($numberEmptyAlias + $numberEmptyAliasWithoutQuotes))
-  if [ $numberEmptyLines != 0 ]
+  if [ "$numberEmptyLines" != 0 ]
   then
     echo "$EMPTY_LINES_MESSAGE"
     echo -e "$DELETE_EMPTY_LINES_MESSAGE ${CYAN}$CONFIRM_OPTIONS${NC}"
@@ -336,7 +334,7 @@ function clear {
 }
 
 function copy {
-  cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
+  grep -E "^alias " "${FILE_WITH_ALIAS}" > .alias.tmp
   if [ -z $1 ]
   then
     showAlias
@@ -354,7 +352,7 @@ function copy {
     comandoOrigen=$1
     for param in "$@"
     do
-      if cat .alias.tmp | grep "^alias $comandoOrigen=" > /dev/null
+      if grep "^alias $comandoOrigen=" .alias.tmp > /dev/null
       then
         if [ -z $2 ]
         then
@@ -374,7 +372,7 @@ function copy {
 }
 
 function copySpecificAlias {
-  commando=$(cat .alias.tmp | grep -E "alias $1=" | cut -d"=" -f 2 | head -1)
+  commando=$(grep -E "alias $1=" .alias.tmp | cut -d"=" -f 2 | head -1)
   temp="${commando%\"}"
   commando="${temp#\"}"
   if [ -z $2 ]
@@ -396,12 +394,12 @@ function copySpecificAlias {
 }
 
 function confirmYes {
-  if [ -z $1 ]
+  if [ -z "$1" ]
   then
     echo "$EXIT_SCRIPT_WITH_OPTIONS"
     exit 4
   fi
-  if [ $1 == "y" ] || [ $1 == "Y" ] || [ $1 == "s" ] || [ $1 == "S" ]
+  if [ "$1" == "y" ] || [ "$1" == "Y" ] || [ "$1" == "s" ] || [ "$1" == "S" ]
   then
     return 0
   fi
@@ -419,10 +417,6 @@ function showAlias {
     echo -e "\t${BLUE}[$contador] ${ORANGE}$nombreScript${NC}=$comando" | sed 's/alias //g'
     contador=$(($contador + 1))
   done < .alias.tmp
-}
-
-function deleteDuplicateAlias {
-  awk "/^alias $1=/&&c++>0 {next} 1" ${FILE_WITH_ALIAS}
 }
 
 function restore {
@@ -458,70 +452,70 @@ function showHelp {
 }
 
 function parseOption {
-  if [ -z $1 ]
+  if [ -z "$1" ]
   then
     add
   else
-    if [ $1 == "add" ] || [ $1 == "-a" ]
+    if [ "$1" == "add" ] || [ "$1" == "-a" ]
   	then
-      if [ -z $2 ]
+      if [ -z "$2" ]
       then
   		    add
       else
           add $2
       fi
-  	elif [ $1 == "edit" ] || [ $1 == "-e" ]
+  	elif [ "$1" == "edit" ] || [ "$1" == "-e" ]
   	then
-      if [ -z $2 ]
+      if [ -z "$2" ]
       then
         edit
       else
         shift
         edit "$@"
       fi
-  	elif [ $1 == "delete" ] || [ $1 == "-d" ]
+  	elif [ "$1" == "delete" ] || [ "$1" == "-d" ]
   	then
-        if [ -z $2 ]
+        if [ -z "$2" ]
         then
           delete
         else
           shift
           delete "$@"
         fi
-    elif [ $1 == "copy" ] || [ $1 == "-cp" ]
+    elif [ "$1" == "copy" ] || [ "$1" == "-cp" ]
     then
-      if [ -z $2 ]
+      if [ -z "$2" ]
       then
         copy
-      elif [ -z $3 ]
+      elif [ -z "$3" ]
       then
         copy $2
       else
         shift
         copy "$@"
       fi
-  	elif [ $1 == "-h" ] || [ $1 == "--help" ]
+  	elif [ "$1" == "-h" ] || [ "$1" == "--help" ]
   	then
   		showHelp
-    elif [ $1 == "show" ] || [ $1 == "view" ] || [ $1 == "list" ] || [ $1 == "-l" ]
+    elif [ "$1" == "show" ] || [ "$1" == "view" ] || [ "$1" == "list" ] || [ "$1" == "-l" ]
     then
       show
-    elif [ $1 == "--clear" ]
+    elif [ "$1" == "--clear" ]
     then
       clear
-    elif [ $1 == "--restore" ]
+    elif [ "$1" == "--restore" ]
     then
       restore
-    elif [ $1 == "--import" ]
+    elif [ "$1" == "--import" ]
     then
       importAlias $2
-    elif [ $1 == "--install" ] || [ $1 == "install" ]
+    elif [ "$1" == "--install" ] || [ "$1" == "install" ]
     then
       installAlias $2
-    elif [ $1 == "--conf" ]
+    elif [ "$1" == "--conf" ]
     then
       echo ""
-    elif [ $1 == "--open" ] || [ $1 == "open" ]
+    elif [ "$1" == "--open" ] || [ "$1" == "open" ]
     then
       openFileWithAlias
     else
