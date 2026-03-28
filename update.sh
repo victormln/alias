@@ -44,7 +44,6 @@ if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]; then
 
   SCRIPT_DIRECTORY=$(cd $(dirname $0) && pwd)
   $sed 's,^\(LAST_UPDATE_CHECKED_IN=\).*,\1'"$TODAY"',' "$SCRIPT_DIRECTORY"/conf/user.conf
-  rm "$SCRIPT_DIRECTORY/conf/user.conf''" >/dev/null
   if [ "$has_internet" -ne 0 ]; then
     echo -e "$NO_INTERNET_CONNECTION_MESSAGE"
   fi
@@ -81,6 +80,5 @@ if [[ "$TODAY" > "$LAST_UPDATE_CHECKED_IN" ]] || [ "$1" == "--update" ]; then
       fi
     fi
   fi
-  echo "$EXIT_SCRIPT"
-  exit
+  [ "$1" == "--update" ] && exit
 fi

@@ -15,10 +15,9 @@ function printOptions {
 }
 
 function checkShell {
-    error_level=$(echo $?)
     if [ -z "${FILE_WITH_ALIAS}" ]
     then
-        if [ $error_level -eq 0 ]
+        if echo "$SHELL" | grep -q zsh
         then
             FILE_WITH_ALIAS=~/.zshrc
         else
@@ -57,7 +56,6 @@ function installAlias {
         installAliasesFromUrl $1
         exit
     fi
-    exit
     if ! [ -e "$INSTALL_ALIAS_DIRECTORY/alias/$1.txt" ]
     then
         echo -e "$ALIAS_NAME_NOT_EXISTS [$1]"
@@ -138,6 +136,7 @@ function show {
   echo "*---------------------------------------------------*"
   # Cat temporal file with all alias
   cat ${FILE_WITH_ALIAS} | grep -E "^alias " > .alias.tmp
+  contador=0
   while read linea
   do
     nombreScript=$(echo "$linea" | cut -d"=" -f 1)
@@ -202,15 +201,7 @@ function editSpecificAlias {
       name=$1
     fi
   else
-    if [[ $OS_TYPE == "Darwin" ]]; then
-      read -p "(current: $1): " name
-      if [[ -z $name ]]
-      then
-        name=$1
-      fi
-    else
-      read -e -i "$1" name
-    fi
+    read -e -i "$1" name
   fi
   name=$(echo $name | sed 's/ //g')
   echo -e "$INSERT_COMMAND_MESSAGE ${ORANGE}$name${NC}:"
@@ -221,27 +212,14 @@ function editSpecificAlias {
       alias_command=$commando
     fi
   else
-    if [[ $OS_TYPE == "Darwin" ]]; then
-      read -p "(current: $commando): " alias_command
-      if [[ -z $alias_command ]]
-      then
-        alias_command=$commando
-      fi
-    else
-      read -e -i "$commando" alias_command
-    fi
+    read -e -i "$commando" alias_command
   fi
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
-  if cat ${FILE_WITH_ALIAS} | grep "^alias $1=\"$commando\"" &> /dev/null
-  then
-    sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
-    echo alias $name=\"$alias_command\" >> ~/bash.txt
-  else
-    sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
-    echo alias $name=\"$alias_command\" >> ~/bash.txt
-  fi
+  tmp_file=$(mktemp)
+  sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > "$tmp_file"
+  echo alias $name=\"$alias_command\" >> "$tmp_file"
   rm ${FILE_WITH_ALIAS}
-  mv ~/bash.txt ${FILE_WITH_ALIAS}
+  mv "$tmp_file" ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
   then
     echo -e "$ALIAS_MODIFIED_SUCCESFULLY"
@@ -296,7 +274,7 @@ function deleteSpecificAlias {
     echo -e $ALIAS_DUPLICATED_MESSAGE
     exit
   fi
-  temp="${commando%\"}"
+  temp="${comando%\"}"
   comando="${temp#\"}"
   echo -en "$CONFIRM_ALIAS_DELETE ${ORANGE}$1${NC}? ${CONFIRM_OPTIONS}: "; read confirmation
   if ! confirmYes $confirmation
@@ -304,9 +282,10 @@ function deleteSpecificAlias {
     exit 6
   fi
   cp ${FILE_WITH_ALIAS} ${DIR_BACKUP}.alias_backup.txt
-  sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > ~/bash.txt
+  tmp_file=$(mktemp)
+  sed "1!{/^alias $1=/d;}" ${FILE_WITH_ALIAS} > "$tmp_file"
   rm ${FILE_WITH_ALIAS}
-  mv ~/bash.txt ${FILE_WITH_ALIAS}
+  mv "$tmp_file" ${FILE_WITH_ALIAS}
   if [ $? -eq 0 ]
   then
     echo -e "$ALIAS_DELETED_SUCCESSFULLY"
@@ -449,7 +428,6 @@ function deleteDuplicateAlias {
 function restore {
   if ! [ -e ${DIR_BACKUP}.alias_backup.txt ]
   then
-    cat ${DIR_BACKUP}.alias_backup.txt
     echo -e "$BACKUP_NOT_FOUND"
     echo "$ROUTE_BACKUP_MESSAGE"
   else
